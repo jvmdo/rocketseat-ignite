@@ -10,7 +10,7 @@ No primeiro projeto do <em>bootcamp</em> Rocketseat Ignite, desenvolvi uma pági
 
 ## Live site preview
 
-<!-- TODO -->
+Disponível assim que eu souber resolver [esse problema do .git](https://stackoverflow.com/a/74926059/7631147). A pasta .git deve estar no mesmo nível do projeto Vite, o que não é o meu caso. Por isso meu deploy para o GitHub pages não tem sucesso.
 
 ## O que eu aprendi
 
