@@ -1,0 +1,19 @@
+.container {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  align-items: start;
+  gap: 2rem;
+  padding-inline: 1.5rem;
+  max-width: 73rem;
+  margin: 2rem auto;
+}
+
+@media (max-width: 48em) {
+  html {
+    font-size: 87.5%;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+  }
+}

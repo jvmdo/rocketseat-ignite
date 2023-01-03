@@ -1,0 +1,43 @@
+.sidebar .cover {
+  width: 100%;
+  height: 5rem;
+  object-fit: cover;
+}
+
+.sidebar strong {
+  display: block;
+}
+
+.sidebar span {
+  display: block;
+  font-size: 0.875rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 0.125rem solid var(--gray-600);
+  margin-bottom: 1.5rem;
+}
+
+.sidebar a {
+  color: var(--green-500);
+  font-weight: bold;
+  border: 1px solid var(--green-500);
+  border-radius: var(--border-radius);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem 0.875rem;
+  margin-bottom: 2rem;
+  transition: color 0.1s, background-color 0.1s;
+}
+
+.sidebar a:hover {
+  background-color: var(--green-500);
+  color: var(--white);
+}
+
+.sidebar {
+  background-color: var(--gray-800);
+  color: var(--gray-100);
+  text-align: center;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}

@@ -1,0 +1,17 @@
+.header {
+  font-family: "Roboto", sans-serif;
+  color: var(--white);
+  background-color: var(--gray-800);
+  padding: 1.25rem;
+  display: flex;
+  justify-content: center;
+}
+
+.header img {
+  width: 2rem;
+  margin-right: 0.75rem;
+}
+
+.header h1 {
+  font-size: large;
+}

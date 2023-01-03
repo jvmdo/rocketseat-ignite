@@ -1,0 +1,22 @@
+.avatar {
+  width: 3rem;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--border-radius);
+}
+
+.avatarWithBorder {
+  width: 4rem;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--border-radius);
+  border: 0.5rem solid var(--gray-800);
+  outline: 0.25rem solid var(--green-500);
+}
+
+.avatarWithFloat {
+  width: 4rem;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--border-radius);
+  border: 0.5rem solid var(--gray-800);
+  outline: 0.25rem solid var(--green-500);
+  margin-block: -2rem 1rem;
+}
