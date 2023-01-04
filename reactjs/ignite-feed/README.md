@@ -89,4 +89,41 @@ Disponível assim que eu souber resolver [esse problema do .git](https://stackov
   }
   ```
 
+  <div style="color: linen; background-color: cadetblue; border: 2px dashed orangered; padding: 0.5rem;">
+
+    <h2 style="font-weight: bold; text-transform: uppercase;">Resposta</h2>
+
+    <p>That's exactly how CSS Modules work: <q>A CSS Module is a CSS file in which <strong>all class names</strong> and animation names are scoped locally by default.<q> <a href="https://github.com/css-modules/css-modules">Read more</a>.</p>
+
+  </div>
+
 - Como utilizar várias classes no `className` para evitar repetir regras no CSS (como fiz no componente Avatar)? Ou se existe uma solução mais adequada, sem repetição de CSS.
+
+  <div style="color: linen; background-color: cadetblue; border: 2px dashed orangered; padding: 0.5rem;">
+
+    <h2 style="font-weight: bold; text-transform: uppercase;">Resposta</h2>
+
+    <p>CSS Modules composition feature. <a href="https://glenmaddern.com/articles/css-modules">Read more</a>.</p>
+    
+    <pre><code>
+    .common {
+      /* all the common styles you want */
+    }
+    .normal {
+      composes: common;
+      /* anything that only applies to Normal */
+    }
+    .disabled {
+      composes: common;
+      /* anything that only applies to Disabled */
+    }
+    .error {
+      composes: common;
+      /* anything that only applies to Error */
+    }
+    .inProgress {
+      composes: common;
+      /* anything that only applies to In Progress */
+    }
+    </code></pre>
+  </div>
