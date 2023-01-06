@@ -1,0 +1,90 @@
+/* 
+  Create task form
+*/
+.createForm {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.25rem 0.5rem;
+  position: relative;
+  top: -1.625rem;
+}
+
+.createInput {
+  flex: 7 1 20rem;
+  color: var(--gray-300);
+  background-color: var(--gray-500);
+  padding-inline: 1rem;
+  height: 3.25rem;
+  border-radius: var(--border-radius);
+}
+
+.createInput:focus {
+  color: var(--gray-100);
+  border: 1px solid var(--purple-dark);
+}
+
+.createButton {
+  flex: 1 1 6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--blue-dark);
+  padding-inline: 1rem;
+  height: 3.25rem;
+  border-radius: var(--border-radius);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+}
+
+.createButton:is(:focus-visible, :hover) {
+  background-color: var(--blue);
+}
+
+/* 
+  Tasks info 
+*/
+.tasksInfo {
+  margin-block: calc(4rem - 1.625rem) 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tasksInfo p {
+  font-size: var(--fs-sm);
+  font-weight: bold;
+  color: var(--blue);
+}
+
+.tasksInfo p:last-of-type {
+  color: var(--purple);
+}
+
+.tasksCounter {
+  font-size: var(--fs-xs);
+  color: var(--gray-200);
+  background-color: var(--gray-400);
+  padding: 0.15rem 0.5rem;
+  border-radius: 100vw;
+  text-align: center;
+  margin-left: 0.25rem;
+}
+
+/* 
+  Empty tasks placeholder
+*/
+.placeholder {
+  border-top: 1px solid var(--gray-400);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  height: 16rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-300);
+}
+
+.placeholder img {
+  margin-bottom: 1rem;
+}
