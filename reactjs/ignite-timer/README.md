@@ -9,8 +9,13 @@
 ${(props) => {
     return css`
       background-color: ${props.theme['green-300']};
+      color: ${props.theme['green-500']};
+      // ...
     `
   }}
+```
+```jsx
+  css`background-color: ${(props) => props.theme['green-300']};`
 ```
 
 styled component, acessar props, versão typescript, integração de tipos no arquivo .d.ts, extensão vs code, tema, estilos globais, eslint
@@ -31,3 +36,14 @@ Add the following object inside ```rules``` in .eslintrc.json file
   }
 ]
 ```
+Uppercase is not valid. Correct is crlf. Prettier is overtaking ESLint even tho I'm setting ESLint as default in settings.json
+
+npm run lint --fix flag not working
+  It works if the flag is directly written in the npm script command
+
+npx eslint src --ext .ts,.tsx --fix working properly
+  It affects only the currently opened files
+  Must run for every new file. Then the CTRL + Save starts work
+  It fixes the prettier CRLF error
+
+Set the input's width within nested rules did not work. But when I changed to styled component inheritance it worked fine.

@@ -10,13 +10,13 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react"],
-  "rules": {
+  "plugins": ["react"]
+  /* "rules": {
     "prettier/prettier": [
       "error",
       {
         "endOfLine": "CRLF"
       }
     ]
-  }
+  } */
 }
