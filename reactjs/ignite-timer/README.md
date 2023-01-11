@@ -1,3 +1,5 @@
+falar do modulo e link to repo
+
 ```js
   //Injecting 2 or more classes in CSS Modules
   export function Button({ variant = "primary" }: ButtonProps) {
@@ -47,3 +49,7 @@ npx eslint src --ext .ts,.tsx --fix working properly
   It fixes the prettier CRLF error
 
 Set the input's width within nested rules did not work. But when I changed to styled component inheritance it worked fine.
+
+Por que a primeira execution do timer do projeto original starts exatamente no tempo e nao com 1s de atraso?
+
+```const countdown = useRef({ intervalId: 0 })```
