@@ -99,6 +99,16 @@ Nesse desafio, deve-se desenvolver uma aplicação de controle de tarefas no est
   }
   ```
 
+   **RESPOSTA**
+    
+    Modificar um objeto, mesmo que dentro de um ```.map()```, altera o valor de suas propriedades modificadas no array fonte também. Portanto, a forma acima de fato fere a imutabilidade. 
+    
+    ```js
+      // Fixed!
+      return { ...task, isDone: !task.isDone }
+    ```
+
+
 - Como passar a `TaskProps` junto de outros _callbacks_ para o componentes? Eu não encontrei uma solução, então tive que acrescentar funções à interface.
 
   ```ts
