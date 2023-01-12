@@ -1,6 +1,11 @@
+import { useContext } from 'react'
+import { TimerContext } from '../../contexts/TimerContext'
 import { HistoryContainer, StatusFlag, TableContainer } from './styles'
+import { formatDistanceToNow } from 'date-fns'
 
 export function History() {
+  const { timers } = useContext(TimerContext)
+
   return (
     <HistoryContainer>
       <h1>My history</h1>
@@ -15,134 +20,28 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Lorem ipsum dolor sit amet consectetur</td>
-              <td>60 minutes</td>
-              <td>About 1 hours ago</td>
-              <td>
-                <StatusFlag color="yellow">On going</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Adipisicing elit. Voluptates amet molestiae</td>
-              <td>15 minutes</td>
-              <td>2 days ago</td>
-              <td>
-                <StatusFlag color="red">Interrupted</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Laudantium at delectus totam ad hic</td>
-              <td>25 minutes</td>
-              <td>3 days ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Quibusdam eligendi odio?</td>
-              <td>5 minutes</td>
-              <td>1 week ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet consectetur</td>
-              <td>60 minutes</td>
-              <td>About 1 hours ago</td>
-              <td>
-                <StatusFlag color="yellow">On going</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Adipisicing elit. Voluptates amet molestiae</td>
-              <td>15 minutes</td>
-              <td>2 days ago</td>
-              <td>
-                <StatusFlag color="red">Interrupted</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Laudantium at delectus totam ad hic</td>
-              <td>25 minutes</td>
-              <td>3 days ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Quibusdam eligendi odio?</td>
-              <td>5 minutes</td>
-              <td>1 week ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet consectetur</td>
-              <td>60 minutes</td>
-              <td>About 1 hours ago</td>
-              <td>
-                <StatusFlag color="yellow">On going</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Adipisicing elit. Voluptates amet molestiae</td>
-              <td>15 minutes</td>
-              <td>2 days ago</td>
-              <td>
-                <StatusFlag color="red">Interrupted</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Laudantium at delectus totam ad hic</td>
-              <td>25 minutes</td>
-              <td>3 days ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Quibusdam eligendi odio?</td>
-              <td>5 minutes</td>
-              <td>1 week ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet consectetur</td>
-              <td>60 minutes</td>
-              <td>About 1 hours ago</td>
-              <td>
-                <StatusFlag color="yellow">On going</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Adipisicing elit. Voluptates amet molestiae</td>
-              <td>15 minutes</td>
-              <td>2 days ago</td>
-              <td>
-                <StatusFlag color="red">Interrupted</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Laudantium at delectus totam ad hic</td>
-              <td>25 minutes</td>
-              <td>3 days ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
-            <tr>
-              <td>Quibusdam eligendi odio?</td>
-              <td>5 minutes</td>
-              <td>1 week ago</td>
-              <td>
-                <StatusFlag color="green">Concluded</StatusFlag>
-              </td>
-            </tr>
+            {timers.map((timer) => {
+              return (
+                <tr key={timer.id}>
+                  <td>{timer.task}</td>
+                  <td>{timer.minutes} minutes</td>
+                  <td>
+                    {formatDistanceToNow(new Date(timer.startAt * 1000), {
+                      addSuffix: true,
+                    })}
+                  </td>
+                  <td>
+                    {timer.finishedAt ? (
+                      <StatusFlag color="green">Finished</StatusFlag>
+                    ) : timer.interruptedAt ? (
+                      <StatusFlag color="red">Interrupted</StatusFlag>
+                    ) : (
+                      <StatusFlag color="yellow">On going</StatusFlag>
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </TableContainer>

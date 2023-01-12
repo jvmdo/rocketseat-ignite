@@ -52,4 +52,38 @@ Set the input's width within nested rules did not work. But when I changed to st
 
 Por que a primeira execution do timer do projeto original starts exatamente no tempo e nao com 1s de atraso?
 
+  A lógica de contagem é diferente: a minha se baseia na quantidade de segundos para o final da contatem enquanto a deles, no total de segundos menos a quantidade de segundos que se passou desde o início da contagem.
+
+  Daí, na minha lógica, quando a UI atualiza após 1 segundo por conta do ```setInterval```, já se passou 1 segundo; enquanto na dele, o valor inicial é o total de segundos e, após 1 segundo, há a subtração, gerando o comportamento normal de um cronômetro.
+
+  ```jsx
+    // Mine
+    const activeTimerSeconds = activeTimerId ? secondsLeftToEnd : 0
+    // Theirs
+    const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+    const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+  ```
+
+  Portanto, para contornar esse 1s de atraso, escrevi as linhas 80 e 81.
+
 ```const countdown = useRef({ intervalId: 0 })```
+
+A linha nao comentada fere o principio da imutabilidade?
+Mas esse objeto esta dentro de um map que vai gerar outra lista
+  Outra lista é criada, porém o objeto é modificado na lista fonte também.
+  Portanto, não é a maneira adequada para atualizar um objeto.
+```jsx
+  setTimers((state) =>
+    state.map((timer) => {
+      if (timer.id === activeTimerId) {
+        timer.interruptedAt = Date.now()
+        // Ou
+        // return { ...timer, interruptedAt = Date.now() } 
+      }
+      return timer
+    }),
+  )
+```
+
+A página de histórico deveria ter o status atualizado em tempo real ou o projeto original também não funciona assim?
+  Por exemplo, quando um timer está em contagem, seu estado no histórico é "On going". Quando o timer finaliza, seu estado é "Finished" porém para a tabela atualizar, deve navegar à pagina do timer e voltar à tabela.

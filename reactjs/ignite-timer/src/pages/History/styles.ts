@@ -18,7 +18,7 @@ export const TableContainer = styled.div`
   table {
     border-collapse: collapse;
     font-size: 0.875rem;
-    min-width: 48rem;
+    min-width: 32rem;
     width: 100%;
 
     thead {
@@ -48,6 +48,7 @@ export const TableContainer = styled.div`
         height: 3.5rem;
         background-color: ${(props) => props.theme['gray-700']};
         border-top: 3px solid ${(props) => props.theme['gray-800']};
+        padding-right: 0.75rem;
 
         &:first-of-type {
           padding-left: 1.5rem;
@@ -89,5 +90,6 @@ export const StatusFlag = styled.span<StatusProps>`
     height: 0.25rem;
     border-radius: 50%;
     background-color: ${(props) => props.theme[STATUS_PROPS_MAP[props.color]]};
+    flex-shrink: 0;
   }
 `
