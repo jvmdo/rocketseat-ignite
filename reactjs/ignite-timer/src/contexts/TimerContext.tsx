@@ -1,24 +1,17 @@
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useEffect, useReducer } from 'react'
+import { ActionTypes } from '../reducers/actions'
+import { Timer, timerReducer } from '../reducers/timers'
 
 interface TimerFormData {
   task: string
   minutes: number
 }
 
-interface Timer {
-  id: string
-  task: string
-  minutes: number
-  startAt: number
-  interruptedAt?: number
-  finishedAt?: number
-}
-
 interface TimerContextProps {
   timers: Timer[]
   activeTimerId: string | null
   createNewTimer: (data: TimerFormData) => void
-  setCurrentTimerStatus: (status: string) => void
+  setCurrentTimerStatus: (action: ActionTypes) => void
 }
 
 export const TimerContext = createContext({} as TimerContextProps)
@@ -28,19 +21,36 @@ interface TimerContextProviderProps {
 }
 
 export function TimerContextProvider({ children }: TimerContextProviderProps) {
-  const [timers, setTimers] = useState<Timer[]>([])
-  const [activeTimerId, setActiveTimerId] = useState<string | null>(null)
+  const [timersState, dispatch] = useReducer(
+    timerReducer,
+    {
+      timers: [],
+      activeTimerId: null,
+    },
+    (initialValue) => {
+      // Local storage on first page render
+      const storedTimers = localStorage.getItem('@ignite-timer:timers-0.1.0')
 
-  function setCurrentTimerStatus(status: string) {
-    setTimers((state) =>
-      state.map((timer) => {
-        if (timer.id === activeTimerId) {
-          return { ...timer, [status]: Date.now() }
-        }
-        return timer
-      }),
+      if (storedTimers) {
+        return JSON.parse(storedTimers)
+      } else {
+        return initialValue
+      }
+    },
+  )
+
+  const { timers, activeTimerId } = timersState
+
+  useEffect(() => {
+    // Local storage on every [timersState] change
+    localStorage.setItem(
+      '@ignite-timer:timers-0.1.0',
+      JSON.stringify(timersState),
     )
-    setActiveTimerId(null)
+  }, [timersState])
+
+  function setCurrentTimerStatus(action: ActionTypes) {
+    dispatch({ type: action })
   }
 
   function createNewTimer(data: TimerFormData) {
@@ -51,8 +61,10 @@ export function TimerContextProvider({ children }: TimerContextProviderProps) {
       startAt: Date.now() / 1000,
     }
 
-    setTimers((state) => [newTimer, ...state])
-    setActiveTimerId(newTimer.id)
+    dispatch({
+      type: ActionTypes.CREATE_NEW_TIMER,
+      payload: { newTimer },
+    })
   }
 
   return (

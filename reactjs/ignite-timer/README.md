@@ -85,5 +85,43 @@ Mas esse objeto esta dentro de um map que vai gerar outra lista
   )
 ```
 
-A página de histórico deveria ter o status atualizado em tempo real ou o projeto original também não funciona assim?
-  Por exemplo, quando um timer está em contagem, seu estado no histórico é "On going". Quando o timer finaliza, seu estado é "Finished" porém para a tabela atualizar, deve navegar à pagina do timer e voltar à tabela.
+#### **Pergunta X. Por que a página de histórico não atualiza em tempo real o status do Timer?**
+
+  Quando um timer está em contagem, seu estado no histórico é "On going". Quando o timer finaliza, seu estado é "Finished" porém para a tabela atualizar, deve-se navegar à pagina Home e voltar à History.
+
+  **Resposta X.**
+  No projeto original, a contagem regressiva no título também não atualiza quando o app está na History. Um detalhe interessante é que, no meu projeto, escrevi um retorno no código do ```useEffect``` para restaurar o título original da página enquanto no projeto original esse retorno não existe. Isso leva a um comportamento diferente: no meu app, ao alternar para History, a contagem regressiva no título da página é substituída por "Ignite Timer" enquanto no app original a contagem simplesmente congela.
+
+  ```js
+    if (currentActiveTimer) {
+      document.title = `Countdown ${minutesCountdownString}:${secondsCountdownString}`
+    }
+    return () => {
+      document.title = 'Ignite Timer'
+    }
+  ```
+
+  Portanto, acredito que os hooks de estado de uma página não são executadas enquanto o app está em outra página. Daí, concluo que, da maneira foi implementado, não tem como a página de histórico ser notificada de que o estado do Timer foi alterado, porque ele não é alterado até visitar a página do Timer.
+
+
+#### **Pergunta X+1. Se a conclusão da pergunta anterior é verdadeira, por que o Timer apresenta a contagem regressiva correta e atualizada quando o app retorna à Home? Se é incorreta, então como evitar o congelamento da contagem no título?**
+  **Resposta X+1.**
+  Porque a função responsável pelos *ticks* do relógio é o *callback* executado pelo **setInterval**, o qual é disparado pelo **useEffect** que é disparado pela criação de uma nova contagem. Após isso, a sua execução é independente do hook.
+
+  Esse fato reforça minha crença de que os hooks não são executados em segundo plano, porque, se fossem, o estado da quantidade de segundos seria atualizado, o que iria atualizar a renderização da contagem no título. Enfim, esse é exatamente o tipo de dúvida sanada ao se lê a documentação.
+
+#### Por que, ao deixar e retornar à Home após iniciar uma contagem, o display apresenta, durante 1s, a quantidade total de minutos inicial?
+  **Resposta**
+  Certamente esse comportamento é devido ao ```useEffect``` ser executado sempre que o app abre a página. O que leva à execução do hook:
+
+  ```js
+    setSecondsLeftToEnd(currentActiveTimer.minutes * 60)
+  ```
+  
+
+### Useful Resources
+
+About immutability https://immerjs.github.io/immer/
+See also [this script](./map-vs-reference.js)
+
+About reducer https://dmitripavlutin.com/react-usereducer/

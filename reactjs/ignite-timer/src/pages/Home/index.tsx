@@ -4,6 +4,7 @@ import { useContext, useState } from 'react'
 import { TimerContext } from '../../contexts/TimerContext'
 import { TimerDisplay } from './components/TimerDisplay'
 import { TimerForm } from './components/TimerForm'
+import { ActionTypes } from '../../reducers/actions'
 
 export function Home() {
   const { timers, activeTimerId, setCurrentTimerStatus } =
@@ -12,7 +13,7 @@ export function Home() {
   const [isBtnDisabled, setIsBtnDisabled] = useState(true)
 
   function stopTheCount() {
-    setCurrentTimerStatus('interruptedAt')
+    setCurrentTimerStatus(ActionTypes.STOP_COUNTDOWN)
   }
 
   function handleTaskValidnessChange(isValid: boolean) {

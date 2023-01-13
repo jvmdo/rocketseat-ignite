@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { TimerContext } from '../../../../contexts/TimerContext'
+import { ActionTypes } from '../../../../reducers/actions'
 import { DisplayContainer } from './styles'
 
 export function TimerDisplay() {
@@ -11,7 +12,7 @@ export function TimerDisplay() {
   const currentActiveTimer = timers.find(({ id }) => id === activeTimerId)
 
   useEffect(() => {
-    let countdown: number
+    let tick: number
 
     if (currentActiveTimer) {
       const endAt = currentActiveTimer.startAt + currentActiveTimer.minutes
@@ -20,21 +21,21 @@ export function TimerDisplay() {
       // Display the total minutes immediately
       setSecondsLeftToEnd(currentActiveTimer.minutes * 60)
 
-      countdown = setInterval(() => {
+      tick = setInterval(() => {
         const differenceInSeconds = Math.round(endAt - Date.now() / 1000)
         setSecondsLeftToEnd(differenceInSeconds)
 
         if (differenceInSeconds <= 0) {
-          setCurrentTimerStatus('finishedAt')
+          setCurrentTimerStatus(ActionTypes.FINISH_COUNTDOWN)
           setSecondsLeftToEnd(0)
         }
       }, 1000)
     }
 
-    return () => clearInterval(countdown)
-  }, [currentActiveTimer, activeTimerId, setCurrentTimerStatus])
+    return () => clearInterval(tick)
+  }, [currentActiveTimer, setCurrentTimerStatus])
 
-  const activeTimerSeconds = activeTimerId ? secondsLeftToEnd : 0
+  const activeTimerSeconds = currentActiveTimer ? secondsLeftToEnd : 0
   const minutesCountdown = Math.floor(activeTimerSeconds / 60)
   const secondsCountdown = Math.floor(activeTimerSeconds % 60)
 
@@ -42,13 +43,13 @@ export function TimerDisplay() {
   const secondsCountdownString = String(secondsCountdown).padStart(2, '0')
 
   useEffect(() => {
-    if (activeTimerId) {
+    if (currentActiveTimer) {
       document.title = `Countdown ${minutesCountdownString}:${secondsCountdownString}`
     }
     return () => {
       document.title = 'Ignite Timer'
     }
-  }, [minutesCountdownString, secondsCountdownString, activeTimerId])
+  }, [minutesCountdownString, secondsCountdownString, currentActiveTimer])
 
   return (
     <DisplayContainer>
