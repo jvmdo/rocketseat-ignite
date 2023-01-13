@@ -74,7 +74,7 @@ Disponível assim que eu souber resolver [esse problema do .git](https://stackov
 
 ## Dúvidas
 
-- O escopo do modules não funcionou quando utilizei <em>tag selectors</em>. Tive que tornar o seletor mais específico colocando uma class na frente.
+- **Question**. O escopo do modules não funcionou quando utilizei <em>tag selectors</em>. Tive que tornar o seletor mais específico colocando uma class na frente.
 
   ```css
   /* This rule affects all the components */
@@ -88,42 +88,39 @@ Disponível assim que eu souber resolver [esse problema do .git](https://stackov
     margin: -2rem 1rem;
   }
   ```
+  **Answer**. That's exactly how CSS Modules is supposed to work: "a CSS Module is a CSS file in which *all class names* and animation names are scoped locally by default.". [Read more](https://github.com/css-modules/css-modules)
 
-  <div style="color: linen; background-color: cadetblue; border: 2px dashed orangered; padding: 0.5rem;">
+- **Pergunta**.Como utilizar várias classes no `className` para evitar repetir regras no CSS (como fiz no componente Avatar)? Ou se existe uma solução mais adequada, sem repetição de CSS.
 
-    <h2 style="font-weight: bold; text-transform: uppercase;">Resposta</h2>
+    **Resposta**. Com CSS Modules composition feature é possível criar uma classe base e utilizar a propriedade ```composes``` para implementar uma composição. [Read more.](https://glenmaddern.com/articles/css-modules")
 
-    <p>That's exactly how CSS Modules work: <q>A CSS Module is a CSS file in which <strong>all class names</strong> and animation names are scoped locally by default.<q> <a href="https://github.com/css-modules/css-modules">Read more</a>.</p>
+    ```css
+      .common {
+        /* all the common styles you want */
+      }
+      .normal {
+        composes: common;
+        /* anything that only applies to Normal */
+      }
+      .disabled {
+        composes: common;
+        /* anything that only applies to Disabled */
+      }
+      .error {
+        composes: common;
+        /* anything that only applies to Error */
+      }
+      .inProgress {
+        composes: common;
+        /* anything that only applies to In Progress */
+      }
+    ```
+    Para passar duas ou mais classes:
 
-  </div>
-
-- Como utilizar várias classes no `className` para evitar repetir regras no CSS (como fiz no componente Avatar)? Ou se existe uma solução mais adequada, sem repetição de CSS.
-
-  <div style="color: linen; background-color: cadetblue; border: 2px dashed orangered; padding: 0.5rem;">
-
-    <h2 style="font-weight: bold; text-transform: uppercase;">Resposta</h2>
-
-    <p>CSS Modules composition feature. <a href="https://glenmaddern.com/articles/css-modules">Read more</a>.</p>
-    
-    <pre><code>
-    .common {
-      /* all the common styles you want */
-    }
-    .normal {
-      composes: common;
-      /* anything that only applies to Normal */
-    }
-    .disabled {
-      composes: common;
-      /* anything that only applies to Disabled */
-    }
-    .error {
-      composes: common;
-      /* anything that only applies to Error */
-    }
-    .inProgress {
-      composes: common;
-      /* anything that only applies to In Progress */
-    }
-    </code></pre>
-  </div>
+    ```js
+      return <button 
+        className={`${style.btn} ${style[variant]}`}
+        >
+          Submit
+        </button>
+    ```
