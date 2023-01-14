@@ -15,7 +15,7 @@ export function TimerDisplay() {
     let tick: number
 
     if (currentActiveTimer) {
-      const endAt = currentActiveTimer.startAt + currentActiveTimer.minutes
+      const endAt = currentActiveTimer.startAt + currentActiveTimer.minutes * 60
 
       // It takes 1s until the setInterval's callback first execution
       // Display the total minutes immediately

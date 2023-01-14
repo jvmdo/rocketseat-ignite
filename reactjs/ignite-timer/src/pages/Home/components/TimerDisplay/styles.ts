@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const DisplayContainer = styled.div`
   font-family: 'Roboto Mono', 'monospace';
-  font-size: clamp(5rem, 3.182rem + 9.09vw, 10rem);
+  font-size: clamp(3rem, 0.455rem + 12.73vw, 10rem);
 
   .digit {
     padding-inline: 0.75rem;
