@@ -30,13 +30,13 @@ FEM is a great site that helps you improve your web dev coding skills by buildin
 
 #### Mobile
 | Mobile      | Mobile (with active states) | Mobile (something)     |
-| :----:        |    :----:   |          ---: |
+| :----:        |    :----:   |    :---:   |
 | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices" width=200>      | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices (with active states)" width=200>       | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices (with something more)" width=200>   |
 
 
 #### Desktop
 | Desktop      | Desktop (with active states) | Desktop (something)     |
-| :----:        |    :----:   |          ---: |
+| :----:        |    :----:   |     :---:    |
 | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices" width=200>      | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=200>       | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices (with something more)" width=200>   |
 
 
@@ -83,9 +83,11 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 - GitHub - [jvmdo](https://github.com/jvmdo)
 
-- LinkedIn - [João Oliveira](https://br.linkedin.com/)
-
 - Frontend Mentor - [@jvmdo](https://www.frontendmentor.io/profile/jvmdo)
+
+- CodeWars - [jvmdo](https://www.codewars.com/users/jvmdo)
+
+- LinkedIn - [João Oliveira](https://br.linkedin.com/)
 
 
 ## Acknowledgments
