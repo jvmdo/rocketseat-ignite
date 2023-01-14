@@ -52,6 +52,8 @@ Nesse desafio, deve-se desenvolver uma aplicação de controle de tarefas no est
 
 - [Project GitHub's repository](https://www.github.com/jvmdo/rocketseat-ignite/reactjs/todo-list)
 
+- [Live demo on StackBlitz](https://stackblitz.com/github/jvmdo/rocketseat-ignite/tree/main/reactjs/todo-list?terminal=dev)
+
 - [Live Site URL]()
 
 ## My process
