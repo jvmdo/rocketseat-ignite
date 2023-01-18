@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet"
+      />
+      <link rel="stylesheet" href="global.css" />
+      <link rel="stylesheet" href="header.css" />
+      <link rel="stylesheet" href="checkout.css" />
+
+      <title>Coffee Delivery UI</title>
+    </head>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav class="navigation">
+          <a class="nav-link" href="home.html">
+            <img src="assets/logo.svg" alt="" />
+          </a>
+          <a class="nav-link" href="#">
+            <span class="location">
+              <img class="icon" src="assets/icon.svg" alt="" />
+              Manaus, AM
+            </span>
+          </a>
+          <a class="nav-link" href="checkout.html">
+            <span class="cart" data-items-amount="3">
+              <img class="icon" src="assets/icon.svg" alt="" />
+            </span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <section class="payment-address">
+          <h2 class="payment-title">Complete seu pedido</h2>
+          <div class="form-wrapper">
+            <div class="payment-text">
+              <img class="icon" src="assets/icon.svg" alt="" />
+              <h3>Endereço de Entrega</h3>
+              <p>Informe o endereço onde deseja receber seu pedido</p>
+            </div>
+            <form method="post" class="address-form">
+              <label for="cep">
+                <input type="tel" id="cep" name="cep" placeholder="CEP" />
+              </label>
+              <label for="rua">
+                <input type="text" id="rua" name="rua" placeholder="Rua" />
+              </label>
+              <label for="numero">
+                <input
+                  type="number"
+                  id="numero"
+                  name="numero"
+                  placeholder="Número"
+                />
+              </label>
+              <label for="complemento">
+                <input
+                  type="text"
+                  id="complemento"
+                  name="complemento"
+                  placeholder="Complemento"
+                />
+              </label>
+              <label for="bairro">
+                <input type="text" name="bairro" placeholder="Bairro" />
+              </label>
+              <label for="cidade">
+                <input
+                  type="text"
+                  id="cidade"
+                  name="cidade"
+                  placeholder="Cidade"
+                />
+              </label>
+              <label for="uf">
+                <input type="text" id="uf" name="uf" placeholder="UF" />
+              </label>
+            </form>
+          </div>
+        </section>
+      </div>
+
+      <div class="container">
+        <section class="payment-method">
+          <div class="payment-text">
+            <img class="icon" src="assets/icon.svg" alt="" />
+            <h3>Pagamento</h3>
+            <p>
+              O pagamento é feito na entrega. Escolha a forma que deseja pagar
+            </p>
+          </div>
+          <form method="post" class="method-form">
+            <fieldset>
+              <div class="method">
+                <img class="icon" src="assets/icon.svg" alt="" />
+                <input type="radio" name="payment-method" id="credit-card" />
+                <label for="credit-card">Cartão de crédito</label>
+              </div>
+              <div class="method">
+                <img class="icon" src="assets/icon.svg" alt="" />
+                <input type="radio" name="payment-method" id="debit-card" />
+                <label for="debit-card">Cartão de débito</label>
+              </div>
+              <div class="method">
+                <img class="icon" src="assets/icon.svg" alt="" />
+                <input type="radio" name="payment-method" id="cash" />
+                <label for="cash">Dinheiro</label>
+              </div>
+            </fieldset>
+          </form>
+        </section>
+      </div>
+
+      <div class="container">
+        <section class="order-summary">
+          <h2 class="payment-title">Cafés selecionados</h2>
+          <div class="order-wrapper">
+            <ul class="order-list">
+              <li class="order-item">
+                <div class="coffee-item">
+                  <img class="coffee-img" src="assets/tradicional.png" alt="" />
+                  <h3 class="coffee-name">Expresso Tradicional</h3>
+                  <span class="coffee-price">R$ 19,90</span>
+                  <span class="coffee-add">
+                    <button type="button" class="add-plus">
+                      <img class="icon" src="assets/icon.svg" alt="" />
+                    </button>
+                    1
+                    <button type="button" class="add-minus">
+                      <img class="icon" src="assets/icon.svg" alt="" />
+                    </button>
+                  </span>
+                  <button type="button" class="coffee-del">
+                    <img class="icon" src="assets/icon.svg" alt="" />
+                    Remover
+                  </button>
+                </div>
+              </li>
+            </ul>
+            <ul class="order-total">
+              <li class="items-price">
+                <span>Total de itens</span>
+                <span>R$ 123,70</span>
+              </li>
+              <li class="items-delivery">
+                <span>Entrega</span>
+                <span>R$ 3,50</span>
+              </li>
+              <li class="items-total">
+                <span>Total</span>
+                <span>R$ 345,00</span>
+              </li>
+            </ul>
+            <button type="button" class="order-confirm">
+              Confirmar pedido
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

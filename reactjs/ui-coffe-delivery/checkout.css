@@ -1,0 +1,290 @@
+/* 
+  Address from
+*/
+.payment-address {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.payment-title {
+  color: var(--base-subtitle);
+  font-size: var(--fs-h-sm);
+  font-weight: var(--fw-bd);
+  margin-bottom: 1rem;
+}
+
+.payment-text {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.payment-text h3 {
+  color: var(--base-subtitle);
+  font-family: var(--ff-body);
+  font-size: var(--fs-b-rg);
+  font-weight: var(--fw-rg);
+}
+
+.payment-text p {
+  grid-column: 2 / 3;
+  font-size: var(--fs-b-sm);
+  margin-bottom: 2rem;
+}
+
+.form-wrapper {
+  background-color: var(--base-card);
+  border-radius: var(--br-rg);
+  padding: 2.5rem;
+}
+
+input::placeholder {
+  color: var(--base-label);
+  font-size: var(--fs-b-sm);
+}
+
+input:not(:placeholder-shown) {
+  z-index: 1;
+}
+
+input[name] {
+  background-color: var(--base-input);
+  border: 1px solid var(--base-button);
+  border-radius: var(--br-sm);
+  font-size: var(--fs-b-sm);
+  height: 2.615rem;
+  padding-inline: 0.75rem;
+}
+
+input[name]:focus-visible {
+  border-color: var(--yellow-dark);
+}
+
+input[name="cep"],
+input[name="numero"],
+input[name="bairro"] {
+  max-width: 12rem;
+}
+
+input[name="uf"] {
+  max-width: 4rem;
+}
+
+label[for="complemento"] {
+  position: relative;
+}
+
+/* :not(:focus-within) */
+label[for="complemento"]::after {
+  content: "Opcional";
+  color: var(--base-label);
+  font-style: italic;
+  font-size: var(--fs-b-xs);
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-inline: 0.75rem;
+}
+
+.address-form {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem 0.75rem;
+}
+
+label {
+  display: flex;
+}
+
+label[for="cep"] {
+  flex: 1 0 100%;
+}
+
+label[for="rua"] {
+  flex: 1 0 100%;
+}
+
+label[for="complemento"],
+label[for="cidade"] {
+  flex: 1;
+}
+
+label[for="uf"] {
+  margin-left: auto;
+}
+
+label > input {
+  flex: 1;
+}
+
+/* 
+  Payment method form
+*/
+.payment-method {
+  background-color: var(--base-card);
+  border-radius: var(--br-rg);
+  max-width: 40rem;
+  margin-inline: auto;
+  padding: 2.5rem;
+}
+
+.method-form fieldset {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.625rem, 1fr));
+  gap: 0.75rem;
+}
+
+.method {
+  background-color: var(--base-button);
+  border-radius: var(--br-rg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 3.25rem;
+  padding-inline: 1rem;
+  position: relative;
+}
+
+/* .method:is(:focus-visible) {
+  background-color: var(--base-hover);
+} */
+
+.method input[type="radio"] {
+  border: none;
+  padding: unset;
+  appearance: none;
+  /* background: url("assets/icon.svg") no-repeat center / 1rem;
+  height: 1rem;
+  width: 1rem;
+  pointer-events: none;
+  z-index: 1; */
+}
+
+.method .icon {
+  color: var(--purple);
+  width: 1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+input[type="radio"] + label {
+  all: unset;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  font-size: var(--fs-b-xs);
+  text-transform: uppercase;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 2.5rem;
+  /* border: 1px solid firebrick; */
+}
+
+input[type="radio"] + label:is(:hover) {
+  background-color: var(--base-hover);
+  color: var(--base-subtitle);
+}
+
+input[type="radio"]:is(input:checked) + label {
+  background-color: var(--purple-light);
+  border-color: var(--purple);
+}
+
+/* 
+  Purchase summary
+*/
+.order-summary {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.order-wrapper {
+  background-color: var(--base-input);
+  border-radius: 6px 44px;
+  padding: 2.5rem;
+}
+
+.coffee-item {
+  display: grid;
+  grid-template-columns: repeat(3, auto) 1fr;
+  gap: 0.5rem;
+}
+
+.coffee-img {
+  grid-row: 1 / span 2;
+  margin-right: 0.75rem;
+  object-fit: cover;
+  height: 4rem;
+  width: 4rem;
+}
+
+.coffee-name {
+  grid-column: 2 / span 2;
+  color: var(--base-subtitle);
+  font-family: var(--ff-body);
+  font-size: var(--fs-b-rg);
+  font-weight: var(--fw-rg);
+  line-height: var(--lh-body);
+}
+
+.coffee-price {
+  margin-left: auto;
+  font-weight: var(--fw-bd);
+  text-transform: capitalize;
+}
+
+.coffee-add {
+  background-color: var(--base-button);
+  border-radius: var(--br-rg);
+  color: var(--base-title);
+  padding-inline: 0.5rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.coffee-add :is(.add-plus, .add-minus) {
+  display: inline-flex;
+  transition: var(--ts-hover);
+}
+
+.coffee-add :is(.add-plus, .add-minus):is(:hover, :focus-visible) {
+  color: var(--purple-dark);
+}
+
+.coffee-add .icon {
+  color: var(--purple);
+  width: 0.875rem;
+}
+
+.coffee-del {
+  background-color: var(--base-button);
+  border-radius: var(--br-rg);
+  color: var(--base-text);
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--fs-b-xs);
+  text-transform: uppercase;
+  padding-inline: 0.5rem;
+}
+
+.coffee-del:hover {
+  background-color: var(--base-hover);
+}
+
+.coffee-del .icon {
+  color: var(--purple);
+  width: 1rem;
+}
+
+.order-item {
+  border-bottom: 1px solid var(--base-button);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+}
