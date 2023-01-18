@@ -2,8 +2,11 @@
   Intro 
 */
 .intro {
-  background: center / 100vw 100% no-repeat url("assets/background-intro.svg");
+  background-image: url("assets/background.svg");
+  background-repeat: no-repeat;
+  background-position: top;
   text-align: center;
+  padding-block: 2rem 4rem;
 }
 
 .intro-illustration {
@@ -21,7 +24,10 @@
 
 @media (min-width: 64em) {
   .intro {
+    background-size: 100vw auto;
+    background-position: left bottom;
     text-align: unset;
+    padding-block: 5rem 7rem;
   }
 
   .intro .container {
@@ -67,7 +73,7 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  gap: 1.25rem 2.5rem;
+  gap: 1.25rem 2rem;
 }
 
 @media (min-width: 64em) {
@@ -106,12 +112,12 @@
   Products
 */
 .products {
-  margin-block: 4rem;
+  margin-bottom: 4rem;
 }
 
 @media (min-width: 64em) {
   .products {
-    margin-block: 7rem;
+    margin-bottom: 7rem;
   }
 }
 

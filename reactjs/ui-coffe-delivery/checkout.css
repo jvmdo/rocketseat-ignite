@@ -3,7 +3,7 @@
 */
 .payment-address {
   max-width: 40rem;
-  margin-inline: auto;
+  /* margin-inline: auto; */
 }
 
 .payment-title {
@@ -126,13 +126,13 @@ label > input {
   background-color: var(--base-card);
   border-radius: var(--br-rg);
   max-width: 40rem;
-  margin-inline: auto;
+  /* margin-inline: auto; */
   padding: 2.5rem;
 }
 
 .method-form fieldset {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10.625rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(10.25rem, 1fr));
   gap: 0.75rem;
 }
 
@@ -180,7 +180,7 @@ input[type="radio"] + label {
   display: flex;
   align-items: center;
   padding-left: 2.5rem;
-  /* border: 1px solid firebrick; */
+  transition: var(--ts-hover);
 }
 
 input[type="radio"] + label:is(:hover) {
@@ -198,11 +198,11 @@ input[type="radio"]:is(input:checked) + label {
 */
 .order-summary {
   max-width: 40rem;
-  margin-inline: auto;
+  /* margin-inline: auto; */
 }
 
 .order-wrapper {
-  background-color: var(--base-input);
+  background-color: var(--base-card);
   border-radius: 6px 44px;
   padding: 2.5rem;
 }
@@ -287,4 +287,70 @@ input[type="radio"]:is(input:checked) + label {
   border-bottom: 1px solid var(--base-button);
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+:is(.items-price, .items-delivery, .items-total) {
+  display: flex;
+  justify-content: space-between;
+}
+
+:is(.items-price, .items-delivery) span:first-of-type {
+  font-size: var(--fs-b-sm);
+  margin-bottom: 0.75rem;
+}
+
+.items-total {
+  color: var(--base-subtitle);
+  font-size: var(--fs-b-xl);
+  font-weight: var(--fw-bd);
+  margin-bottom: 1.5rem;
+}
+
+.order-confirm {
+  background-color: var(--yellow);
+  border-radius: var(--br-rg);
+  color: var(--white);
+  font-size: var(--fs-b-sm);
+  font-weight: var(--fw-bd);
+  text-transform: uppercase;
+  height: 3rem;
+  width: 100%;
+  padding-inline: 0.75rem;
+}
+
+.order-confirm:is(:hover, :focus-visible) {
+  background-color: var(--yellow-dark);
+}
+
+/* 
+  Main layout
+*/
+main > .container {
+  display: grid;
+  justify-content: center;
+  row-gap: 0.75rem;
+  margin-bottom: 6rem;
+  /* border: 1px solid firebrick; */
+}
+
+@media (min-width: 64em) {
+  main > .container {
+    grid-template-columns: 10fr 7fr;
+    grid-template-rows: auto auto 1fr;
+    align-items: start;
+    column-gap: clamp(1rem, -4.818rem + 9.09vw, 2rem); /* 1024px - 1200px */
+  }
+
+  .order-summary {
+    grid-area: 1 / 2 / -1 / -1;
+  }
+
+  .order-wrapper {
+    min-height: 375px;
+    padding-inline: clamp(
+      2rem,
+      -0.909rem + 4.55vw,
+      2.5rem
+    ); /* 1024px - 1200px */
+  }
 }

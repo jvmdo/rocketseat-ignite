@@ -5,3 +5,5 @@ Embrulhar input numa label para mostrar um texto de campo opcional nao e bom se 
 alterar o tamanho do REM no html (75%, 87.5%, 100%) pode ser uma boa porem isso alterar literalmente o valor de 1rem (12px, 14px, 16px respectivamente)
   vantagem: reduz tamanhos e espacamentos
   desvantagens: ter que alterar valores antes fixos. min-width: 20rem --> 26.667rem
+
+como utilizar um linear-gradient como border

@@ -129,4 +129,10 @@ h3 {
 
 .icon {
   width: 1.375rem;
+  transition: var(--ts-hover);
+}
+
+input,
+button {
+  transition: var(--ts-hover);
 }
