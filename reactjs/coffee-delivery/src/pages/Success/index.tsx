@@ -3,20 +3,21 @@ import { IconBox } from '../../components/IconBox'
 import { Container } from '../../styles/global'
 import { SuccessSkin } from './style'
 import illustration from '../../assets/illustrations/delivery.png'
+import { useLocation } from 'react-router-dom'
+import { FormValues } from '../Checkout'
 
-interface SuccessProps {
-  address: string
-  number: string
-  district: string
-  city: string
-  state: string
-  paymentMethod: string
-}
-
-export function Success(props: SuccessProps) {
+export function Success() {
   const deliveryTime = Math.floor(Math.random() * 50) + 10
 
-  // useEffect?
+  const { state } = useLocation()
+  const { rua, numero, bairro, cidade, uf, method }: FormValues = state
+
+  function capetalize(sentence: string) {
+    return sentence.replace(
+      /^\p{Letter}|\b\p{Letter}{4,}/gu,
+      (word) => word[0].toUpperCase() + word.slice(1),
+    )
+  }
 
   return (
     <SuccessSkin>
@@ -38,13 +39,14 @@ export function Success(props: SuccessProps) {
                 </IconBox>
                 <div className="info-text">
                   <p>
-                    Entrega em{' '}
+                    Entrega em rua{' '}
                     <span>
-                      Rua {props.address}, {props.number}
+                      {capetalize(rua)}, {capetalize(numero)}
                     </span>
                   </p>
                   <p>
-                    {props.district} - {props.city}, {props.state}
+                    {capetalize(bairro)} - {capetalize(cidade)},{' '}
+                    {uf.toUpperCase()}
                   </p>
                 </div>
               </li>
@@ -78,7 +80,7 @@ export function Success(props: SuccessProps) {
                 <div className="info-text">
                   <p>Pagamento na entrega</p>
                   <p>
-                    <span>{props.paymentMethod}</span>
+                    <span>{capetalize(method)}</span>
                   </p>
                 </div>
               </li>

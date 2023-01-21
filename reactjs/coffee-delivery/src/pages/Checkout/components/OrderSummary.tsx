@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { FormValues } from '../index'
 import { breakpoint } from '../../../styles/global'
 import { CoffeeItem } from './CoffeeItem'
+import { useFormContext } from 'react-hook-form'
 
 interface OrderSummaryProps {
   cartItems: {
@@ -13,8 +15,20 @@ interface OrderSummaryProps {
   deliveryFee: number
 }
 
+function priceFormatter(price: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(price)
+}
+
 export function OrderSummary({ cartItems, deliveryFee }: OrderSummaryProps) {
   const navigateTo = useNavigate()
+  const {
+    getValues,
+    reset,
+    formState: { isValid },
+  } = useFormContext<FormValues>()
 
   const itemsTotal = cartItems.reduce(
     (acc, { price, quantity }) => acc + price * quantity,
@@ -22,25 +36,21 @@ export function OrderSummary({ cartItems, deliveryFee }: OrderSummaryProps) {
   )
   const total = itemsTotal + deliveryFee
 
-  const itemsTotalText = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(itemsTotal)
-
-  const totalText = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(total)
-
-  const deliveryFeeText = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(deliveryFee)
+  const itemsTotalText = priceFormatter(itemsTotal)
+  const totalText = priceFormatter(total)
+  const deliveryFeeText = priceFormatter(deliveryFee)
 
   function handleNavigation() {
-    // Add state to navigation
-    // https://stackoverflow.com/a/68912082
-    navigateTo('/success')
+    document.querySelectorAll('form').forEach((form) => form.requestSubmit())
+
+    if (isValid) {
+      navigateTo('/success', {
+        state: { ...getValues() },
+      })
+      // Get the coffees
+      // Post to server
+      reset()
+    }
   }
 
   return (
@@ -71,7 +81,7 @@ export function OrderSummary({ cartItems, deliveryFee }: OrderSummaryProps) {
           </li>
         </ul>
         <button
-          type="button"
+          type="submit"
           className="order-confirm"
           onClick={handleNavigation}
         >

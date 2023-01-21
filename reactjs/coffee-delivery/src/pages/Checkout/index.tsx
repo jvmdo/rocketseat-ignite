@@ -1,3 +1,4 @@
+import { FormProvider, useForm } from 'react-hook-form'
 import { Container } from '../../styles/global'
 import { OrderSummary } from './components/OrderSummary'
 import { PaymentAddress } from './components/PaymentAddress'
@@ -19,14 +20,40 @@ const cartItems = [
   },
 ]
 
+export type FormValues = {
+  cep: string
+  rua: string
+  numero: string
+  complemento?: string
+  bairro: string
+  cidade: string
+  uf: string
+  method: string
+}
+
 export function Checkout() {
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      cep: '',
+      rua: '',
+      numero: '',
+      complemento: '',
+      bairro: '',
+      cidade: '',
+      uf: '',
+      method: '',
+    },
+  })
+
   return (
-    <CheckoutSkin>
-      <Container>
-        <PaymentAddress />
-        <PaymentMethod />
-        <OrderSummary cartItems={cartItems} deliveryFee={5.5} />
-      </Container>
-    </CheckoutSkin>
+    <FormProvider {...methods}>
+      <CheckoutSkin>
+        <Container>
+          <PaymentAddress />
+          <PaymentMethod />
+          <OrderSummary cartItems={cartItems} deliveryFee={5.5} />
+        </Container>
+      </CheckoutSkin>
+    </FormProvider>
   )
 }
