@@ -26,26 +26,6 @@ export const ProductsSectionSkin = styled.section`
     padding-inline: 1rem;
   }
 
-  .filter-tag {
-    border: 1px solid ${(p) => p.theme.yellow};
-    border-radius: 100vw;
-    color: ${(p) => p.theme['yellow-dark']};
-    font-size: ${(p) => p.theme['fs-b-xxs']};
-    font-weight: ${(p) => p.theme['fw-bd']};
-    text-transform: uppercase;
-    padding-inline: 0.75rem;
-    height: 1.5rem;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    transition: ${(p) => p.theme['ts-hover']};
-  }
-
-  .filter-tag:is(:hover, :focus-visible) {
-    background-color: ${(p) => p.theme['yellow-dark']};
-    color: ${(p) => p.theme.white};
-  }
-
   .products-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(16rem, min-content));
