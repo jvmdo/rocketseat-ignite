@@ -70,12 +70,9 @@ export const IntroSectionSkin = styled.section`
   }
 
   @media (min-width: ${breakpoint.lg}) {
-    background-size: 100vw auto;
-    background-position: center;
+    background-repeat: repeat-x;
     text-align: unset;
     padding-block: 5rem 7rem;
-    /* background-color: #fafafa30;
-    background-blend-mode: hard-light; */
 
     & > ${Container} {
       display: flex;
