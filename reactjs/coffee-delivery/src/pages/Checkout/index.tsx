@@ -5,21 +5,6 @@ import { PaymentAddress } from './components/PaymentAddress'
 import { PaymentMethod } from './components/PaymentMethod'
 import { CheckoutSkin } from './style'
 
-const cartItems = [
-  {
-    image: '/coffee/traditional.png',
-    name: 'expresso tradicional',
-    price: 5.5,
-    quantity: 3,
-  },
-  {
-    image: '/coffee/american.png',
-    name: 'expresso americano',
-    price: 7.5,
-    quantity: 4,
-  },
-]
-
 export type FormValues = {
   cep: string
   rua: string
@@ -51,7 +36,7 @@ export function Checkout() {
         <Container>
           <PaymentAddress />
           <PaymentMethod />
-          <OrderSummary cartItems={cartItems} deliveryFee={5.5} />
+          <OrderSummary />
         </Container>
       </CheckoutSkin>
     </FormProvider>

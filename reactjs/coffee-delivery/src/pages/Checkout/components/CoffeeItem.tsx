@@ -1,6 +1,8 @@
 import { Minus, Plus, Trash } from 'phosphor-react'
+import { useContext } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { IconBox } from '../../../components/IconBox'
+import { CartContext } from '../../../contexts/CartContext'
 
 interface CoffeeItemProps {
   image: string
@@ -11,11 +13,24 @@ interface CoffeeItemProps {
 
 export function CoffeeItem({ image, name, price, quantity }: CoffeeItemProps) {
   const theme = useTheme()
+  const cart = useContext(CartContext)
 
   const amount = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).format(price)
+
+  function handleRemoveItem() {
+    cart.remove(name)
+  }
+
+  function handleIncreaseQuantity() {
+    cart.addQuantity(name)
+  }
+
+  function handleDecreaseQuantity() {
+    quantity && cart.addQuantity(name, -1)
+  }
 
   return (
     <CoffeeItemSkin>
@@ -23,7 +38,11 @@ export function CoffeeItem({ image, name, price, quantity }: CoffeeItemProps) {
       <h3 className="coffee-name">{name}</h3>
       <span className="coffee-price">{amount}</span>
       <span className="coffee-add">
-        <button type="button" className="add-minus">
+        <button
+          type="button"
+          className="add-minus"
+          onClick={handleDecreaseQuantity}
+        >
           <IconBox
             boxWidth={1}
             color={'purple'}
@@ -35,7 +54,11 @@ export function CoffeeItem({ image, name, price, quantity }: CoffeeItemProps) {
           </IconBox>
         </button>
         {quantity}
-        <button type="button" className="add-plus">
+        <button
+          type="button"
+          className="add-plus"
+          onClick={handleIncreaseQuantity}
+        >
           <IconBox
             boxWidth={1}
             color={'purple'}
@@ -47,7 +70,7 @@ export function CoffeeItem({ image, name, price, quantity }: CoffeeItemProps) {
           </IconBox>
         </button>
       </span>
-      <button type="button" className="coffee-del">
+      <button type="button" className="coffee-del" onClick={handleRemoveItem}>
         <Trash size={16} color={theme.purple} />
         Remover
       </button>

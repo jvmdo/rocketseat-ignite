@@ -4,16 +4,8 @@ import { FormValues } from '../index'
 import { breakpoint } from '../../../styles/global'
 import { CoffeeItem } from './CoffeeItem'
 import { useFormContext } from 'react-hook-form'
-
-interface OrderSummaryProps {
-  cartItems: {
-    image: string
-    name: string
-    price: number
-    quantity: number
-  }[]
-  deliveryFee: number
-}
+import { useContext } from 'react'
+import { CartContext } from '../../../contexts/CartContext'
 
 function priceFormatter(price: number): string {
   return new Intl.NumberFormat('pt-BR', {
@@ -22,15 +14,18 @@ function priceFormatter(price: number): string {
   }).format(price)
 }
 
-export function OrderSummary({ cartItems, deliveryFee }: OrderSummaryProps) {
+const deliveryFee = Math.floor(Math.random() * 11)
+
+export function OrderSummary() {
   const navigateTo = useNavigate()
   const {
     getValues,
     reset,
     formState: { isValid },
   } = useFormContext<FormValues>()
+  const cart = useContext(CartContext)
 
-  const itemsTotal = cartItems.reduce(
+  const itemsTotal = cart.items.reduce(
     (acc, { price, quantity }) => acc + price * quantity,
     0,
   )
@@ -38,7 +33,7 @@ export function OrderSummary({ cartItems, deliveryFee }: OrderSummaryProps) {
 
   const itemsTotalText = priceFormatter(itemsTotal)
   const totalText = priceFormatter(total)
-  const deliveryFeeText = priceFormatter(deliveryFee)
+  const deliveryFeeText = deliveryFee ? priceFormatter(deliveryFee) : 'Grátis'
 
   function handleNavigation() {
     document.querySelectorAll('form').forEach((form) => form.requestSubmit())
@@ -47,8 +42,7 @@ export function OrderSummary({ cartItems, deliveryFee }: OrderSummaryProps) {
       navigateTo('/success', {
         state: { ...getValues() },
       })
-      // Get the coffees
-      // Post to server
+      cart.clear()
       reset()
     }
   }
@@ -58,7 +52,8 @@ export function OrderSummary({ cartItems, deliveryFee }: OrderSummaryProps) {
       <h2 className="payment-title">Cafés selecionados</h2>
       <div className="order-wrapper">
         <ul className="order-list">
-          {cartItems.map((item) => {
+          {/* //TODO: Pass index as props */}
+          {cart.items.map((item) => {
             return (
               <li key={item.name} className="order-item">
                 <CoffeeItem {...item} />

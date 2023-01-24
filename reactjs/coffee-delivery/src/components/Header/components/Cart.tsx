@@ -1,12 +1,15 @@
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
 import styled from 'styled-components'
+import { CartContext } from '../../../contexts/CartContext'
 
 interface CartProps {
   children: ReactNode
-  number: number
 }
 
-export function Cart({ children, number }: CartProps) {
+export function Cart({ children }: CartProps) {
+  const { items: cart } = useContext(CartContext)
+  const number = cart.reduce((acc, item) => acc + item.quantity, 0)
+
   return <CartContainer number={number}>{children}</CartContainer>
 }
 

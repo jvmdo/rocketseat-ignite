@@ -1,6 +1,8 @@
 import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { IconBox } from '../../../../../components/IconBox'
+import { CartContext } from '../../../../../contexts/CartContext'
 
 interface CoffeeCardProps {
   image: string
@@ -17,14 +19,27 @@ export function CoffeeCard({
   description,
   price,
 }: CoffeeCardProps) {
-  const numberFormat = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  })
+  const formatOptions = { style: 'currency', currency: 'BRL' }
+  const numberFormat = new Intl.NumberFormat('pt-BR', formatOptions)
   const partValues = numberFormat.formatToParts(price).map((p) => p.value)
 
   const currency = partValues[0]
   const amount = partValues.slice(2).join('')
+
+  const [quantity, setQuantity] = useState(1)
+  const cart = useContext(CartContext)
+
+  function handleAddQuantity() {
+    setQuantity((state) => ++state)
+  }
+
+  function handleSubQuantity() {
+    quantity && setQuantity((state) => --state)
+  }
+
+  function handleInsertItem() {
+    quantity && cart.insert({ image, name, price, quantity })
+  }
 
   return (
     <CoffeeCardSkin>
@@ -52,7 +67,11 @@ export function CoffeeCard({
           {amount}
         </span>
         <span className="coffee-add">
-          <button type="button" className="add-minus">
+          <button
+            type="button"
+            className="add-minus"
+            onClick={handleSubQuantity}
+          >
             <IconBox
               boxWidth={1}
               color={'purple'}
@@ -63,8 +82,12 @@ export function CoffeeCard({
               <Minus size={14} />
             </IconBox>
           </button>
-          1
-          <button type="button" className="add-plus">
+          {quantity}
+          <button
+            type="button"
+            className="add-plus"
+            onClick={handleAddQuantity}
+          >
             <IconBox
               boxWidth={1}
               color={'purple'}
@@ -76,7 +99,12 @@ export function CoffeeCard({
             </IconBox>
           </button>
         </span>
-        <button type="button" className="coffee-buy">
+        <button
+          type="button"
+          className="coffee-buy"
+          title="Adicionar ao carrinho"
+          onClick={handleInsertItem}
+        >
           <IconBox
             boxWidth={2.5}
             color={'baseCard'}
