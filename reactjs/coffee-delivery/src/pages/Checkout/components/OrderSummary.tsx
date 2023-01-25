@@ -19,7 +19,7 @@ export function OrderSummary() {
   } = useFormContext<FormValues>()
   const cart = useContext(CartContext)
 
-  const itemsTotal = cart.items.reduce(
+  const itemsTotal = cart.cart.reduce(
     (acc, { price, quantity }) => acc + price * quantity,
     0,
   )
@@ -48,9 +48,9 @@ export function OrderSummary() {
       <h2 className="payment-title">Cafés selecionados</h2>
       <div className="order-wrapper">
         <ul className="order-list">
-          {cart.items.map((item, index) => (
+          {cart.cart.map((item) => (
             <li key={item.name} className="order-item">
-              <CoffeeItem {...item} index={index} />
+              <CoffeeItem {...item} />
             </li>
           ))}
         </ul>

@@ -10,31 +10,25 @@ interface CoffeeItemProps {
   name: string
   price: number
   quantity: number
-  index: number
 }
 
-export function CoffeeItem({
-  image,
-  name,
-  price,
-  quantity,
-  index,
-}: CoffeeItemProps) {
+export function CoffeeItem(item: CoffeeItemProps) {
   const theme = useTheme()
   const cart = useContext(CartContext)
 
+  const { image, name, price, quantity } = item
   const priceCurrency = currencyFormatter(price)
 
   function handleRemoveItem() {
-    cart.remove(name)
+    cart.remove(item)
   }
 
   function handleIncreaseQuantity() {
-    cart.addQuantity(index)
+    cart.increase(item)
   }
 
   function handleDecreaseQuantity() {
-    quantity && cart.addQuantity(index, -1)
+    quantity && cart.decrease(item)
   }
 
   return (

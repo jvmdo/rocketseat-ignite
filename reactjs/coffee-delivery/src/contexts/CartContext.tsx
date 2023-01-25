@@ -1,17 +1,12 @@
-import { createContext, ReactNode, useState } from 'react'
-
-type CartItem = {
-  image: string
-  name: string
-  price: number
-  quantity: number
-}
+import { createContext, ReactNode, useReducer } from 'react'
+import { ActionTypes, CartItem, cartReducer } from '../reducers/cart-reducer'
 
 interface CartContextProps {
-  items: CartItem[]
+  cart: CartItem[]
   insert: (item: CartItem) => void
-  remove: (itemName: string) => void
-  addQuantity: (index: number, value?: number) => void
+  remove: (item: CartItem) => void
+  increase: (item: CartItem) => void
+  decrease: (item: CartItem) => void
   clear: () => void
 }
 
@@ -22,45 +17,40 @@ interface CartContextProviderProps {
 }
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-  const [cart, setCart] = useState<CartItem[]>([])
+  const [cartState, dispatch] = useReducer(cartReducer, { cart: [] })
 
-  function insert(newItem: CartItem) {
-    setCart((state) => {
-      const item = state.find(({ name }) => name === newItem.name)
-      if (!item) return [...state, newItem]
+  const { cart } = cartState
 
-      const newState = state.filter(({ name }) => name !== newItem.name)
-      return [
-        ...newState,
-        { ...newItem, quantity: newItem.quantity + item.quantity },
-      ]
-    })
+  function insert(item: CartItem) {
+    dispatch({ type: ActionTypes.INSERT, payload: { item } })
   }
 
-  function remove(itemName: string) {
-    setCart((state) => state.filter(({ name }) => name !== itemName))
+  function remove(item: CartItem) {
+    dispatch({ type: ActionTypes.REMOVE, payload: { item } })
   }
 
-  function addQuantity(index: number, value = 1) {
-    setCart((state) => {
-      if (!state[index]) return state
+  function increase(item: CartItem) {
+    dispatch({ type: ActionTypes.INCREASE, payload: { item } })
+  }
 
-      const newState = [...state]
-      newState[index] = {
-        ...newState[index],
-        quantity: newState[index].quantity + value,
-      }
-      return newState
-    })
+  function decrease(item: CartItem) {
+    dispatch({ type: ActionTypes.DECREASE, payload: { item } })
   }
 
   function clear() {
-    setCart([])
+    dispatch({ type: ActionTypes.CLEAR })
   }
 
   return (
     <CartContext.Provider
-      value={{ items: cart, insert, remove, addQuantity, clear }}
+      value={{
+        cart,
+        insert,
+        remove,
+        increase,
+        decrease,
+        clear,
+      }}
     >
       {children}
     </CartContext.Provider>

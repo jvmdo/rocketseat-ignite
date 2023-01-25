@@ -7,7 +7,7 @@ interface CartProps {
 }
 
 export function Cart({ children }: CartProps) {
-  const { items: cart } = useContext(CartContext)
+  const { cart } = useContext(CartContext)
   const number = cart.reduce((acc, item) => acc + item.quantity, 0)
 
   return <CartContainer number={number}>{children}</CartContainer>
