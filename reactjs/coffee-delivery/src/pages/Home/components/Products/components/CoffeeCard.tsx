@@ -3,6 +3,7 @@ import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { IconBox } from '../../../../../components/IconBox'
 import { CartContext } from '../../../../../contexts/CartContext'
+import { currencyFormatterParts } from '../../../../../utils/utils'
 
 interface CoffeeCardProps {
   image: string
@@ -19,15 +20,10 @@ export function CoffeeCard({
   description,
   price,
 }: CoffeeCardProps) {
-  const formatOptions = { style: 'currency', currency: 'BRL' }
-  const numberFormat = new Intl.NumberFormat('pt-BR', formatOptions)
-  const partValues = numberFormat.formatToParts(price).map((p) => p.value)
-
-  const currency = partValues[0]
-  const amount = partValues.slice(2).join('')
-
-  const [quantity, setQuantity] = useState(1)
   const cart = useContext(CartContext)
+  const [quantity, setQuantity] = useState(1)
+
+  const [currencyType, priceCurrency] = currencyFormatterParts(price)
 
   function handleAddQuantity() {
     setQuantity((state) => ++state)
@@ -63,8 +59,8 @@ export function CoffeeCard({
       </div>
       <div className="coffee-card-bottom">
         <span className="coffee-price">
-          <span className="coffee-currency">{currency}</span>
-          {amount}
+          <span className="coffee-currency">{currencyType}</span>
+          {priceCurrency}
         </span>
         <span className="coffee-add">
           <button

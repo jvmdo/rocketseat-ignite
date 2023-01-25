@@ -6,13 +6,7 @@ import { CoffeeItem } from './CoffeeItem'
 import { useFormContext } from 'react-hook-form'
 import { useContext } from 'react'
 import { CartContext } from '../../../contexts/CartContext'
-
-function priceFormatter(price: number): string {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(price)
-}
+import { currencyFormatter } from '../../../utils/utils'
 
 const deliveryFee = Math.floor(Math.random() * 11)
 
@@ -31,9 +25,11 @@ export function OrderSummary() {
   )
   const total = itemsTotal + deliveryFee
 
-  const itemsTotalText = priceFormatter(itemsTotal)
-  const totalText = priceFormatter(total)
-  const deliveryFeeText = deliveryFee ? priceFormatter(deliveryFee) : 'Grátis'
+  const itemsTotalCurrency = currencyFormatter(itemsTotal)
+  const totalCurrency = currencyFormatter(total)
+  const deliveryFeeCurrency = deliveryFee
+    ? currencyFormatter(deliveryFee)
+    : 'Grátis'
 
   function handleNavigation() {
     document.querySelectorAll('form').forEach((form) => form.requestSubmit())
@@ -64,15 +60,15 @@ export function OrderSummary() {
         <ul className="order-total">
           <li className="items-price">
             <span>Total de itens</span>
-            <span>{itemsTotalText}</span>
+            <span>{itemsTotalCurrency}</span>
           </li>
           <li className="items-delivery">
             <span>Taxa de entrega</span>
-            <span>{deliveryFeeText}</span>
+            <span>{deliveryFeeCurrency}</span>
           </li>
           <li className="items-total">
             <span>Total</span>
-            <span>{totalText}</span>
+            <span>{totalCurrency}</span>
           </li>
         </ul>
         <button

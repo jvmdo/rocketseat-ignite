@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { IconBox } from '../../../components/IconBox'
 import { CartContext } from '../../../contexts/CartContext'
+import { currencyFormatter } from '../../../utils/utils'
 
 interface CoffeeItemProps {
   image: string
@@ -15,10 +16,7 @@ export function CoffeeItem({ image, name, price, quantity }: CoffeeItemProps) {
   const theme = useTheme()
   const cart = useContext(CartContext)
 
-  const amount = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(price)
+  const priceCurrency = currencyFormatter(price)
 
   function handleRemoveItem() {
     cart.remove(name)
@@ -36,7 +34,7 @@ export function CoffeeItem({ image, name, price, quantity }: CoffeeItemProps) {
     <CoffeeItemSkin>
       <img className="coffee-img" src={window.location.origin + image} alt="" />
       <h3 className="coffee-name">{name}</h3>
-      <span className="coffee-price">{amount}</span>
+      <span className="coffee-price">{priceCurrency}</span>
       <span className="coffee-add">
         <button
           type="button"
