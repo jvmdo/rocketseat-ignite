@@ -8,6 +8,7 @@ export const IntroSectionSkin = styled.section`
   background-position: top;
   text-align: center;
   padding-block: 2rem 4rem;
+  margin-top: -1rem;
 
   .intro-illustration {
     max-width: 30rem;
@@ -73,6 +74,7 @@ export const IntroSectionSkin = styled.section`
     background-repeat: repeat-x;
     text-align: unset;
     padding-block: 5rem 7rem;
+    margin-top: -3rem;
 
     & > ${Container} {
       display: flex;

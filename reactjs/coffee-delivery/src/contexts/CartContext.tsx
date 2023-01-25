@@ -11,7 +11,7 @@ interface CartContextProps {
   items: CartItem[]
   insert: (item: CartItem) => void
   remove: (itemName: string) => void
-  addQuantity: (itemName: string, value?: number) => void
+  addQuantity: (index: number, value?: number) => void
   clear: () => void
 }
 
@@ -27,15 +27,13 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   function insert(newItem: CartItem) {
     setCart((state) => {
       const item = state.find(({ name }) => name === newItem.name)
-      if (item) {
-        const newState = state.filter(({ name }) => name !== newItem.name)
-        return [
-          ...newState,
-          { ...newItem, quantity: newItem.quantity + item.quantity },
-        ]
-      } else {
-        return [...state, newItem]
-      }
+      if (!item) return [...state, newItem]
+
+      const newState = state.filter(({ name }) => name !== newItem.name)
+      return [
+        ...newState,
+        { ...newItem, quantity: newItem.quantity + item.quantity },
+      ]
     })
   }
 
@@ -43,15 +41,16 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     setCart((state) => state.filter(({ name }) => name !== itemName))
   }
 
-  function addQuantity(itemName: string, value = 1) {
+  function addQuantity(index: number, value = 1) {
     setCart((state) => {
-      const item = state.find(({ name }) => name === itemName)
-      if (item) {
-        const newState = state.filter(({ name }) => name !== itemName)
-        return [...newState, { ...item, quantity: item.quantity + value }]
-      } else {
-        return state
+      if (!state[index]) return state
+
+      const newState = [...state]
+      newState[index] = {
+        ...newState[index],
+        quantity: newState[index].quantity + value,
       }
+      return newState
     })
   }
 

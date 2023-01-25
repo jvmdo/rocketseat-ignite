@@ -1,16 +1,21 @@
 import styled from 'styled-components'
+import { breakpoint } from '../../styles/global'
 
 export const HeaderSkin = styled.header`
-  background-color: ${({ theme }) => theme.background};
-  box-shadow: 0 2px 6px ${({ theme }) => theme['purple-light']};
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   top: -5rem;
   transition: ${({ theme }) => theme['ts-hover']};
 
   &.sticky {
+    background-color: ${({ theme }) => theme.background};
+    box-shadow: 0 2px 6px ${({ theme }) => theme['purple-light']};
     position: sticky;
     top: 0;
     z-index: 10;
+  }
+
+  @media (min-width: ${breakpoint.lg}) {
+    margin-bottom: 2.5rem;
   }
 `
 

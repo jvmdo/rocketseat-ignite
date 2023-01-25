@@ -48,33 +48,35 @@ export function OrderSummary() {
       <h2 className="payment-title">Cafés selecionados</h2>
       <div className="order-wrapper">
         <ul className="order-list">
-          {/* //TODO: Pass index as props */}
-          {cart.items.map((item) => {
-            return (
-              <li key={item.name} className="order-item">
-                <CoffeeItem {...item} />
-              </li>
-            )
-          })}
+          {cart.items.map((item, index) => (
+            <li key={item.name} className="order-item">
+              <CoffeeItem {...item} index={index} />
+            </li>
+          ))}
         </ul>
-        <ul className="order-total">
-          <li className="items-price">
-            <span>Total de itens</span>
-            <span>{itemsTotalCurrency}</span>
-          </li>
-          <li className="items-delivery">
-            <span>Taxa de entrega</span>
-            <span>{deliveryFeeCurrency}</span>
-          </li>
-          <li className="items-total">
-            <span>Total</span>
-            <span>{totalCurrency}</span>
-          </li>
-        </ul>
+        {itemsTotal ? (
+          <ul className="order-total">
+            <li className="items-price">
+              <span>Total de itens</span>
+              <span>{itemsTotalCurrency}</span>
+            </li>
+            <li className="items-delivery">
+              <span>Taxa de entrega</span>
+              <span>{deliveryFeeCurrency}</span>
+            </li>
+            <li className="items-total">
+              <span>Total</span>
+              <span>{totalCurrency}</span>
+            </li>
+          </ul>
+        ) : (
+          <p className="empty-message">Escolha pelo menos 1 unidade de café</p>
+        )}
         <button
           type="submit"
           className="order-confirm"
           onClick={handleNavigation}
+          disabled={!itemsTotal}
         >
           Confirmar pedido
         </button>
@@ -115,6 +117,14 @@ export const OrderSummarySkin = styled.section`
     margin-bottom: 0.75rem;
   }
 
+  .empty-message {
+    color: ${(p) => p.theme['yellow-dark']};
+    font-size: ${(p) => p.theme['fs-h-rg']};
+    font-weight: ${(p) => p.theme['fw-bd']};
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
   .items-total {
     color: ${(p) => p.theme['base-subtitle']};
     font-size: ${(p) => p.theme['fs-b-xl']};
@@ -132,6 +142,11 @@ export const OrderSummarySkin = styled.section`
     height: 3rem;
     width: 100%;
     padding-inline: 0.75rem;
+  }
+
+  .order-confirm:disabled {
+    background-color: ${(p) => p.theme['base-hover']};
+    cursor: not-allowed;
   }
 
   .order-confirm:is(:hover, :focus-visible) {

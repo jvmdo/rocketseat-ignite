@@ -48,14 +48,7 @@ export function ProductsSection() {
         </div>
         <div className="products-list">
           {coffees.map((coffee) => (
-            <CoffeeCard
-              key={coffee.name}
-              image={coffee.image}
-              tags={coffee.tags}
-              name={coffee.name}
-              description={coffee.description}
-              price={coffee.price}
-            />
+            <CoffeeCard key={coffee.name} {...coffee} />
           ))}
         </div>
       </Container>
