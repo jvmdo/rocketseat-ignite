@@ -1,6 +1,20 @@
 import styled from 'styled-components'
 
-export const Navbar = styled.nav`
+export const HeaderSkin = styled.header`
+  background-color: ${({ theme }) => theme.background};
+  box-shadow: 0 2px 6px ${({ theme }) => theme['purple-light']};
+  margin-bottom: 3rem;
+  top: -5rem;
+  transition: ${({ theme }) => theme['ts-hover']};
+
+  &.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+`
+
+export const NavbarSkin = styled.nav`
   display: flex;
   gap: 0.75rem;
   padding-block: 2rem;

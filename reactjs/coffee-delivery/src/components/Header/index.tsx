@@ -1,20 +1,52 @@
 import { MapPin, ShoppingCart } from 'phosphor-react'
 import { Container } from '../../styles/global'
-import { Navbar } from './style'
+import { HeaderSkin, NavbarSkin } from './style'
 import logo from '../../assets/logo.svg'
 import { IconBox } from '../IconBox'
 import { Cart } from './components/Cart'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useTheme } from 'styled-components'
+import { useEffect, useState } from 'react'
 
 export function Header() {
-  const stateVar = 0
   const theme = useTheme()
+  const location = useLocation()
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    function getWindowYOffset() {
+      const windowScrollY = window.scrollY
+      const productsHeadDistanceToTop =
+        document.querySelector('.products-head')?.getBoundingClientRect().top ??
+        Infinity
+
+      if (location.pathname === '/') {
+        if (productsHeadDistanceToTop <= 150) {
+          setScrollY(windowScrollY)
+        } else {
+          setScrollY(0)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', getWindowYOffset)
+    return () => {
+      window.removeEventListener('scroll', getWindowYOffset)
+    }
+  }, [location.pathname])
+
+  useEffect(() => {
+    if (scrollY) {
+      document.querySelector('.header')?.classList.add('sticky')
+    } else {
+      document.querySelector('.header')?.classList.remove('sticky')
+    }
+  }, [scrollY, location])
 
   return (
-    <header>
+    <HeaderSkin className="header">
       <Container>
-        <Navbar>
+        <NavbarSkin>
           <NavLink to="/">
             <img src={logo} alt="" />
           </NavLink>
@@ -25,7 +57,7 @@ export function Header() {
             </span>
           </NavLink>
           <NavLink to="/checkout">
-            <Cart number={stateVar}>
+            <Cart>
               <IconBox
                 boxWidth={2.5}
                 color={'yellowDark'}
@@ -36,8 +68,8 @@ export function Header() {
               </IconBox>
             </Cart>
           </NavLink>
-        </Navbar>
+        </NavbarSkin>
       </Container>
-    </header>
+    </HeaderSkin>
   )
 }
