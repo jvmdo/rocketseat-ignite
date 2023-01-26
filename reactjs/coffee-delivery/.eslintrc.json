@@ -10,5 +10,12 @@
     "sourceType": "module"
   },
   "plugins": ["react"],
-  "rules": {}
+  "rules": {},
+  "prettier/prettier": [
+    "error",
+    {},
+    {
+      "usePrettierrc": false
+    }
+  ]
 }
