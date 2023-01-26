@@ -14,7 +14,6 @@ O segundo desafio da trilha atualizada de ReactJS do *bootcamp* Ignite da [Rocke
   - [Questions](#questions)
   - [Useful resources](#useful-resources)
 - [Author](#author)
-- [Step tracker](#step-tracker)
 
 
 ## Overview
@@ -59,7 +58,7 @@ Capturas de tela do app desenvolvido para dispositivos mobile (375px) e desktop 
 
 | Checkout (active) | Success |
 |       :---:       |  :---:  |
-| <img src="screenshots/desktop-checkout.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=500>  | <img src="screenshots/desktop-success.jpeg" alt="Screenshot of my solution for desktop devices" width=500>
+| <img src="screenshots/desktop-checkout-active.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=500>  | <img src="screenshots/desktop-success.jpeg" alt="Screenshot of my solution for desktop devices" width=500>
 
 
 ### Links
@@ -175,8 +174,23 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
 
 - Where's portfolio?
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-## Step tracker
+----
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+###### Step tracker ()
 
 1. Vite
 2. Wipe project
@@ -226,7 +240,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
     - At this point I realized that... There is no need to define a theme map if there is only one theme, since you can MyTheme[p.themeString] to get the values. However, if there was 2 or more themes, p.theme[...] is the right way
 9. Figuring out how to implement the cart number
     - content string interpolation must be surrounded by quotes content: '${}'
-    - ${({ number }) => number && `content: "${number}"`};
+    - \${({ number }) => number && `content: "${number}"`};
 10. Use `<NavLink to="">`
 11. How to pass `color` to phosphor icons? I’m using `LightTheme.purple` but it is incorrect because if there were another theme…
     1. `const theme = useTheme()`
