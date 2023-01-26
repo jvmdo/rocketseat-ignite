@@ -2,18 +2,19 @@ import { Container } from '../../../../styles/global'
 import { CoffeeCard } from './components/CoffeeCard'
 import { ProductsSectionSkin } from './style'
 import data from '../../../../data/coffees.json'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FilterTag } from './components/FilterTag'
 
 const availableTags = data.reduce((acc, item) => {
   return [...acc].concat(item.tags.filter((tag) => !acc.includes(tag)))
 }, [] as string[])
 
+const activeTags: string[] = []
+
 export function ProductsSection() {
   const [coffees, setCoffees] = useState([...data])
-  const [activeTags, setActiveTags] = useState<string[]>([])
 
-  useEffect(() => {
+  function coffeesFilter() {
     if (activeTags.length) {
       const filteredCoffees = data.filter((coffee) =>
         coffee.tags.some((tag) => activeTags.includes(tag)),
@@ -22,17 +23,13 @@ export function ProductsSection() {
     } else {
       setCoffees([...data])
     }
-  }, [activeTags])
+  }
 
   function handleFilter(tag: string) {
-    const tagFound = activeTags.find((activeTag) => activeTag === tag)
-    if (tagFound) {
-      // Remove
-      setActiveTags((state) => state.filter((tag) => tag !== tagFound))
-    } else {
-      // Insert
-      setActiveTags((state) => [...state, tag])
-    }
+    // tag currently active ? remove : insert
+    const index = activeTags.findIndex((activeTag) => activeTag === tag)
+    ~index ? activeTags.splice(index, 1) : activeTags.push(tag)
+    coffeesFilter()
   }
 
   return (
