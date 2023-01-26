@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useReducer } from 'react'
+import { createContext, ReactNode, useEffect, useReducer } from 'react'
 import { ActionTypes, CartItem, cartReducer } from '../reducers/cart-reducer'
 
 interface CartContextProps {
@@ -17,9 +17,26 @@ interface CartContextProviderProps {
 }
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-  const [cartState, dispatch] = useReducer(cartReducer, { cart: [] })
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    { cart: [] },
+    (initialValue) => {
+      // Get [cart] storage locally on first page render
+      const storedCart = localStorage.getItem('@coffee-delivery:cart-0.1.0')
+      if (!storedCart) return initialValue
+      return JSON.parse(storedCart)
+    },
+  )
 
   const { cart } = cartState
+
+  useEffect(() => {
+    // Store cart items locally on every [cartState] change
+    localStorage.setItem(
+      '@coffee-delivery:cart-0.1.0',
+      JSON.stringify(cartState),
+    )
+  }, [cartState])
 
   function insert(item: CartItem) {
     dispatch({ type: ActionTypes.INSERT, payload: { item } })
