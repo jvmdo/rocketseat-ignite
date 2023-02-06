@@ -10,7 +10,7 @@ No primeiro projeto do <em>bootcamp</em> Rocketseat Ignite, desenvolvi uma pági
 
 ## Live site preview
 
-Disponível assim que eu souber resolver [esse problema do .git](https://stackoverflow.com/a/74926059/7631147). A pasta .git deve estar no mesmo nível do projeto Vite, o que não é o meu caso. Por isso meu deploy para o GitHub pages não tem sucesso.
+- [Live demo](https://ignite-feed-jvmdo.vercel.app/)
 
 ## O que eu aprendi
 
@@ -88,6 +88,7 @@ Disponível assim que eu souber resolver [esse problema do .git](https://stackov
     margin: -2rem 1rem;
   }
   ```
+
   **Answer**. That's exactly how CSS Modules is supposed to work: "a CSS Module is a CSS file in which *all class names* and animation names are scoped locally by default.". [Read more](https://github.com/css-modules/css-modules)
 
 - **Pergunta**.Como utilizar várias classes no `className` para evitar repetir regras no CSS (como fiz no componente Avatar)? Ou se existe uma solução mais adequada, sem repetição de CSS.
@@ -115,6 +116,7 @@ Disponível assim que eu souber resolver [esse problema do .git](https://stackov
         /* anything that only applies to In Progress */
       }
     ```
+
     Para passar duas ou mais classes:
 
     ```js

@@ -1,6 +1,6 @@
 # Desafio 02 - Coffee Delivery
 
-O segundo desafio da trilha atualizada de ReactJS do *bootcamp* Ignite da [Rocketseat](https://www.rocketseat.com.br/) exige que o aluno desenvolva uma aplicação frontend aplicando diversos conceitos de React e de ferramentas do seu ecossistema. 
+O segundo desafio da trilha atualizada de ReactJS do *bootcamp* Ignite da [Rocketseat](https://www.rocketseat.com.br/) exige que o aluno desenvolva uma aplicação frontend aplicando diversos conceitos de React e de ferramentas do seu ecossistema.
 
 ## Table of contents
 
@@ -15,89 +15,89 @@ O segundo desafio da trilha atualizada de ReactJS do *bootcamp* Ignite da [Rocke
   - [Useful resources](#useful-resources)
 - [Author](#author)
 
-
 ## Overview
 
 Coffee Delivery foi o aplicativo desenvolvido para completar o desafio do módulo 2, cuja principal funcionalidade é compra de cafés de uma cafeteria fictícia. Na tela principal, o usuário pode selecionar quantidades de diferentes tipos de cafés; na tela de *checkout*, ele preenche um formulário de endereço e pagamento e também visualiza um resumo da compra; por fim, na tela final é apresentada as informações de entrega.
 
 ### The challenge
 
-A proposta deste desafio é construir um aplicativo utilizando os conceitos de React e suas bibliotecas apresentadas nas aulas do módulo 2, seguindo a proposta de design disponibilizada [neste projeto Figma](https://www.figma.com/file/5yT9ZzZmRQRS4yivGGB3pl/Coffee-Delivery/). 
+A proposta deste desafio é construir um aplicativo utilizando os conceitos de React e suas bibliotecas apresentadas nas aulas do módulo 2, seguindo a proposta de design disponibilizada [neste projeto Figma](https://www.figma.com/file/5yT9ZzZmRQRS4yivGGB3pl/Coffee-Delivery/).
 
 #### Design
-  - ✔️ Aplicação correta de fontes, cores, tamanhos, espaçamentos, ilustrações, ícones e textos;
-  - ✔️ Reação de botões e campos a ações de *hover over* e *focus*;
-  - ✔️ Transições entre estados (bônus);
-  - ✔️ Responsividade entre 320px e 1440px (bônus).
+
+- ✔️ Aplicação correta de fontes, cores, tamanhos, espaçamentos, ilustrações, ícones e textos;
+- ✔️ Reação de botões e campos a ações de *hover over* e *focus*;
+- ✔️ Transições entre estados (bônus);
+- ✔️ Responsividade entre 320px e 1440px (bônus).
 
 #### Funcionalidades
-  - ✔️ Listar produtos (cafés) disponíveis para compra;
-  - ✔️ Adição de quantidades específicas de diferentes cafés no carrinho;
-  - ✔️ Incremento e decremento da quantidade de itens do carrinho;
-  - ✔️ Formulários para fornecimento de dados;
-  - ✔️ Exibição do total de itens do carrinho no *header*;
-  - ✔️ Exibição do valor total a pagar;
-  - ✔️ Filtragem de produtos na tela principal (bônus);
-  - ✔️ Mensagem de carrinho vazio (bônus);
-  - ✔️ Apresentação de mensagens de validação nos formulários (bônus).
+
+- ✔️ Listar produtos (cafés) disponíveis paracompra;
+- ✔️ Adição de quantidades específicas dediferentes cafés no carrinho;
+- ✔️ Incremento e decremento da quantidade deitens do carrinho;
+- ✔️ Formulários para fornecimento de dados;
+- ✔️ Exibição do total de itens do carrinho no*header*;
+- ✔️ Exibição do valor total a pagar;
+- ✔️ Filtragem de produtos na tela principal(bônus);
+- ✔️ Mensagem de carrinho vazio (bônus);
+- ✔️ Apresentação de mensagens de validação nos formulários (bônus).
 
 ### Screenshot
 
 Capturas de tela do app desenvolvido para dispositivos mobile (375px) e desktop (1440px).
 
 #### Mobile
+
 |   Home   |  Home (active)  |  Checkout  | Checkout (active) | Success |
 |  :----:  |      :----:     |    :---:   |       :---:       |  :---:  |
 | <img src="screenshots/mobile-home.jpeg" alt="Screenshot of my solution for mobile devices" width=200> | <img src="screenshots/mobile-home-active.jpeg" alt="Screenshot of my solution for mobile devices (with active states)" width=200> | <img src="screenshots/mobile-checkout.jpeg" alt="Screenshot of my solution for mobile devices" width=200> | <img src="screenshots/mobile-checkout-active.jpeg" alt="Screenshot of my solution for mobile devices (with active states)" width=200> | <img src="screenshots/mobile-success.jpeg" alt="Screenshot of my solution for mobile devices" width=200> |
 
-
 #### Desktop
+
 |   Home   |  Home (active)  |  Checkout  |
 |  :----:  |      :----:     |    :---:   |
-| <img src="screenshots/desktop-home.jpeg" alt="Screenshot of my solution for desktop devices" width=500> | <img src="screenshots/desktop-home-active.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=500>  | <img src="screenshots/desktop-checkout.jpeg" alt="Screenshot of my solution for desktop devices" width=500> 
+| <img src="screenshots/desktop-home.jpeg" alt="Screenshot of my solution for desktop devices" width=500> | <img src="screenshots/desktop-home-active.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=500>  | <img src="screenshots/desktop-checkout.jpeg" alt="Screenshot of my solution for desktop devices" width=500>
 
 | Checkout (active) | Success |
 |       :---:       |  :---:  |
 | <img src="screenshots/desktop-checkout-active.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=500>  | <img src="screenshots/desktop-success.jpeg" alt="Screenshot of my solution for desktop devices" width=500>
 
-
 ### Links
 
 - [Repositório do meu projeto](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/coffee-delivery)
 
-- [Live demo on StackBlitz](https://stackblitz.com/github/jvmdo/rocketseat-ignite/tree/main/reactjs/coffee-delivery?terminal=dev)
-
+- [Live demo](https://coffee-delivery-jvmdo.vercel.app/)
 
 ## My process
 
 Iniciei escrevendo todo o código de UI utilizando apenas HTML5 e CSS3. Em seguida, iniciei um projeto React e separei todo o código de UI em componentes. Após isso, implementei as rotas, o layout, o formulário e as funcionalidades adicionando gerenciamento de estado em tudo que já havia feito.
-
 
 ### Built with
 
 Some of the technologies, libraries, tools, techniques, patterns, and concepts applied in this project.
 
 #### Technologies, libraries and tools
-  - Vite
-  - ReactJS
-  - TypeScript
-  - Styled Components
-  - React Router DOM
-  - React Hook Form
-  - Immer
-  - Phosphor React
-  - Local Storage
-  - ESLint
+
+- Vite
+- ReactJS
+- TypeScript
+- Styled Components
+- React Router DOM
+- React Hook Form
+- Immer
+- Phosphor React
+- Local Storage
+- ESLint
 
 #### More
-  - Mobile-first workflow
-  - CSS custom properties
-  - Grid and Flexbox
-  - Styled Themes
-  - React Layouts
-  - React Contexts
-  - React Reducers
 
+- Mobile-first workflow
+- CSS custom properties
+- Grid and Flexbox
+- Styled Themes
+- React Layouts
+- React Contexts
+- React Reducers
 
 ### What I learned
 
@@ -123,7 +123,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
 
 - Remember: types in TypeScript are always lowercase
 
-- How to implement a filter by tag feature and the difference between module scoped variables and ```useRef()``` hook 
+- How to implement a filter by tag feature and the difference between module scoped variables and ```useRef()``` hook
 
 - I have learnt that ```useEffect()```'s callback runs asynchronously (after the actual UI rendering!).
 
@@ -131,11 +131,9 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
 
 - I could successfully apply the notes I took from the last module lessons. I also could go a little deeper into the React concepts and practice more the libraries.
 
-
 ### Questions
 
 - Usei muitas ```className```'s para estilizar os componentes. Isso é uma prática ruim já que estou utilizando os styled ou é OK?
-
 
 ### Useful resources
 
@@ -160,7 +158,6 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
 - [```useRef()``` vs module scoped variable 2](https://stackoverflow.com/a/71952595/7631147)
 
 - [Transition between position static and sticky](https://stackoverflow.com/a/61204727/7631147)
-
 
 ## Author
 
@@ -248,7 +245,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
     1. How to set background images
         1. Import and ${apply}
     2. Create components for Intro and Products
-    3. Regex `var\(--([-\w]+)\)` 
+    3. Regex `var\(--([-\w]+)\)`
     Output `${(p) => p.theme['$1']}`
     4. CoffeeCard component
     5. Coffee data in JSON
@@ -262,7 +259,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
 14. Implementing Success UI
     1. programmatic navigation `useNavigate(route)` instead of using `<NavLink/>`
     2. Pass data from checkout to success
-    3. https://stackoverflow.com/a/68912082
+    3. <https://stackoverflow.com/a/68912082>
 15. Implement form using react-hook-form [TTTT]
     1. How to validate two forms on button click
         1. `FormProvider`, `useFormContext()`
@@ -280,7 +277,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
     4. It happens that `useEffect()`'s callback runs asynchronously (after the actual UI rendering) as [stated here](https://stackoverflow.com/a/71818358/7631147). This behavior explains why the filtered list was always one state behind it should be. So I needed to use the list as a state variable and update it inside the callback.
     5. No need for useEffect anymore. I changed to module scoped variable. Although it would be better `useRef` as [stated here in this answer](https://stackoverflow.com/a/61240132/7631147). More clarify can be [read here](https://stackoverflow.com/a/71952595/7631147).
 19. Implement add to cart feature
-    1. An item insert 
+    1. An item insert
 20. Context function returns the context object and the props `return <MyContext.Provider value={{...}}>{children}</MyContext.Provider>`
     1. Use context to add and remove items; change header’s cart number; increase/decrease item quantity in cart;
 21. Implement Header behavior

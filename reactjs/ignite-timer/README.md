@@ -1,6 +1,6 @@
 # Projeto 02 - Criando SPAs com React
 
-O segundo módulo da trilha atualizada de ReactJS do *bootcamp* Ignite da [Rocketseat](https://www.rocketseat.com.br/) ensina como desenvolver uma aplicação completa aplicando diversos conceitos de React e de ferramentas do seu ecossistema. 
+O segundo módulo da trilha atualizada de ReactJS do *bootcamp* Ignite da [Rocketseat](https://www.rocketseat.com.br/) ensina como desenvolver uma aplicação completa aplicando diversos conceitos de React e de ferramentas do seu ecossistema.
 
 O projeto original está disponível [neste repositório](https://github.com/rocketseat-education/02-ignite-timer).
 
@@ -19,47 +19,50 @@ O projeto original está disponível [neste repositório](https://github.com/roc
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
-
 ## Overview
 
 Ignite Timer é o aplicativo desenvolvido neste módulo cuja funcionalidade principal é um relógio de contagem regressiva o qual o usuário pode escolher entre 5 e 60 minutos. Sua funcionalidade secundária é apresentar um histórico das contagens.
 
 ### The challenge
 
-A proposta deste módulo é construir um aplicativo utilizando React e sua bibliotecas, seguindo a proposta de design disponibilizada [neste projeto Figma](https://www.figma.com/community/file/1127351821076435124). 
+A proposta deste módulo é construir um aplicativo utilizando React e sua bibliotecas, seguindo a proposta de design disponibilizada [neste projeto Figma](https://www.figma.com/community/file/1127351821076435124).
 
 #### Design
-  - Aplicar corretamente as fontes, cores, tamanhos, espaçamento, ícones e textos;
-  - Botões devem reagir a ações de *hover over* e *focus*;
-  - Botões e campos de entrada devem reagir ao estado de *disabled* do formulário e contagem regressiva em andamento;
-  - Responsividade (entre 320px e 1440px).
+
+- Aplicar corretamente as fontes, cores, tamanhos, espaçamento, ícones e textos;
+- Botões devem reagir a ações de *hover over* e *focus*;
+- Botões e campos de entrada devem reagir ao estado de *disabled* do formulário e contagem regressiva em andamento;
+- Responsividade (entre 320px e 1440px).
 
 #### Funcionalidades
-  - Iniciar contagens regressivas;
-  - Interromper contagens;
-  - Navegação entre as páginas;
-  - Apresentar histórico de contagens;
-  - Indicar status da contagem no histórico;
+
+- Iniciar contagens regressivas;
+- Interromper contagens;
+- Navegação entre as páginas;
+- Apresentar histórico de contagens;
+- Indicar status da contagem no histórico;
 
 ### Screenshots
 
 Capturas das telas do meu app finalizado para dispositivos mobile (375px) e desktop (1440px).
 
 #### Mobile
+
 | Mobile      | Mobile (with active states) | Mobile (page 2)     |
 | :----:        |    :----:   |    :---: |
 | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices" width=200>      | <img src="screenshots/mobile-active.jpeg" alt="Screenshot of my solution for mobile devices (with active states)" width=200>       | <img src="screenshots/mobile-2.jpeg" alt="Screenshot of my solution for mobile devices (with page 2 more)" width=200>   |
 
-
 #### Desktop
+
 | Desktop      | Desktop (with active states) | Desktop (page 2)     |
 | :----:        |    :----:   |     :---: |
 | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices" width=200>      | <img src="screenshots/desktop-active.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=200>       | <img src="screenshots/desktop-2.jpeg" alt="Screenshot of my solution for desktop devices (with page 2 more)" width=200>   |
 
 ### Links
-  - [Repositório do meu projeto](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/ignite-timer)
 
-  - [Live demo on StackBlitz](https://stackblitz.com/github/jvmdo/rocketseat-ignite/tree/main/reactjs/ignite-timer?terminal=dev)
+- [Repositório do meu projeto](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/ignite-timer)
+
+- [Live demo](https://ignite-timer-jvmdo.vercel.app/)
 
 ## My process
 
@@ -70,27 +73,29 @@ O meu processo de aprendizagem por vídeo-aulas instruídas é tomar nota de pas
 Some of the technologies, libraries, tools, techniques, patterns, and concepts applied in this project.
 
 #### Technologies, libraries and tools
-  - Vite
-  - ReactJS
-  - TypeScript
-  - Styled Components
-  - React Router DOM
-  - React Hook Form
-  - Zod
-  - Immer
-  - date-fns
-  - Phosphor React
-  - Local Storage
-  - ESLint
+
+- Vite
+- ReactJS
+- TypeScript
+- Styled Components
+- React Router DOM
+- React Hook Form
+- Zod
+- Immer
+- date-fns
+- Phosphor React
+- Local Storage
+- ESLint
 
 #### More
-  - Mobile-first workflow
-  - CSS custom properties
-  - Flexbox
-  - Styled Themes
-  - React Layouts
-  - React Contexts
-  - React Reducers
+
+- Mobile-first workflow
+- CSS custom properties
+- Flexbox
+- Styled Themes
+- React Layouts
+- React Contexts
+- React Reducers
 
 ### What I learned
 
@@ -101,26 +106,34 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
     2. Criar arquivo ```src/@types/styled.d.ts```
     3. Escrever [esse código](src/@types/styled.d.ts).
   - Como escrever CSS-in-JS
+
     ```js
     export const StyledContainer = styled.tag`...`
     ```
+
   - Definir um arquivo de estilos globais que é importado dentro do ```<ThemeProvider>```
+
     ```js
     export const GlobalStyle = createGlobalStyle`...`
     ```
+
   - Definir arquivos de estilos para componentes
   - Como criar um arquivo de temas
     1. Criar um arquivo .ts com o nome do tema
     2. Exportar um objeto contendo as cores, tamanhos, etc.
     3. No App.tsx, embrulhar retorno com ```<ThemeProvider theme={themeName}>```
     4. Utilizar valores do tema
+
         ```jsx
         background-color: ${(props) => props.theme['green-500']};
         ```
+
   - Como reaproveitar classes de estilos em comum
+
     ```js
     export const StartButton = styled(CommonButton)`...`
     ```
+
   - Passar propriedades customizadas e mapeá-las para CSS utilizando ```keyof typeof <OBJECT>``` como foi feito [nesse código](src/pages/History/styles.ts).
   - Suporte nativo a pré-processador semelhante a SASS
   - É possível exportar mais de um styled componente em um mesmo arquivo. Assim dá para estilizar individualmente cada elemento HTML.
@@ -149,13 +162,15 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
   - React layouts evita repetição de instâncias de componentes pelas páginas do projeto.
   - Criar arquivos src/layouts/MyLayout/*index.tsx, styles.ts
   - No index.tsx, implementar o ```<MyLayout>``` que retorna a estrutura de componentes pelas páginas utilizando de ```<Outlet>```, que será substituído dinamicamente pelos componentes exclusivos de uma página.
-  - Embrulhar todos os Route em Router.tsx com um 
+  - Embrulhar todos os Route em Router.tsx com um
+
     ```html
     <Route path="/" element={<MyLayout />}>
       // Route
       // Route
     </Route> 
     ```
+
 - React Hook Form
   - ```npm i react-hook-form```
   - ```{register, handleSubmit, watch, formState} = useForm()```
@@ -173,12 +188,14 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
     1. Definir o schema, que é o formato dos dados retornado pelo formulário com restrições (validação);
     2. Definir type, ```type formData = zod.infer<typeof formDataSchema>;```
     3. Adicionar resolver ao react-hook-form
+
         ```js
         useForm<formData>({
           resolver: zodResolver(formDataSchema),
           defaultValues: { ... },
         })
         ```
+
 - React Contexts
   - Context providers são componentes que, ao invés de serem mostrados em tela como de costume, eles fornecem um contexto (dados globais) para seus descendentes.
   - Eles resolvem o problema de *prop drilling*
@@ -194,7 +211,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
   - O código do arquivo MyContext.tsx deve ser independente de bibliotecas que não lidam diretamente com implementação de contextos.
 
 - React Reducers
-  - Alternativa ao ```useState()``` em componentes cuja variável de estado é complexa, há diferentes tipos de alterações possíveis nela e provenientes de diferentes ações do usuário. 
+  - Alternativa ao ```useState()``` em componentes cuja variável de estado é complexa, há diferentes tipos de alterações possíveis nela e provenientes de diferentes ações do usuário.
   - Capaz de combinar diversas variáveis de estado em uma maior composta.
   - Incentiva a separação do código do componente e seu código de gerenciamento de estado.
   - Processo
@@ -221,7 +238,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
 
 - ```useState()``` é um hook utilizado para criar variáveis de estado cujo objetivo é (re)renderizar a tela toda vez que seu valor é modificado.
 
-- ```useEffect()``` (do termo side-effect) permite monitorar uma (ou mais) variável (de estado) e rodar uma função em resposta a alterações nela. Essa função também é executada na primeira renderização do componente. Se nenhuma variável for passada como dependência, então a função é executada apenas uma vez. 
+- ```useEffect()``` (do termo side-effect) permite monitorar uma (ou mais) variável (de estado) e rodar uma função em resposta a alterações nela. Essa função também é executada na primeira renderização do componente. Se nenhuma variável for passada como dependência, então a função é executada apenas uma vez.
 
   Uma outra função pode ser opcionalmente retornada. Nessa função, pode-se executar um código que “reseta” o que está sendo feito na função principal. Importante: raramente se utiliza de ```useEffect()``` para atualizar uma variável de estado em modo síncrono.
 
@@ -248,7 +265,7 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
 
 #### **Pergunta 01**. Por que a primeira execução do relógio do projeto original inicia exatamente no momento que o botão é pressionado enquanto no meu inicia com 1s de atraso?
 
-  **Resposta 01**. 
+  **Resposta 01**.
   A lógica de contagem é diferente: a minha se baseia na quantidade de segundos para o final da contatem enquanto a deles, no total de segundos menos a quantidade de segundos que se passou desde o início da contagem.
 
   Daí, na minha lógica, quando a UI atualiza após 1 segundo por conta do ```setInterval```, já se passou 1 segundo; enquanto na dele, o valor inicial é o total de segundos menos os segundos passados (que no primeiro tick ainda é 0)e, após 1 segundo, há a subtração, gerando o comportamento normal de um cronômetro.
@@ -262,18 +279,17 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
   ```
 
   Portanto, para contornar esse 1s de atraso, eu chamo uma atualização antes do ```setInterval()```
+
   ```js
   setSecondsLeftToEnd(currentActiveTimer.minutes * 60)
   ```
 
-
-
 #### **Pergunta 02**. A linha comentada fere o princípio da imutabilidade?
 
-  **Resposta 02**. 
+  **Resposta 02**.
   Apesar do fato de que outra lista é criada pelo método ```map()```, os elementos da lista são objetos que também serão modificados na lista fonte pois são parâmetros passados por referência. Portanto, a melhor prática é criar outro objeto.
   
-  No entanto, o app funciona mesmo com a quebra da imutabilidade, já que a variável de estado não são os objetos e sim a lista que os contém. 
+  No entanto, o app funciona mesmo com a quebra da imutabilidade, já que a variável de estado não são os objetos e sim a lista que os contém.
 
 ```jsx
 setTimers((state) =>
@@ -302,16 +318,18 @@ Quando um timer está em contagem, seu estado no histórico é "On going". Quand
       document.title = 'Ignite Timer'
     }
   ```
+
   Portanto, acredito que os hooks de estado de uma página não são executadas enquanto o app está em outra página. Daí, concluo que, da maneira foi implementado, não tem como a página de histórico ser notificada de que o estado do Timer foi alterado, porque ele não é alterado até visitar a página do Timer.
 
-
 #### **Pergunta 04. Se a conclusão da pergunta anterior é verdadeira, por que o Timer apresenta a contagem regressiva correta e atualizada quando o app retorna à Home? Se é incorreta, então como evitar o congelamento da contagem no título?**
+
   **Resposta 04.**
   Porque a função responsável pelos *ticks* do relógio é o *callback* executado pelo **setInterval**, o qual é disparado pelo **useEffect** que é disparado pela criação de uma nova contagem. Após isso, a sua execução é independente do hook.
 
   Esse fato reforça minha crença de que os hooks não são executados em segundo plano, porque, se fossem, o estado da quantidade de segundos seria atualizado, o que iria atualizar a renderização da contagem no título. Enfim, esse é exatamente o tipo de dúvida sanada ao se lê a documentação.
 
 #### **Pergunta 05**. Por que, ao deixar e retornar à Home após iniciar uma contagem, o display apresenta, durante 1s, a quantidade total de minutos inicial?
+
   **Resposta 05.**
   Certamente esse comportamento é devido ao ```useEffect``` ser executado sempre que o app abre a página. O que leva à execução do hook:
 
@@ -328,6 +346,7 @@ Quando um timer está em contagem, seu estado no histórico é "On going". Quand
   ![ESLint Conflict Error](./screenshots/eslint-conflict-error.png)
 
   **Solution found**. Add the following object inside ```rules``` in .eslintrc.json file
+
     ```json
     "prettier/prettier": [
       "error",
@@ -336,7 +355,8 @@ Quando um timer está em contagem, seu estado no histórico é "On going". Quand
       }
     ]
     ```
-  **It solved the problem?**. No, I had to run ```npm run lint``` on every new file I created in this project. 
+
+  **It solved the problem?**. No, I had to run ```npm run lint``` on every new file I created in this project.
   
   I set ESLint as default formatter for *.tsx files,but Prettier is overtaking anyways.
 
@@ -346,7 +366,6 @@ Quando um timer está em contagem, seu estado no histórico é "On going". Quand
 
   Set the input's width within nested rules did not work. But when I changed to styled component inheritance it worked fine.
 
-
 ### Useful resources
 
 - [About immutability](https://immerjs.github.io/immer/). See also [this script](./map-vs-reference.js).
@@ -354,7 +373,6 @@ Quando um timer está em contagem, seu estado no histórico é "On going". Quand
 - [About reducers](https://dmitripavlutin.com/react-usereducer/)
 
 - [About controlled vs uncontrolled inputs](https://www.joshwcomeau.com/react/data-binding/)
-
 
 ## Author
 
