@@ -1,0 +1,21 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["@rocketseat/eslint-config/react"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+    // "prettier/prettier": [
+    //   "error",
+    //   {},
+    //   {
+    //     "usePrettierrc": false
+    //   }
+    // ]
+  },
+  "plugins": ["react"],
+  "rules": {}
+}
