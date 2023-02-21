@@ -1,71 +1,98 @@
 import { CaretLeft, CaretRight } from 'phosphor-react'
-import { Dispatch, SetStateAction } from 'react'
-import styles from './TablePagination.module.css'
-import { Transaction } from './Transactions'
+import { Dispatch, SetStateAction, useEffect } from 'react'
+import styled from 'styled-components'
 
-function sliceRange(currentPage: number, range: number[], slice = 3) {
-  if (currentPage === range.at(0)! - 1) {
-    return range.slice(0, slice)
-  } else if (currentPage === range.at(-1)! - 1) {
-    return range.slice(-slice, range.length)
-  }
-  return range.slice(currentPage - 1, currentPage + slice - 1)
+const StyledTableFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-block: 2rem 3rem;
+`
+
+const StyledTablePages = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`
+
+interface PageButtonProps {
+  isActive: boolean
 }
+
+const StyledPageButton = styled.button<PageButtonProps>`
+  background-color: ${(p) =>
+    p.isActive ? p.theme['green-700'] : p.theme['gray-600']};
+  border: none;
+  border-radius: ${(p) => p.theme.br};
+  color: ${(p) => (p.isActive ? p.theme['gray-100'] : p.theme['gray-400'])};
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+`
+
+interface PaginatorButtonProps {
+  isOnEdge: boolean
+}
+
+const StyledPaginatorButton = styled.button<PaginatorButtonProps>`
+  background-color: transparent;
+  border: none;
+  color: ${(p) => (p.isOnEdge ? p.theme['green-500'] : p.theme['gray-600'])};
+  cursor: pointer;
+`
 
 interface TablePaginationProps {
   range: number[]
-  slice: Transaction[]
+  rangeTotalLength: number
   page: number
   setPage: Dispatch<SetStateAction<number>>
 }
 
-const TablePagination = ({
+export function TablePagination({
   range,
-  setPage,
+  rangeTotalLength,
   page,
-  slice,
-}: TablePaginationProps) => {
-  const slicedRange = sliceRange(page - 1, range)
+  setPage,
+}: TablePaginationProps) {
+  useEffect(() => {
+    // Go to page 1 when filtering
+    // It works only when the current page is out of range of the filtering result
+    if (range.length <= 1 && page !== 1) {
+      setPage(1)
+    }
+  }, [range, page, setPage])
 
   function handleSetPage(currentPage: number) {
     setPage(currentPage)
   }
 
-  // TODO: change to styled comps
   return (
-    <div className={styles.tableFooter}>
-      <button
-        className={[styles.paginator, page !== 1 && styles.active].join(' ')}
+    <StyledTableFooter>
+      <StyledPaginatorButton
+        isOnEdge={page !== 1}
         disabled={page === 1}
         onClick={() => handleSetPage(--page)}
       >
         <CaretLeft size={24} weight="bold" />
-      </button>
-      <div className={styles.tablePages}>
-        {slicedRange.map((currentPage) => (
-          <button
+      </StyledPaginatorButton>
+      <StyledTablePages>
+        {range.map((currentPage) => (
+          <StyledPageButton
             key={currentPage}
-            className={`${styles.button} ${
-              page === currentPage ? styles.activeButton : styles.inactiveButton
-            }`}
+            isActive={page === currentPage}
             onClick={() => handleSetPage(currentPage)}
           >
             {currentPage}
-          </button>
+          </StyledPageButton>
         ))}
-      </div>
-      <button
-        className={[
-          styles.paginator,
-          page !== range.length && styles.active,
-        ].join(' ')}
-        disabled={page === range.length}
+      </StyledTablePages>
+      <StyledPaginatorButton
+        isOnEdge={page !== rangeTotalLength && range.length > 1}
+        disabled={page === rangeTotalLength || range.length <= 1}
         onClick={() => handleSetPage(++page)}
       >
         <CaretRight size={24} weight="bold" />
-      </button>
-    </div>
+      </StyledPaginatorButton>
+    </StyledTableFooter>
   )
 }
-
-export default TablePagination

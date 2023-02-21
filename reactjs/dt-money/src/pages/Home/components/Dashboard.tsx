@@ -74,41 +74,46 @@ function DashboardCard({ iconColor, color, ...props }: DashboardCardProps) {
   )
 }
 
-const StyledDashboard = styled.div`
+const StyledDashboard = styled.section`
   margin-block: -4rem 2rem;
 
   @media (min-width: ${breakpoint.lg}) {
     margin-bottom: 4rem;
+
+    & > *:not(:last-child) {
+      margin-right: 2rem;
+    }
   }
 `
 
 export function Dashboard() {
   // TODO: Get the amounts $ from somewhere
   // TODO: The total card color depends on the positive or negative value
+  // TODO: Get the last modified dates and the range from most earlier to last
 
   const theme = useTheme()
+  const isMobile = !useMediaQuery({
+    query: `(min-width: ${breakpoint.lg})`,
+  })
   const [ref] = useKeenSlider<HTMLDivElement>({
     slides: { perView: 1.2, spacing: 8 },
     breakpoints: {
-      '(min-width: 23.4375em)': {
+      [`(min-width: ${breakpoint.xs})`]: {
         slides: { perView: 1.2, spacing: 16 },
       },
-      '(min-width: 36em)': {
+      [`(min-width: ${breakpoint.sm})`]: {
         slides: { perView: 1.6, spacing: 16 },
       },
-      '(min-width: 48em)': {
+      [`(min-width: ${breakpoint.md})`]: {
         slides: { perView: 2.4, spacing: 16 },
-      },
-      '(min-width: 62em)': {
-        slides: { perView: 3, spacing: 32 },
       },
     },
   })
 
   return (
-    <ContentContainer>
+    <ContentContainer style={{ overflow: 'clip' }}>
       <StyledDashboard
-        ref={ref}
+        ref={isMobile ? ref : null}
         className="keen-slider"
         style={{ overflow: 'visible' }}
       >

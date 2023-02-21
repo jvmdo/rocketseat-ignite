@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode } from 'react'
 import styled from 'styled-components'
 import { FluidText } from './FluidText'
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   background-color: ${(p) => p.theme['green-500']};
   border-radius: ${(p) => p.theme.br};
   color: ${(p) => p.theme.white};

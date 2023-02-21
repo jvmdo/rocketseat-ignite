@@ -2,7 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { ReactNode } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { FluidText } from './FluidText'
-import { TransactionButton } from './TransactionButton'
+import { StyledButton, TransactionButton } from './TransactionButton'
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
 import { breakpoint } from '../styles/global'
@@ -25,6 +25,8 @@ const StyledDialogContent = styled(Dialog.Content)`
   inset-inline: 0;
   inset-block: auto 0;
   min-height: 58.22%;
+  display: flex;
+  flex-direction: column;
 
   @media (min-width: ${breakpoint.lg}) {
     border-radius: ${(p) => p.theme.br};
@@ -33,6 +35,13 @@ const StyledDialogContent = styled(Dialog.Content)`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    min-height: 50%;
+  }
+
+  @media (max-width: ${breakpoint.lg}) and (orientation: landscape) {
+    min-height: unset;
+    height: 100dvh;
+    overflow: scroll;
   }
 `
 
@@ -75,7 +84,6 @@ const StyledRadioItem = styled(RadioGroup.Item)<StyledRadioItemProps>`
   gap: 0.5rem;
   padding: 1rem;
   cursor: pointer;
-  margin-bottom: clamp(2rem, 1.696rem + 1.3vw, 2.5rem);
 
   svg {
     color: ${(p) =>
@@ -100,8 +108,10 @@ const StyledRadioItem = styled(RadioGroup.Item)<StyledRadioItemProps>`
 `
 
 const StyledForm = styled.form`
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, min-content);
   gap: clamp(0.75rem, 0.598rem + 0.65vw, 1rem);
 
   input {
@@ -125,6 +135,11 @@ const StyledForm = styled.form`
 
   input:not(:placeholder-shown):invalid {
     box-shadow: 0 0 0 2px ${(p) => p.theme['red-500']};
+  }
+
+  ${StyledButton} {
+    align-self: end;
+    margin-top: clamp(2rem, 1.696rem + 1.3vw, 2.5rem);
   }
 `
 
@@ -176,7 +191,6 @@ export function TransactionDialog({ children }: DialogProps) {
               placeholder="Category"
               required
             />
-
             <StyledRadioGroup>
               <StyledRadioItem value="income" variant="income" required>
                 <ArrowCircleUp size={24} />
@@ -191,7 +205,6 @@ export function TransactionDialog({ children }: DialogProps) {
                 </FluidText>
               </StyledRadioItem>
             </StyledRadioGroup>
-
             <Dialog.Close asChild>
               <TransactionButton
                 height="3.625rem"

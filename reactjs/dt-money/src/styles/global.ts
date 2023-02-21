@@ -16,7 +16,6 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${(props) => props.theme['gray-800']};
     color: ${(props) => props.theme['gray-100']};
     line-height: 1.6;
-    overflow-x: hidden;
     min-width: 20rem;
   }
 

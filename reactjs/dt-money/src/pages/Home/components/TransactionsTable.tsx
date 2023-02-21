@@ -5,8 +5,9 @@ import styled, { useTheme } from 'styled-components'
 import { breakpoint } from '../../../styles/global'
 import { currencyFormatter } from '../../../utils/formatter'
 import useTable from '../hooks/useTable'
-import TablePagination from './TablePagination'
+import { TablePagination } from './TablePagination'
 import { Transaction } from './Transactions'
+import * as ScrollArea from '@radix-ui/react-scroll-area'
 
 interface TransactionsTableProps {
   data: Transaction[]
@@ -14,39 +15,54 @@ interface TransactionsTableProps {
 
 export function TransactionsTable({ data }: TransactionsTableProps) {
   const [page, setPage] = useState(1)
-  const { slice, range } = useTable(data, page, 10)
+  const isMobile = !useMediaQuery({
+    query: `(min-width: ${breakpoint.lg})`,
+  })
+  const { slice, range, rangeTotalLength } = useTable(
+    data,
+    page,
+    isMobile ? 10 : 20,
+  )
 
   return (
-    // TODO: this wrapper styled
     <>
-      <div
-        style={{ overflowY: 'scroll', height: '500px', scrollbarWidth: 'none' }}
-      >
-        <StyledTable>
-          {slice.map((transaction) => (
-            <Row
-              key={transaction.id}
-              title={transaction.title}
-              amount={
-                Math.random() > 0.5
-                  ? transaction.amount
-                  : -1 * transaction.amount
-              }
-              tag={transaction.tag}
-              date={new Date(transaction.date)}
-            />
-          ))}
-        </StyledTable>
-      </div>
+      <StyledScrollAreaRoot>
+        <StyledScrollViewport className="tableScrollViewport">
+          <StyledTable>
+            {slice.map((transaction) => (
+              <Row
+                key={transaction.id}
+                title={transaction.title}
+                amount={
+                  Math.random() > 0.5
+                    ? transaction.amount
+                    : -1 * transaction.amount
+                }
+                tag={transaction.tag}
+                date={new Date(transaction.date)}
+              />
+            ))}
+          </StyledTable>
+        </StyledScrollViewport>
+        <ScrollArea.Scrollbar orientation="vertical"></ScrollArea.Scrollbar>
+      </StyledScrollAreaRoot>
       <TablePagination
         range={range}
-        slice={slice}
-        setPage={setPage}
+        rangeTotalLength={rangeTotalLength}
         page={page}
+        setPage={setPage}
       />
     </>
   )
 }
+
+const StyledScrollAreaRoot = styled(ScrollArea.Root)`
+  height: 72vh;
+`
+
+const StyledScrollViewport = styled(ScrollArea.Viewport)`
+  height: 100%;
+`
 
 const StyledTable = styled.div`
   display: grid;
@@ -173,7 +189,6 @@ const StyledHalfRow = styled.div`
   }
 `
 
-//! Flex not working properly??
 const StyledCell = styled.span`
   flex: var(--flex, 0 0 auto);
   color: var(--color, inherit);
