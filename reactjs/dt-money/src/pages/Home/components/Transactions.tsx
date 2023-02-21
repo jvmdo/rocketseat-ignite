@@ -1,10 +1,9 @@
 import { MagnifyingGlass } from 'phosphor-react'
-import { FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import { breakpoint, ContentContainer } from '../../../styles/global'
 import { TransactionsTable } from './TransactionsTable'
-import data from '../../../data/data.json'
 
 const StyledTransactionsHeader = styled.div`
   display: flex;
@@ -80,23 +79,39 @@ export type Transaction = {
   date: number
 }
 
-export function Transactions() {
-  const [transactions, setTransaction] = useState<Transaction[]>([])
+interface TransactionsProps {
+  data: Transaction[]
+}
+
+export function Transactions({ data }: TransactionsProps) {
+  const [transactions, setTransactions] = useState<Transaction[]>(data)
   const biggerThanKiss = useMediaQuery({
     query: `(min-width: ${breakpoint.lg})`,
   })
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
-    const loadData = () => JSON.parse(JSON.stringify(data))
-    setTransaction(loadData())
-  }, [])
+    function transactionsFilter(query: string) {
+      if (query) {
+        const filteredTransactions = data.filter(({ title }) =>
+          title.toLowerCase().includes(query.toLowerCase()),
+        )
+        setTransactions(filteredTransactions)
+      } else {
+        setTransactions(data)
+      }
+    }
 
-  function handleTransactionsFilter(event: FormEvent<HTMLFormElement>) {
-    // TODO: data passed to table must be filtered if search is called
+    transactionsFilter(query)
+  }, [data, query])
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const query = new FormData(event.currentTarget).get('search-transaction')
-    console.log(query)
-    event.currentTarget.reset()
+  }
+
+  // TODO: try to pass [query] down to pagination then set range on every query change
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    setQuery(event.currentTarget.value)
   }
 
   return (
@@ -108,14 +123,13 @@ export function Transactions() {
             <span>{transactions.length} items</span>
           </StyledTransactionsHeader>
         )}
-        <StyledTransactionForm
-          autoComplete="on"
-          onSubmit={handleTransactionsFilter}
-        >
+        <StyledTransactionForm autoComplete="on" onSubmit={handleSubmit}>
           <input
             type="search"
             name="search-transaction"
             placeholder="Search transactions by name"
+            value={query}
+            onChange={handleChange}
           />
           <button>
             <MagnifyingGlass size={biggerThanKiss ? 20 : 22} weight="bold" />

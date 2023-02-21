@@ -33,11 +33,7 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
               <Row
                 key={transaction.id}
                 title={transaction.title}
-                amount={
-                  Math.random() > 0.5
-                    ? transaction.amount
-                    : -1 * transaction.amount
-                }
+                amount={transaction.amount}
                 tag={transaction.tag}
                 date={new Date(transaction.date)}
               />

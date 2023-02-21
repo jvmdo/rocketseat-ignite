@@ -7,6 +7,7 @@ import { currencyFormatter, dateFormatter } from '../../../utils/formatter'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { useMediaQuery } from 'react-responsive'
+import { Transaction } from './Transactions'
 
 const StyledDashboardCard = styled.div`
   background-color: var(--color, ${(p) => p.theme['gray-600']});
@@ -37,6 +38,7 @@ const StyledDashboardCard = styled.div`
 interface DashboardCardProps {
   title: string
   amount: number
+  firstModifiedAt?: Date
   lastModifiedAt: Date
   children: ReactNode
   iconColor?: string
@@ -65,9 +67,13 @@ function DashboardCard({ iconColor, color, ...props }: DashboardCardProps) {
         <FluidText
           min={theme['fs-sm']}
           max={theme.fs}
-          color={theme['gray-500']}
+          color={props.firstModifiedAt ? theme['gray-300'] : theme['gray-500']}
         >
-          Last modified at {dateFormatter(props.lastModifiedAt)}
+          {props.firstModifiedAt
+            ? `From ${props.firstModifiedAt.toLocaleDateString(
+                'en-US',
+              )} to ${props.lastModifiedAt.toLocaleDateString('en-US')}`
+            : `Last modified at ${dateFormatter(props.lastModifiedAt)}`}
         </FluidText>
       )}
     </StyledDashboardCard>
@@ -86,11 +92,11 @@ const StyledDashboard = styled.section`
   }
 `
 
-export function Dashboard() {
-  // TODO: Get the amounts $ from somewhere
-  // TODO: The total card color depends on the positive or negative value
-  // TODO: Get the last modified dates and the range from most earlier to last
+interface DashboardProps {
+  data: Transaction[]
+}
 
+export function Dashboard({ data }: DashboardProps) {
   const theme = useTheme()
   const isMobile = !useMediaQuery({
     query: `(min-width: ${breakpoint.lg})`,
@@ -110,6 +116,18 @@ export function Dashboard() {
     },
   })
 
+  const incomes = data.filter(({ amount }) => amount > 0)
+  const outcomes = data.filter(({ amount }) => amount < 0)
+
+  const incomeAmount = incomes.reduce((acc, { amount }) => acc + amount, 0)
+  const outcomeAmount = outcomes.reduce((acc, { amount }) => acc + amount, 0)
+  const totalAmount = incomeAmount + outcomeAmount
+
+  const lastIncomeDate = Math.max(...incomes.map(({ date }) => date))
+  const lastOutcomeDate = Math.max(...outcomes.map(({ date }) => date))
+  const theLastOfUs = Math.max(lastIncomeDate, lastOutcomeDate)
+  const theFirstOfUs = Math.min(...data.map(({ date }) => date))
+
   return (
     <ContentContainer style={{ overflow: 'clip' }}>
       <StyledDashboard
@@ -119,25 +137,26 @@ export function Dashboard() {
       >
         <DashboardCard
           title="Income"
-          amount={12309450}
-          lastModifiedAt={new Date()}
+          amount={incomeAmount}
+          lastModifiedAt={new Date(lastIncomeDate)}
           iconColor={theme['green-300']}
         >
           <ArrowCircleUp />
         </DashboardCard>
         <DashboardCard
           title="Outcome"
-          amount={56732}
-          lastModifiedAt={new Date()}
+          amount={outcomeAmount}
+          lastModifiedAt={new Date(lastOutcomeDate)}
           iconColor={theme['red-300']}
         >
           <ArrowCircleDown />
         </DashboardCard>
         <DashboardCard
           title="Total"
-          amount={7852029}
-          lastModifiedAt={new Date()}
-          color={theme['green-700']}
+          amount={totalAmount}
+          firstModifiedAt={new Date(theFirstOfUs)}
+          lastModifiedAt={new Date(theLastOfUs)}
+          color={totalAmount > 0 ? theme['green-700'] : theme['red-700']}
         >
           <CurrencyDollar />
         </DashboardCard>
