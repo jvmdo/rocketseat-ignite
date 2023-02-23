@@ -51,6 +51,13 @@ function DashboardCard({ iconColor, color, ...props }: DashboardCardProps) {
     query: `(min-width: ${breakpoint.lg})`,
   })
 
+  function isDateValid() {
+    return (
+      props.lastModifiedAt instanceof Date &&
+      !isNaN(props.lastModifiedAt.getTime())
+    )
+  }
+
   return (
     <StyledDashboardCard
       className="keen-slider__slide"
@@ -69,11 +76,13 @@ function DashboardCard({ iconColor, color, ...props }: DashboardCardProps) {
           max={theme.fs}
           color={props.firstModifiedAt ? theme['gray-300'] : theme['gray-500']}
         >
-          {props.firstModifiedAt
-            ? `From ${props.firstModifiedAt.toLocaleDateString(
-                'en-US',
-              )} to ${props.lastModifiedAt.toLocaleDateString('en-US')}`
-            : `Last modified at ${dateFormatter(props.lastModifiedAt)}`}
+          {isDateValid()
+            ? props.firstModifiedAt
+              ? `From ${props.firstModifiedAt.toLocaleDateString(
+                  'en-US',
+                )} to ${props.lastModifiedAt.toLocaleDateString('en-US')}`
+              : `Last modified at ${dateFormatter(props.lastModifiedAt)}`
+            : ''}
         </FluidText>
       )}
     </StyledDashboardCard>
@@ -111,7 +120,7 @@ export function Dashboard() {
       },
     },
   })
-  const transactions = useContext(TransactionsContext)
+  const { transactions } = useContext(TransactionsContext)
 
   const incomes = transactions.filter(({ amount }) => amount > 0)
   const outcomes = transactions.filter(({ amount }) => amount < 0)

@@ -9,7 +9,12 @@ export type Transaction = {
   date: number
 }
 
-export const TransactionsContext = createContext([] as Transaction[])
+type TransactionsContextType = {
+  transactions: Transaction[]
+  fetchTransactions: (query?: string) => void
+}
+
+export const TransactionsContext = createContext({} as TransactionsContextType)
 
 interface TransactionsProviderProps {
   children: ReactNode
@@ -38,7 +43,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   }, [])
 
   return (
-    <TransactionsContext.Provider value={transactions}>
+    <TransactionsContext.Provider value={{ transactions, fetchTransactions }}>
       {children}
     </TransactionsContext.Provider>
   )

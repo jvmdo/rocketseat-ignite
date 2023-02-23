@@ -1,13 +1,13 @@
 import { MagnifyingGlass } from 'phosphor-react'
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
+import { useForm } from 'react-hook-form'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
-import {
-  Transaction,
-  TransactionsContext,
-} from '../../../contexts/TransactionsContext'
+import { TransactionsContext } from '../../../contexts/TransactionsContext'
 import { breakpoint, ContentContainer } from '../../../styles/global'
 import { TransactionsTable } from './TransactionsTable'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const StyledTransactionsHeader = styled.div`
   display: flex;
@@ -66,7 +66,12 @@ const StyledTransactionForm = styled.form`
     align-items: center;
     gap: 0.5rem;
 
-    &:hover {
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed !important;
+    }
+
+    &:not(:disabled):hover {
       background-color: ${(p) => p.theme['green-500']};
       border-color: ${(p) => p.theme['green-500']};
       color: ${(p) => p.theme.white};
@@ -75,35 +80,27 @@ const StyledTransactionForm = styled.form`
   }
 `
 
+const searchTransactionSchema = z.object({
+  query: z.string(),
+})
+
+type SearchTransaction = z.infer<typeof searchTransactionSchema>
+
 export function Transactions() {
   const biggerThanKiss = useMediaQuery({
     query: `(min-width: ${breakpoint.lg})`,
   })
-  const [query, setQuery] = useState('')
-  const data = useContext(TransactionsContext)
-  const [transactions, setTransactions] = useState<Transaction[]>(data)
+  const { transactions, fetchTransactions } = useContext(TransactionsContext)
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SearchTransaction>({
+    resolver: zodResolver(searchTransactionSchema),
+  })
 
-  useEffect(() => {
-    function transactionsFilter(query: string) {
-      if (query) {
-        const filteredTransactions = data.filter(({ title }) =>
-          title.toLowerCase().includes(query.toLowerCase()),
-        )
-        setTransactions(filteredTransactions)
-      } else {
-        setTransactions(data)
-      }
-    }
-
-    transactionsFilter(query)
-  }, [data, query])
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-  }
-
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    setQuery(event.currentTarget.value)
+  async function handleSuccessSubmit({ query }: SearchTransaction) {
+    await fetchTransactions(query)
   }
 
   return (
@@ -115,15 +112,16 @@ export function Transactions() {
             <span>{transactions.length} items</span>
           </StyledTransactionsHeader>
         )}
-        <StyledTransactionForm autoComplete="on" onSubmit={handleSubmit}>
+        <StyledTransactionForm
+          autoComplete="on"
+          onSubmit={handleSubmit(handleSuccessSubmit)}
+        >
           <input
             type="search"
-            name="search-transaction"
             placeholder="Search transactions by name"
-            value={query}
-            onChange={handleChange}
+            {...register('query')}
           />
-          <button>
+          <button type="submit" disabled={isSubmitting}>
             <MagnifyingGlass size={biggerThanKiss ? 20 : 22} weight="bold" />
             {biggerThanKiss && 'Search'}
           </button>
