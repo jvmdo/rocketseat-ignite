@@ -1,30 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
+import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { Dashboard } from './components/Dashboard'
-import { Transaction, Transactions } from './components/Transactions'
-import dataJson from '../../data/data.json'
+import { Transactions } from './components/Transactions'
 
 export function Home() {
-  const [data, setData] = useState<Transaction[]>([])
-
-  useEffect(() => {
-    function loadData(): Transaction[] {
-      return JSON.parse(JSON.stringify(dataJson))
-    }
-    const rawData = loadData()
-    setData(
-      rawData.map((entry) => {
-        entry.amount = Math.random() < 0.5 ? -1 * entry.amount : entry.amount
-        return entry
-      }),
-    )
-  }, [])
+  const transactions = useContext(TransactionsContext)
 
   return (
     <main>
-      {data.length ? (
+      {transactions.length ? (
         <>
-          <Dashboard data={data} />
-          <Transactions data={data} />
+          <Dashboard />
+          <Transactions />
         </>
       ) : (
         <span>Loading</span>

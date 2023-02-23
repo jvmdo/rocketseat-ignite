@@ -1,7 +1,11 @@
 import { MagnifyingGlass } from 'phosphor-react'
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
+import {
+  Transaction,
+  TransactionsContext,
+} from '../../../contexts/TransactionsContext'
 import { breakpoint, ContentContainer } from '../../../styles/global'
 import { TransactionsTable } from './TransactionsTable'
 
@@ -71,24 +75,13 @@ const StyledTransactionForm = styled.form`
   }
 `
 
-export type Transaction = {
-  id: number
-  title: string
-  amount: number
-  tag: string
-  date: number
-}
-
-interface TransactionsProps {
-  data: Transaction[]
-}
-
-export function Transactions({ data }: TransactionsProps) {
-  const [transactions, setTransactions] = useState<Transaction[]>(data)
+export function Transactions() {
   const biggerThanKiss = useMediaQuery({
     query: `(min-width: ${breakpoint.lg})`,
   })
   const [query, setQuery] = useState('')
+  const data = useContext(TransactionsContext)
+  const [transactions, setTransactions] = useState<Transaction[]>(data)
 
   useEffect(() => {
     function transactionsFilter(query: string) {
@@ -109,7 +102,6 @@ export function Transactions({ data }: TransactionsProps) {
     event.preventDefault()
   }
 
-  // TODO: try to pass [query] down to pagination then set range on every query change
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setQuery(event.currentTarget.value)
   }

@@ -1,5 +1,5 @@
 import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from 'phosphor-react'
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
 import styled, { CSSProperties, useTheme } from 'styled-components'
 import { FluidText } from '../../../components/FluidText'
 import { breakpoint, ContentContainer } from '../../../styles/global'
@@ -7,7 +7,7 @@ import { currencyFormatter, dateFormatter } from '../../../utils/formatter'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { useMediaQuery } from 'react-responsive'
-import { Transaction } from './Transactions'
+import { TransactionsContext } from '../../../contexts/TransactionsContext'
 
 const StyledDashboardCard = styled.div`
   background-color: var(--color, ${(p) => p.theme['gray-600']});
@@ -92,11 +92,7 @@ const StyledDashboard = styled.section`
   }
 `
 
-interface DashboardProps {
-  data: Transaction[]
-}
-
-export function Dashboard({ data }: DashboardProps) {
+export function Dashboard() {
   const theme = useTheme()
   const isMobile = !useMediaQuery({
     query: `(min-width: ${breakpoint.lg})`,
@@ -115,9 +111,10 @@ export function Dashboard({ data }: DashboardProps) {
       },
     },
   })
+  const transactions = useContext(TransactionsContext)
 
-  const incomes = data.filter(({ amount }) => amount > 0)
-  const outcomes = data.filter(({ amount }) => amount < 0)
+  const incomes = transactions.filter(({ amount }) => amount > 0)
+  const outcomes = transactions.filter(({ amount }) => amount < 0)
 
   const incomeAmount = incomes.reduce((acc, { amount }) => acc + amount, 0)
   const outcomeAmount = outcomes.reduce((acc, { amount }) => acc + amount, 0)
@@ -126,7 +123,7 @@ export function Dashboard({ data }: DashboardProps) {
   const lastIncomeDate = Math.max(...incomes.map(({ date }) => date))
   const lastOutcomeDate = Math.max(...outcomes.map(({ date }) => date))
   const theLastOfUs = Math.max(lastIncomeDate, lastOutcomeDate)
-  const theFirstOfUs = Math.min(...data.map(({ date }) => date))
+  const theFirstOfUs = Math.min(...transactions.map(({ date }) => date))
 
   return (
     <ContentContainer style={{ overflow: 'clip' }}>
