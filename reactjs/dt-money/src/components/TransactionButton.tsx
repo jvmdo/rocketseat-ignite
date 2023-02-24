@@ -15,7 +15,12 @@ export const StyledButton = styled.button`
   border: none;
   cursor: pointer;
 
-  &:hover {
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
     background-color: ${(p) => p.theme['green-700']};
     transition: background-color 0.2s;
   }
@@ -26,7 +31,9 @@ interface ButtonProps {
   height?: string
   width?: string
   fontSizes?: [string, string]
-  onClick: () => void
+  onClick?: () => void
+  type?: 'submit' | 'button'
+  disabled?: boolean
 }
 
 export function TransactionButton({
@@ -34,12 +41,15 @@ export function TransactionButton({
   width,
   fontSizes = ['0.875rem', '1rem'],
   onClick,
+  type = 'button',
+  disabled = false,
   children,
 }: ButtonProps) {
   return (
     <StyledButton
-      type="button"
+      type={type}
       onClick={onClick}
+      disabled={disabled}
       style={
         {
           '--height': height,

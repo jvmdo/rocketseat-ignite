@@ -1,11 +1,16 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { ReactNode } from 'react'
+import { ReactNode, useContext, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { FluidText } from './FluidText'
 import { StyledButton, TransactionButton } from './TransactionButton'
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
 import { breakpoint } from '../styles/global'
+import * as z from 'zod'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { TransactionsContext } from '../contexts/TransactionsContext'
+import { InputField } from './InputField'
 
 const StyledDialogOverlay = styled(Dialog.Overlay)`
   background-color: ${(p) => p.theme.black};
@@ -143,19 +148,51 @@ const StyledForm = styled.form`
   }
 `
 
+const dialogFormDataSchema = z.object({
+  description: z.string().min(1, { message: 'Cannot be blank' }).max(999),
+  price: z
+    .string()
+    .min(1, { message: 'Cannot be blank' })
+    .regex(/^\d+(\.\d{0,2})?$/, {
+      message: 'Price must have at most 2 decimal places',
+    }),
+  category: z.string().min(1, { message: 'Cannot be blank' }).max(99),
+  type: z.enum(['income', 'outcome']),
+})
+
+type DialogFormDataType = z.infer<typeof dialogFormDataSchema>
+
 interface DialogProps {
   children: ReactNode
 }
 
 export function TransactionDialog({ children }: DialogProps) {
   const theme = useTheme()
+  const [open, setOpen] = useState(false)
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors },
+  } = useForm<DialogFormDataType>({
+    resolver: zodResolver(dialogFormDataSchema),
+    shouldUseNativeValidation: true,
+    defaultValues: {
+      type: 'income',
+    },
+  })
+  const { createTransaction } = useContext(TransactionsContext)
 
-  function handleNewTransaction() {
-    console.count('New transaction registered!')
+  async function handleNewTransaction(data: DialogFormDataType) {
+    console.log(dialogFormDataSchema.safeParse(data))
+    await createTransaction(data)
+    setOpen(false)
+    reset()
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Portal>
         <StyledDialogOverlay />
@@ -170,51 +207,63 @@ export function TransactionDialog({ children }: DialogProps) {
               <X />
             </StyledCloseButton>
           </Dialog.Close>
-          <StyledForm method="dialog">
-            <input
+          <StyledForm
+            method="dialog"
+            onSubmit={handleSubmit(handleNewTransaction)}
+          >
+            <InputField
               type="text"
               name="description"
-              placeholder="Description"
-              required
+              register={() => register('description')}
+              errors={errors}
             />
-            <input
+            <InputField
               type="tel"
-              inputMode="numeric"
               name="price"
-              placeholder="Price"
-              pattern="^\d+(\.\d{0,2})?$"
-              required
+              inputMode="numeric"
+              autoComplete="off"
+              register={() => register('price')}
+              errors={errors}
             />
-            <input
+            <InputField
               type="text"
               name="category"
               placeholder="Category"
-              required
+              register={() => register('category')}
+              errors={errors}
             />
-            <StyledRadioGroup>
-              <StyledRadioItem value="income" variant="income" required>
-                <ArrowCircleUp size={24} />
-                <FluidText min={theme.fs} max={theme['fs-lg']}>
-                  Income
-                </FluidText>
-              </StyledRadioItem>
-              <StyledRadioItem value="outcome" variant="outcome" required>
-                <ArrowCircleDown size={24} />
-                <FluidText min={theme.fs} max={theme['fs-lg']}>
-                  Outcome
-                </FluidText>
-              </StyledRadioItem>
-            </StyledRadioGroup>
-            <Dialog.Close asChild>
-              <TransactionButton
-                height="3.625rem"
-                width="100%"
-                fontSizes={[theme.fs, theme['fs-lg']]}
-                onClick={handleNewTransaction}
-              >
-                Register
-              </TransactionButton>
-            </Dialog.Close>
+            <Controller
+              control={control}
+              name="type"
+              render={({ field }) => (
+                <StyledRadioGroup
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <StyledRadioItem variant="income" value="income">
+                    <ArrowCircleUp size={24} />
+                    <FluidText min={theme.fs} max={theme['fs-lg']}>
+                      Income
+                    </FluidText>
+                  </StyledRadioItem>
+                  <StyledRadioItem variant="outcome" value="outcome">
+                    <ArrowCircleDown size={24} />
+                    <FluidText min={theme.fs} max={theme['fs-lg']}>
+                      Outcome
+                    </FluidText>
+                  </StyledRadioItem>
+                </StyledRadioGroup>
+              )}
+            />
+            <TransactionButton
+              height="3.625rem"
+              width="100%"
+              fontSizes={[theme.fs, theme['fs-lg']]}
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Register
+            </TransactionButton>
           </StyledForm>
         </StyledDialogContent>
       </Dialog.Portal>

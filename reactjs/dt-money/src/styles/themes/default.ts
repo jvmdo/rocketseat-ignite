@@ -21,6 +21,7 @@ export const defaultTheme = {
   'red-700': '#7A1921',
 
   // Font sizes
+  'fs-xm': '0.75rem',
   'fs-sm': '0.875rem',
   fs: '1rem',
   'fs-lg': '1.125rem',

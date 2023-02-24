@@ -11,6 +11,7 @@
     "server": "json-server db-static.json --watch --port 3333 --delay 500"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^2.9.11",
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-radio-group": "^1.1.1",

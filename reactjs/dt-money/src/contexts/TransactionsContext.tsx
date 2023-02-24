@@ -9,9 +9,17 @@ export type Transaction = {
   date: number
 }
 
+type NewTransactionType = {
+  description: string
+  price: string
+  category: string
+  type: 'income' | 'outcome'
+}
+
 type TransactionsContextType = {
   transactions: Transaction[]
   fetchTransactions: (query?: string) => void
+  createTransaction: (transaction: NewTransactionType) => void
 }
 
 export const TransactionsContext = createContext({} as TransactionsContextType)
@@ -38,12 +46,33 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }
 
+  async function createTransaction(transaction: NewTransactionType) {
+    const amount =
+      transaction.type === 'income'
+        ? Number(transaction.price)
+        : -1 * Number(transaction.price)
+
+    try {
+      const response = await api.post('/transactions', {
+        title: transaction.description,
+        amount,
+        tag: transaction.category,
+        date: Date.now(),
+      })
+      setTransactions((state) => [response.data, ...state])
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     fetchTransactions()
   }, [])
 
   return (
-    <TransactionsContext.Provider value={{ transactions, fetchTransactions }}>
+    <TransactionsContext.Provider
+      value={{ transactions, fetchTransactions, createTransaction }}
+    >
       {children}
     </TransactionsContext.Provider>
   )
