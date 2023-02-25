@@ -3,7 +3,7 @@
 This is the readme file template provided by
 [Frontend Mentor](https://www.frontendmentor.io/) slightly modified by me.
 
-FEM is a great site that helps you improve your web dev coding skills by building realistic projects. 
+FEM is a great site that helps you improve your web dev coding skills by building realistic projects.
 
 ## Table of contents
 
@@ -20,32 +20,29 @@ FEM is a great site that helps you improve your web dev coding skills by buildin
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
-
 ## Overview
 
 ### The challenge
 
-
 ### Screenshot
 
 #### Mobile
+
 | Mobile      | Mobile (with active states) | Mobile (something)     |
 | :----:        |    :----:   |    :---:   |
 | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices" width=200>      | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices (with active states)" width=200>       | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices (with something more)" width=200>   |
 
-
 #### Desktop
+
 | Desktop      | Desktop (with active states) | Desktop (something)     |
 | :----:        |    :----:   |     :---:    |
 | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices" width=200>      | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=200>       | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices (with something more)" width=200>   |
-
 
 ### Links
 
 - [Remote repository]()
 
 - [Live preview]()
-
 
 ## My process
 
@@ -61,23 +58,18 @@ FEM is a great site that helps you improve your web dev coding skills by buildin
 - Styled Components
 - NextJS
 
-
 ### What I learned
 
-
 ### Questions
-
 
 ### Continued development
 
 Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
 
-
 ### Useful resources
 
 - [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
 - [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
 
 ## Author
 
@@ -87,8 +79,7 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 - CodeWars - [jvmdo](https://www.codewars.com/users/jvmdo)
 
-- LinkedIn - [João Oliveira](https://br.linkedin.com/)
-
+- LinkedIn - [João Oliveira](https://www.linkedin.com/in/de-oliveira-joao/)
 
 ## Acknowledgments
 
