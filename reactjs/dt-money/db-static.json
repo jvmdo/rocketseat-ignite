@@ -701,60 +701,25 @@
       "date": 1648484010000
     },
     {
-      "title": "Description",
-      "amount": 123.12,
-      "tag": "Category",
-      "date": 1677213973132,
+      "title": "Joy of React",
+      "amount": -757839.12,
+      "tag": "Education",
+      "date": 1677291273069,
       "id": 101
     },
     {
-      "title": "Usucapiao",
-      "amount": -777.77,
-      "tag": "Playstation",
-      "date": 1677214740805,
+      "title": "Rocketseat Ignite",
+      "amount": -8873292.12,
+      "tag": "Education",
+      "date": 1677291296141,
       "id": 102
     },
     {
-      "title": "Manuten;'ao de c[odigo-fonte",
-      "amount": 77777.77,
-      "tag": "Development",
-      "date": 1677214912620,
-      "id": 103
-    },
-    {
-      "title": "Busco emprego",
-      "amount": 6000,
-      "tag": "Emprego",
-      "date": 1677216757811,
-      "id": 104
-    },
-    {
-      "title": "popopo",
-      "amount": 7777777,
+      "title": "Site development",
+      "amount": 99999999,
       "tag": "Salary",
-      "date": 1677218970915,
-      "id": 105
-    },
-    {
-      "title": "sdfgsdfg",
-      "amount": -3123,
-      "tag": "sfgsdfg",
-      "date": 1677219962033,
-      "id": 106
-    },
-    {
-      "title": "That transaction",
-      "amount": -6000,
-      "tag": "Lend",
-      "date": 1677220071795,
-      "id": 107
-    },
-    {
-      "title": "I'm gonna fuck you up!",
-      "amount": -6666.66,
-      "tag": "Hell",
-      "date": 1677220966572,
-      "id": 108
+      "date": 1677291324378,
+      "id": 103
     }
   ]
 }

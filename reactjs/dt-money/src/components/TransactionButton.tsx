@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react'
+import { CSSProperties, forwardRef, ReactNode } from 'react'
 import styled from 'styled-components'
 import { FluidText } from './FluidText'
 
@@ -34,9 +34,11 @@ interface ButtonProps {
   onClick?: () => void
   type?: 'submit' | 'button'
   disabled?: boolean
+  buttonRef?: any
 }
 
-export function TransactionButton({
+function TransactionButtonBones({
+  buttonRef,
   height,
   width,
   fontSizes = ['0.875rem', '1rem'],
@@ -47,6 +49,7 @@ export function TransactionButton({
 }: ButtonProps) {
   return (
     <StyledButton
+      ref={buttonRef}
       type={type}
       onClick={onClick}
       disabled={disabled}
@@ -57,9 +60,17 @@ export function TransactionButton({
         } as CSSProperties
       }
     >
-      <FluidText min={fontSizes[0]} max={fontSizes[1]} unit="rem">
+      <FluidText min={fontSizes[0]} max={fontSizes[1]}>
         {children}
       </FluidText>
     </StyledButton>
   )
 }
+
+export const TransactionButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  (props, forwardedRef) => {
+    return <TransactionButtonBones {...props} buttonRef={forwardedRef} />
+  },
+)
+
+TransactionButton.displayName = 'TransactionButton'
