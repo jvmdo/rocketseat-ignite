@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { breakpoint } from '../styles/global'
 
-interface StyledTextProps {
+interface SFluidTextProps {
   min: number
   max: number
   from: number
@@ -12,7 +12,7 @@ interface StyledTextProps {
   color?: string
 }
 
-const StyledText = styled.span<StyledTextProps>`
+const SFluidText = styled.span<SFluidTextProps>`
   color: ${(p) => p.color};
   font-size: ${({ min, max, from, to, unit }) => `clamp(
     ${min}${unit},
@@ -25,6 +25,14 @@ const StyledText = styled.span<StyledTextProps>`
   font-weight: ${(p) => p.bold && p.theme['fw-bold']};
 `
 
+type HTMLElementTagNameMap = {
+  h1: HTMLHeadingElement
+  h2: HTMLHeadingElement
+  h3: HTMLHeadingElement
+  span: HTMLSpanElement
+  p: HTMLParagraphElement
+}
+
 interface FluidTextProps {
   min: string
   max: string
@@ -34,6 +42,7 @@ interface FluidTextProps {
   to?: number
   unit?: string
   children: ReactNode
+  tag?: keyof HTMLElementTagNameMap
 }
 
 export function FluidText({
@@ -45,13 +54,17 @@ export function FluidText({
   unit = 'rem',
   from = Number.parseFloat(breakpoint.xs),
   to = Number.parseFloat(breakpoint.lg),
+  tag = 'span',
 }: FluidTextProps) {
   const minN = Number.parseFloat(min)
   const maxN = Number.parseFloat(max)
 
   return (
-    <StyledText {...{ min: minN, max: maxN, from, to, unit, bold, color }}>
+    <SFluidText
+      {...{ min: minN, max: maxN, from, to, unit, bold, color }}
+      as={tag}
+    >
       {children}
-    </StyledText>
+    </SFluidText>
   )
 }

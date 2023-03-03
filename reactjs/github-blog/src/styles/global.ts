@@ -10,11 +10,9 @@ export const GlobalStyle = createGlobalStyle`
 
 html {
   background-color: ${(p) => p.theme.background};
-  color: ${(p) => p.theme.text};
   color-scheme: light dark;
   font-family: ${(p) => p.theme['font-family']};
   font-synthesis: none;
-  line-height: ${(p) => p.theme['line-height']};
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -22,14 +20,22 @@ html {
 }
 
 body {
+  color: ${(p) => p.theme.text};
+  line-height: ${(p) => p.theme['line-height']};
   min-height: 100dvh;
   min-width: 20rem;
+  padding-bottom: clamp(7rem, 3.353rem + 15.56vw, 13rem);
+}
+
+h1 {
+  line-height: 1.3;
 }
 
 a {
   color: inherit;
   text-decoration: none;
   text-decoration-skip-ink: none;
+  cursor: pointer;
 }
 
 button {
@@ -66,7 +72,8 @@ export const ContentContainer = styled.div`
     --fluid-padding: clamp(1.5rem, 0.588rem + 3.89vw, 3rem);
   }
 
-  max-width: calc(70rem + 2 * var(--fluid-padding));
+  --base-width: 54rem;
+  max-width: calc(var(--base-width) + 2 * var(--fluid-padding));
   margin-inline: auto;
   padding-inline: var(--fluid-padding);
 `
