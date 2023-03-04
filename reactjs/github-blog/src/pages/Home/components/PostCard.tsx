@@ -39,7 +39,7 @@ export function PostCard({ title, body, date, number = 1 }: PostCardProps) {
 
   // TODO: redirect to full post page onClick. Need issue number
   function navigateToPost() {
-    console.log('Navigating...')
+    console.log('Navigating...' + number)
   }
 
   function handleKeyPress(event: KeyboardEvent<HTMLDivElement>) {

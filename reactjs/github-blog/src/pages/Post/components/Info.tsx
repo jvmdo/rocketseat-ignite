@@ -6,6 +6,7 @@ import {
   ChatCircle,
   GithubLogo,
 } from 'phosphor-react'
+import { useNavigate } from 'react-router-dom'
 import styled, { useTheme } from 'styled-components'
 import { FluidText } from '../../../components/FluidText'
 import { LinkIcon } from '../../../components/LinkIcon'
@@ -59,15 +60,16 @@ interface InfoProps {
 
 export function Info(props: InfoProps) {
   const theme = useTheme()
+  const navigator = useNavigate()
 
   return (
     <SInfo>
       <Navigation>
-        <LinkIcon href="#">
+        <LinkIcon asText onClick={() => navigator(-1)}>
           <CaretLeft size={14} weight="bold" />
           Back
         </LinkIcon>
-        <LinkIcon href={props.url}>
+        <LinkIcon href={props.url} target="_blank">
           See on GitHub
           <ArrowSquareOut size={14} weight="bold" />
         </LinkIcon>

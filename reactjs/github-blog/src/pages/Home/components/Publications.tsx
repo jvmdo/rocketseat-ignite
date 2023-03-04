@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import styled, { useTheme } from 'styled-components'
 import { FluidText } from '../../../components/FluidText'
 import { InputField } from './InputField'
@@ -61,36 +62,18 @@ export function Publications() {
       </form>
       <CardGrid>
         {/* content ?? loading */}
-        <PostCard
-          title="JavaScript data types and data structures"
-          body="Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in "
-          date={new Date()}
-        />
-        <PostCard
-          title="JavaScript data types and data structures"
-          body="Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in "
-          date={new Date()}
-        />
-        <PostCard
-          title="JavaScript data types and data structures"
-          body="Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in "
-          date={new Date()}
-        />
-        <PostCard
-          title="JavaScript data types and data structures"
-          body="Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in "
-          date={new Date()}
-        />
-        <PostCard
-          title="JavaScript data types and data structures"
-          body="Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in "
-          date={new Date()}
-        />
-        <PostCard
-          title="JavaScript data types and data structures"
-          body="Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in "
-          date={new Date()}
-        />
+        {Array(6)
+          .fill(1)
+          .map((_, index) => (
+            <Link key={index} to={`posts/${index + 1}`}>
+              <PostCard
+                title="JavaScript data types and data structures"
+                body="Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in "
+                date={new Date()}
+                number={index + 1}
+              />
+            </Link>
+          ))}
       </CardGrid>
     </SPublications>
   )

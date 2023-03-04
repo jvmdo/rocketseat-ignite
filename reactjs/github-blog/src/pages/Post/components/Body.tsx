@@ -20,13 +20,13 @@ const SBody = styled.section`
   }
 
   h2 {
-    margin-bottom: 0.75rem;
+    margin-block: 0.75rem;
     padding-bottom: 0.35rem;
     font-size: 1.3em;
   }
 
   h3 {
-    margin-bottom: 0.5rem;
+    margin-block: 0.5rem;
     padding-bottom: 0.15rem;
     font-size: 1.1em;
   }
@@ -49,7 +49,7 @@ export function Body({ markdown }: BodyProps) {
   return (
     <SBody style={{ padding: '2.5rem 2rem' }}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
         children={markdown}
         components={{
           code({ node, inline, className, children, style, ...props }) {

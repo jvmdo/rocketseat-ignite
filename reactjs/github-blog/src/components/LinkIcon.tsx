@@ -1,4 +1,4 @@
-import { HTMLProps, ReactNode } from 'react'
+import { ComponentPropsWithoutRef, ReactNode } from 'react'
 import styled from 'styled-components'
 
 const SLinkIcon = styled.a`
@@ -7,6 +7,7 @@ const SLinkIcon = styled.a`
   font-weight: ${(p) => p.theme['fw-bold']};
   text-transform: uppercase;
   word-break: break-word;
+  cursor: pointer;
 
   display: inline-flex;
   align-items: center;
@@ -36,10 +37,15 @@ const SLinkIcon = styled.a`
   }
 `
 
-interface LinkIconProps extends HTMLProps<HTMLAnchorElement> {
+interface LinkIconProps extends ComponentPropsWithoutRef<'a'> {
   children: ReactNode
+  asText?: boolean
 }
 
-export function LinkIcon({ children }: LinkIconProps) {
-  return <SLinkIcon>{children}</SLinkIcon>
+export function LinkIcon({ children, asText, ...rest }: LinkIconProps) {
+  return (
+    <SLinkIcon {...rest} as={asText ? 'span' : undefined}>
+      {children}
+    </SLinkIcon>
+  )
 }
