@@ -52,10 +52,10 @@ const Footer = styled.div`
 
 interface InfoProps {
   title: string
-  user: string
+  username: string
   createdAt: string
   comments: number
-  url: string
+  issueUrl: string
 }
 
 export function Info(props: InfoProps) {
@@ -65,11 +65,12 @@ export function Info(props: InfoProps) {
   return (
     <SInfo>
       <Navigation>
+        {/* TODO: Change to <Link> if the scroll behavior remains the same */}
         <LinkIcon asText onClick={() => navigator(-1)}>
           <CaretLeft size={14} weight="bold" />
           Back
         </LinkIcon>
-        <LinkIcon href={props.url} target="_blank">
+        <LinkIcon href={props.issueUrl} target="_blank">
           See on GitHub
           <ArrowSquareOut size={14} weight="bold" />
         </LinkIcon>
@@ -87,7 +88,7 @@ export function Info(props: InfoProps) {
         <span>
           <GithubLogo size={16} weight="fill" />
           <FluidText min={theme['fs-sm']} max={theme.fs}>
-            {props.user}
+            {props.username}
           </FluidText>
         </span>
         <span>

@@ -4,10 +4,11 @@ import {
   GithubLogo,
   UsersThree,
 } from 'phosphor-react'
+import { useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import pic from '../../../assets/avatar.png'
 import { FluidText } from '../../../components/FluidText'
 import { LinkIcon } from '../../../components/LinkIcon'
+import { getGitHubUser, ProfileUserData } from '../../../services/github'
 import { breakpoint } from '../../../styles/global'
 
 const SProfile = styled.section`
@@ -47,7 +48,7 @@ const SProfile = styled.section`
 const Picture = styled.img`
   grid-area: picture;
   border-radius: ${(p) => p.theme.br};
-  /* width: 9.25rem; */
+  width: 9.25rem;
 `
 
 const About = styled.div`
@@ -95,12 +96,21 @@ const Footer = styled.div`
 
 export function Profile() {
   const theme = useTheme()
+  const [profileData, setProfileData] = useState<ProfileUserData>(null)
 
-  // TODO: fetch user profile data
+  useEffect(() => {
+    async function getProfileData() {
+      const data = await getGitHubUser()
+      if (data) {
+        setProfileData(data)
+      }
+    }
+    getProfileData()
+  }, [])
 
-  return (
+  return profileData ? (
     <SProfile>
-      <Picture src={pic} alt="" />
+      <Picture src={profileData.avatarUrl} alt="" />
       <About>
         <div className="name">
           <FluidText
@@ -110,9 +120,9 @@ export function Profile() {
             bold
             tag="h1"
           >
-            Cameron Williamson
+            {profileData.name}
           </FluidText>
-          <LinkIcon href="#">
+          <LinkIcon href={profileData.profileUrl}>
             GitHub <ArrowSquareOut size={14} weight="bold" />
           </LinkIcon>
         </div>
@@ -123,9 +133,8 @@ export function Profile() {
             color={theme.text}
             tag="p"
           >
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro in
-            iure deleniti velit quo laborum necessitatibus tenetur? Magnam, fuga
-            commodi.
+            {profileData.bio ??
+              'Still working on my bio, but my code speaks for itself! 🚀'}
           </FluidText>
         </div>
       </About>
@@ -133,22 +142,35 @@ export function Profile() {
         <span>
           <GithubLogo size={16} weight="fill" />
           <FluidText min={theme['fs-sm']} max={theme.fs}>
-            cameronwwl
+            {profileData.username}
           </FluidText>
         </span>
-        <span>
-          <Buildings size={16} weight="fill" />
-          <FluidText min={theme['fs-sm']} max={theme.fs}>
-            Rocketseat
-          </FluidText>
-        </span>
+        {profileData.company && (
+          <span>
+            <Buildings size={16} weight="fill" />
+            <FluidText min={theme['fs-sm']} max={theme.fs}>
+              {profileData.company}
+            </FluidText>
+          </span>
+        )}
         <span>
           <UsersThree size={16} weight="fill" />
           <FluidText min={theme['fs-sm']} max={theme.fs}>
-            32 followers
+            {profileData.followers + ' followers'}
           </FluidText>
         </span>
       </Footer>
+    </SProfile>
+  ) : (
+    <SProfile>
+      <FluidText
+        min={theme['fs-xl']}
+        max={theme['fs-xxl']}
+        color={theme.blue}
+        bold
+      >
+        Loading profile data...
+      </FluidText>
     </SProfile>
   )
 }

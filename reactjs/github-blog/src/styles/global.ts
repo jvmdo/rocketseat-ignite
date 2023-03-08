@@ -33,9 +33,13 @@ h1 {
 
 a {
   color: inherit;
+  cursor: pointer;
   text-decoration: none;
   text-decoration-skip-ink: none;
-  cursor: pointer;
+}
+
+a:focus-visible {
+  outline: none;
 }
 
 button {

@@ -1,16 +1,17 @@
 import styled, { useTheme } from 'styled-components'
 import { FluidText } from '../../../components/FluidText'
-import { formatDistance, subDays } from 'date-fns'
-import { KeyboardEvent } from 'react'
+import { formatDistanceToNow } from 'date-fns'
 
 const SPostCard = styled.div`
   background-color: ${(p) => p.theme.post};
   border-radius: ${(p) => p.theme.br};
+  outline: 2px solid transparent;
   padding: 2rem;
 
+  // The card is wrapped in a <Link> element
+  a:focus-visible > &,
   &:is(:hover, :focus-visible) {
-    outline: 2px solid ${(p) => p.theme.label};
-    cursor: pointer;
+    outline-color: ${(p) => p.theme.label};
   }
 
   .title {
@@ -29,27 +30,16 @@ const SPostCard = styled.div`
 
 interface PostCardProps {
   title: string
+  createdAt: string
   body: string
-  date: Date
-  number?: number
+  number: number
 }
 
-export function PostCard({ title, body, date, number = 1 }: PostCardProps) {
+export function PostCard({ title, body, createdAt, number }: PostCardProps) {
   const theme = useTheme()
 
-  // TODO: redirect to full post page onClick. Need issue number
-  function navigateToPost() {
-    console.log('Navigating...' + number)
-  }
-
-  function handleKeyPress(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === 'Enter') {
-      navigateToPost()
-    }
-  }
-
   return (
-    <SPostCard onClick={navigateToPost} onKeyUp={handleKeyPress} tabIndex={0}>
+    <SPostCard>
       <div className="title">
         <FluidText
           min={theme['fs-lg']}
@@ -61,7 +51,7 @@ export function PostCard({ title, body, date, number = 1 }: PostCardProps) {
           {title}
         </FluidText>
         <FluidText min={theme['fs-xs']} max={theme['fs-sm']} color={theme.span}>
-          {formatDistance(subDays(date, 1), new Date(), {
+          {formatDistanceToNow(new Date(createdAt), {
             addSuffix: true,
           })}
         </FluidText>
@@ -73,9 +63,24 @@ export function PostCard({ title, body, date, number = 1 }: PostCardProps) {
           color={theme.text}
           tag="p"
         >
-          {body.slice(0, 181) + '...'}
+          {bodyFormatter(body)}
         </FluidText>
       </div>
     </SPostCard>
+  )
+}
+
+function bodyFormatter(text: string) {
+  return (
+    text
+      .match(/\r\n\r\n(.*)/gi)
+      ?.map((match) =>
+        match
+          .replace(/\s{2,}/g, '')
+          .replace(/[#*>`]*/g, '')
+          .replace(/~~~(.*)(:~~~)?/is, ''),
+      )
+      .join('\n')
+      .slice(0, 181) + '...' ?? 'Formatting error'
   )
 }
