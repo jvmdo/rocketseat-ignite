@@ -32,6 +32,8 @@ const SLinkIcon = styled.a`
     transition: transform 0.2s ease;
   }
 
+  // This component can be nested in a router <Link>
+  a:focus-visible > &::before,
   &:is(:hover, :focus-visible)::before {
     transform: scaleX(1);
   }
