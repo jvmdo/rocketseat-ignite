@@ -48,9 +48,9 @@ O ponto principal desse desafio é utilizar APIs do GitHub para recuperar inform
 
 ### Links
 
-- [Remote repository](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/github-blog)
+- [Live preview](https://github-blog-jvmdo.netlify.app/)
 
-- [Live preview] - TODO
+- [Remote repository](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/github-blog)
 
 ## My process
 
@@ -147,6 +147,13 @@ Some of the technologies, libraries, tools, techniques, patterns, and concepts a
   3. The `await` keyword makes the function execution stop at that line until the computation of `getIssueCardData()` is resolved. Therefore, JavaScript engine puts `getCardData()` in the callback queue.
   4. The rest of the synchronous code is ran, that means a new render occurs and `isLoading` now is `true`.
   5. As soon as the async computation is terminated, the code execution go back to `getCardData()` and next lines are executed. This way, considering the if statement is valid, the `cardData` is set as well as the `isLoading`. A new re-render is executed which is makes `isLoading` = `false`.
+
+| Question 02 |
+|    :---:    |
+| Why did react-markdown not work properly? It styled bold text but not italic (I tried both * and _). I had to manually style the headings and links :/ |
+---
+
+**No answer yet**.
   
 ### Continued development
 
@@ -162,7 +169,7 @@ My approach will be:
   2. Use MUI's Skeleton component.
   3. Use MUI's Snackbar + Toast or Alert components.
 
-However, I am not sure how the better way to handle request errors yet.
+However, I am not sure what's the better way to handle request errors yet.
 
 ### Useful resources
 
