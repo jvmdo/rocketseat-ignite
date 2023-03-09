@@ -45,9 +45,9 @@ O desafio deste módulo é construir uma aplicação web capaz de realizar requi
 
 ### Links
 
-- [Repository](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/dt-money)
+- [Live Preview](https://dt-money-jvmdo.netlify.app/)
 
-- [Live preview] - Available as soon as I host the app's backend in some cloud service.
+- [Repository](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/dt-money)
 
 ## My process
 
@@ -85,6 +85,10 @@ O desafio deste módulo é construir uma aplicação web capaz de realizar requi
 - `memo()` is used to prevent React from running a new rendering flow for a component. However, it comes at a processing cost, so it must be used carefully. In some cases, when the component is not too large or doesn't hold complex data structures, the cost of rendering is less expensive than the calculation cost of `memo`.
 
 - The `useMeme(() => {...}, [])` hook serves the same purpose as `memo`, but for variables and data structures. The variables are recreated only when the hook’s dependency array is changed.
+
+### Questions
+
+- I have two base URL: one for local development, another for production environment. Can I choose the base url based on current environment?
 
 ### Useful resources
 
