@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .ts,.tsx --fix",
-    "server": "json-server db-static.json --watch --port 3333 --delay 500"
+    "server": "json-server db-static.json --watch --port 3333 --delay 500",
+    "checkTs": "npx tsc --noEmit"
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",

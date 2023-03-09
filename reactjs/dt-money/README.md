@@ -86,9 +86,13 @@ O desafio deste módulo é construir uma aplicação web capaz de realizar requi
 
 - The `useMeme(() => {...}, [])` hook serves the same purpose as `memo`, but for variables and data structures. The variables are recreated only when the hook’s dependency array is changed.
 
+- Remember to run `npx tsc --noEmit` before commit anything. VS Code simply does not know if there are TypeScript errors out there!?
+
 ### Questions
 
 - I have two base URL: one for local development, another for production environment. Can I choose the base url based on current environment?
+
+- My hosted json-server on Vercel is not working properly on post requests. Although the data is being saved in the database, the server response is 500. Anyways, the live preview is ON-THE-LINE!
 
 ### Useful resources
 

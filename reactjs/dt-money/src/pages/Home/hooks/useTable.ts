@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Transaction } from '../components/Transactions'
+import { Transaction } from '../../../contexts/TransactionsContext'
 
 function generateRange(length: number, rowsPerPage: number) {
   return Array.from({ length: Math.ceil(length / rowsPerPage) }, (_, i) => ++i)

@@ -6,8 +6,8 @@ import { breakpoint } from '../../../styles/global'
 import { currencyFormatter } from '../../../utils/formatter'
 import useTable from '../hooks/useTable'
 import { TablePagination } from './TablePagination'
-import { Transaction } from './Transactions'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
+import { Transaction } from '../../../contexts/TransactionsContext'
 
 interface TransactionsTableProps {
   data: Transaction[]

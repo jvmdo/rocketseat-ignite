@@ -720,6 +720,20 @@
       "tag": "Salary",
       "date": 1677291324378,
       "id": 103
+    },
+    {
+      "title": "Perdeu tudo!",
+      "amount": -9999999,
+      "tag": "Disaster",
+      "date": 1678331217499,
+      "id": 104
+    },
+    {
+      "title": "Lunch",
+      "amount": -25.5,
+      "tag": "Food",
+      "date": 1678332404082,
+      "id": 105
     }
   ]
 }

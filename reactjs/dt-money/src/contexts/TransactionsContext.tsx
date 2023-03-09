@@ -61,6 +61,8 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       })
       setTransactions((state) => [response.data, ...state])
     } catch (err) {
+      // Fallback because json-server-vercel returns 500 on post request :(
+      fetchTransactions()
       console.log(err)
     }
   }
