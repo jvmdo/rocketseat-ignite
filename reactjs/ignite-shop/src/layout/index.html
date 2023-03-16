@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/javascript.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <title>The Layout</title>
+    <style>
+      /* Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* General */
+      body {
+        min-height: 100vh;
+        min-width: 20rem;
+      }
+
+      #container {
+        --fluid-padding: clamp(0.75rem, -0.681rem + 6.11vw, 2.25rem);
+
+        max-width: calc(43.5rem + 2 * var(--fluid-padding));
+        margin-inline: auto;
+        padding-inline: var(--fluid-padding);
+      }
+
+      .content {
+        background-color: #c9b1bd;
+      }
+
+      /* Header and Footer */
+      header {
+        background-color: #d5dfe5;
+        padding-top: clamp(0.75rem, 4.444vh, 5rem);
+      }
+
+      footer {
+        background-color: #7f9172;
+        padding-bottom: clamp(0.75rem, 4.444vh, 5rem);
+      }
+
+      :is(header, footer) .content {
+        height: clamp(2rem, 0.807rem + 5.09vh, 3.25rem);
+      }
+
+      /* Main */
+      main {
+        background-color: #b49594;
+        overflow-y: auto;
+        /* Hide the scrollbar in Firefox*/
+        scrollbar-width: none;
+      }
+
+      main::-webkit-scrollbar {
+        /* Hide the scrollbar in Chrome, Edge and Safari */
+        display: none;
+      }
+
+      main .content {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      main .block {
+        background-color: #567568;
+        height: 30vh;
+      }
+
+      @media (orientation: landscape) {
+        main {
+          overflow-x: auto;
+        }
+
+        main > #container {
+          height: 100%;
+          max-width: unset;
+          width: max-content;
+        }
+
+        main .content {
+          height: inherit;
+          grid-auto-flow: column;
+        }
+
+        main .block {
+          height: 100%;
+          width: 30vw;
+        }
+      }
+
+      /* The Layout */
+      #app {
+        height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div id="container">
+          <section class="content"></section>
+        </div>
+      </header>
+      <main>
+        <div id="container">
+          <section class="content">
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+          </section>
+        </div>
+      </main>
+      <footer>
+        <div id="container">
+          <section class="content"></section>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
