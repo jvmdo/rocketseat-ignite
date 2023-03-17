@@ -28,6 +28,21 @@
         padding-inline: var(--fluid-padding);
       }
 
+      @media (min-width: 48em) {
+        #container {
+          --fluid-padding: clamp(2.25rem, -4.893rem + 14.88vw, 8.5rem);
+          max-width: calc(73rem + 2 * var(--fluid-padding));
+        }
+      }
+
+      @media (min-width: 96em) {
+        #container {
+          --fluid-padding: calc(5rem + 5vw);
+          max-width: unset;
+          min-width: calc(90rem + 2 * var(--fluid-padding));
+        }
+      }
+
       .content {
         background-color: #c9b1bd;
       }
@@ -88,7 +103,8 @@
       #app {
         height: 100vh;
         display: grid;
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: auto minmax(auto, 80rem) auto;
+        align-content: center;
         gap: 1rem;
       }
 
