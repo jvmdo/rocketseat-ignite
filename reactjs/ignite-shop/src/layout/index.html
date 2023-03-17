@@ -50,46 +50,38 @@
       /* Main */
       main {
         background-color: #b49594;
-        overflow-y: auto;
-        /* Hide the scrollbar in Firefox*/
-        scrollbar-width: none;
+        overflow: hidden;
       }
 
-      main::-webkit-scrollbar {
-        /* Hide the scrollbar in Chrome, Edge and Safari */
-        display: none;
+      main > #container {
+        height: 100%;
       }
 
       main .content {
+        height: inherit;
         display: grid;
         gap: 0.5rem;
+        overflow: auto;
+        scrollbar-width: none; /* Hide the scrollbar in Firefox*/
+        scroll-snap-type: both mandatory;
+      }
+
+      main .content::-webkit-scrollbar {
+        display: none; /* Hide the scrollbar in Chrome, Edge and Safari */
       }
 
       main .block {
         background-color: #567568;
-        height: 30vh;
+        height: 50vh;
+        scroll-snap-align: center;
       }
 
-      @media (orientation: landscape) {
-        main {
-          overflow-x: auto;
-        }
+      .block:first-of-type {
+        margin-top: 25vh;
+      }
 
-        main > #container {
-          height: 100%;
-          max-width: unset;
-          width: max-content;
-        }
-
-        main .content {
-          height: inherit;
-          grid-auto-flow: column;
-        }
-
-        main .block {
-          height: 100%;
-          width: 30vw;
-        }
+      .block:last-of-type {
+        margin-bottom: 25vh;
       }
 
       /* The Layout */
@@ -98,6 +90,28 @@
         display: grid;
         grid-template-rows: auto 1fr auto;
         gap: 1rem;
+      }
+
+      /* Landscape */
+      @media (orientation: landscape) {
+        main .content {
+          grid-auto-flow: column;
+        }
+
+        main .block {
+          height: 100%;
+          width: 50vw;
+        }
+
+        .block:first-of-type {
+          margin-top: unset;
+          margin-left: 25vw;
+        }
+
+        .block:last-of-type {
+          margin-bottom: unset;
+          margin-right: 25vh;
+        }
       }
     </style>
   </head>
