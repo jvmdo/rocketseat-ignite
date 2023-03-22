@@ -28,6 +28,7 @@ export const globalStyles = globalCss({
     color: '$gray100',
     fontFamily: 'Roboto, sans-serif',
     fontWeight: 400,
+    lineHeight: 1.6,
   },
 
   body: {

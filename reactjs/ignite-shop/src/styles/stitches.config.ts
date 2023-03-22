@@ -12,6 +12,8 @@ export const { styled, css, theme, globalCss, getCssText } = createStitches({
 
       green500: '#00875f',
       green300: '#00b37e',
+
+      imageGradient: 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
     },
 
     fontSizes: {
@@ -20,6 +22,10 @@ export const { styled, css, theme, globalCss, getCssText } = createStitches({
       lg: '1.25rem',
       xl: '1.5rem',
       xxl: '2rem',
+    },
+
+    radii: {
+      rg: '8px',
     },
   },
 })
