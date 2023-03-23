@@ -26,7 +26,17 @@ export const { styled, css, theme, globalCss, getCssText, config } =
       },
 
       radii: {
+        sm: '6px',
         rg: '8px',
+      },
+
+      sizes: {
+        vwHeaderFooterHeight: 'clamp(2rem, 1.405rem + 2.98vw, 3.25rem)',
+        vhHeaderFooterHeight: 'clamp(2rem, 1.405rem + 2.98vh, 3.25rem)',
+      },
+
+      space: {
+        pageBlockPadding: 'clamp(0.75rem, 4.444vh, 5rem)',
       },
     },
 
@@ -37,4 +47,6 @@ export const { styled, css, theme, globalCss, getCssText, config } =
       maxMd: '(max-width: 48em)',
       maxLg: '(max-width: 62em)',
     },
+
+    // TODO: create util to black gradient params (deg, endColor)
   })

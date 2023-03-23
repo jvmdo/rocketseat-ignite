@@ -9,6 +9,8 @@ interface DefaultLayoutProps {
 
 const S_Layout = styled('div', {
   height: '100vh',
+  paddingBlock: '$pageBlockPadding',
+
   display: 'grid',
   gridTemplateRows: 'auto minmax(auto, 80rem) auto',
   alignContent: 'center',
