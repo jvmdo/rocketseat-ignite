@@ -1,21 +1,20 @@
 import { ContentContainer } from '@/components/ContentContainer'
+import { ProductHero } from '@/components/ProductHero'
 import { styled } from '@/styles/stitches.config'
-import Image from 'next/image'
 import Link from 'next/link'
 import Shirt from 'public/beyond-the-limits.png'
 
-interface SuccessProps {
-  imgUrl: string
-  name: string
-  item: string
-}
-
+/* 
+  Styles
+*/
 const S_Success = styled('main', {
   [`& ${ContentContainer}`]: {
     display: 'grid',
     placeContent: 'center',
     justifyItems: 'center',
     gap: '4rem',
+
+    textAlign: 'center',
 
     '& h1': {
       lineHeight: 1.4,
@@ -30,20 +29,10 @@ const S_Success = styled('main', {
 
       fontSize: '$lg',
       maxWidth: '50ch',
-      textAlign: 'center',
     },
+
+    // TODO: Fix scroll issue in landscape
   },
-})
-
-const S_ImageBox = styled('div', {
-  borderRadius: '$rg',
-  backgroundImage: '$imageGradient',
-
-  display: 'grid',
-  placeContent: 'center',
-
-  height: '15rem',
-  width: '13.125rem',
 })
 
 const S_Link = styled(Link, {
@@ -57,6 +46,15 @@ const S_Link = styled(Link, {
   },
 })
 
+/* 
+  Component
+*/
+interface SuccessProps {
+  imgUrl: string
+  name: string
+  item: string
+}
+
 export default function Success({
   imgUrl = Shirt.src,
   name = 'Diego Fernandes',
@@ -67,9 +65,13 @@ export default function Success({
       <ContentContainer>
         <h1>Successful Purchase!</h1>
         <article>
-          <S_ImageBox>
-            <Image src={imgUrl} width={190} height={190} alt="" />
-          </S_ImageBox>
+          <ProductHero
+            src={imgUrl}
+            imgMaxHeight={500}
+            imgMaxWidth={500}
+            width="60%"
+            aspectRatio="36/41"
+          />
           <p>
             Yay, <strong>{name}</strong>! Your <strong>{item}</strong> is
             already on its way to your home.
