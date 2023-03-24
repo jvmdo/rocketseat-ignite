@@ -34,6 +34,8 @@ interface ProductHeroProps {
   imgMaxHeight?: number
 }
 
+ProductHero.toString = () => '.product-hero'
+
 export function ProductHero({
   src,
   alt = '',
@@ -42,7 +44,7 @@ export function ProductHero({
   ...props
 }: ProductHeroProps) {
   return (
-    <S_ProductHero css={{ ...props }}>
+    <S_ProductHero className="product-hero">
       <S_ProductImage
         src={src}
         width={imgMaxWidth}

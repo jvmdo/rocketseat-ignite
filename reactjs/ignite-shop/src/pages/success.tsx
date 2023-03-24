@@ -8,6 +8,10 @@ import Shirt from 'public/beyond-the-limits.png'
   Styles
 */
 const S_Success = styled('main', {
+  overflow: 'scroll',
+  display: 'grid',
+  placeItems: 'center',
+
   [`& ${ContentContainer}`]: {
     display: 'grid',
     placeContent: 'center',
@@ -31,7 +35,9 @@ const S_Success = styled('main', {
       maxWidth: '50ch',
     },
 
-    // TODO: Fix scroll issue in landscape
+    [`& ${ProductHero}`]: {
+      height: '36vh',
+    },
   },
 })
 
@@ -69,7 +75,6 @@ export default function Success({
             src={imgUrl}
             imgMaxHeight={500}
             imgMaxWidth={500}
-            width="60%"
             aspectRatio="36/41"
           />
           <p>
