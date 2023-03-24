@@ -10,8 +10,13 @@ const S_ProductHero = styled('div', {
   placeItems: 'center',
 
   [`@media (orientation: landscape) or ${config.media.lg}`]: {
-    width: 'max-content',
-    // maxHeight: '100vh',
+    width: 'auto',
+    height: `calc(
+      $$mainHeight - 2 * (
+        clamp(0.25rem, -0.583rem + 4.17vh, 2rem) - 
+        $space$defaultLayoutGridGap
+      )
+    )`,
   },
 })
 

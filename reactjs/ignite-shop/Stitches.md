@@ -97,3 +97,29 @@ const button = styled('button', {
 - `createTheme(themeObject)`: function that creates a theme to override the default one.
 
 - `keyframes(styleObject)`: function that generates global `@keyframe` at-rule
+
+## Beyond the Docs
+
+### Create a fluid font size property
+
+Combining `utils` with a `clamp` JS function as I did in the [Stitches config file](./src/styles/stitches.config.ts).
+
+### Create a responsive font size property
+
+Another useful `utils` approach for font sizes.
+
+```ts
+// [value] is a string of comma-separated font-size values
+responsiveFontSize: (value: string) => ({
+    fontSize: value.split(',')[0], // 16px
+    '@md': {
+    fontSize: value.split(',')[1], // 18px
+    },
+    '@lg': {
+    fontSize: value.split(',')[2], // 20px
+    },
+    '@3xl': {
+    fontSize: value.split(',')[3], // 24px
+    },
+}),
+```

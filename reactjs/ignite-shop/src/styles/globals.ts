@@ -11,7 +11,6 @@ export const globalStyles = globalCss({
 
   a: {
     color: 'inherit',
-    outline: 'none',
     textDecoration: 'none',
   },
 
@@ -19,7 +18,15 @@ export const globalStyles = globalCss({
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
-    outline: 'none',
+  },
+
+  ':is(a, button):is(:focus-visible)': {
+    outline: '2px solid $white',
+  },
+
+  img: {
+    maxWidth: '100%',
+    verticalAlign: 'top',
   },
 
   // General
