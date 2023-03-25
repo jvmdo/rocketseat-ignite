@@ -29,6 +29,7 @@ interface ProductHeroProps {
   src: string
   alt?: string
   width?: string
+  height?: string
   aspectRatio?: string
   imgMaxWidth?: number
   imgMaxHeight?: number
@@ -41,10 +42,17 @@ export function ProductHero({
   alt = '',
   imgMaxWidth = 1203,
   imgMaxHeight = 1203,
+  height,
   ...props
 }: ProductHeroProps) {
   return (
-    <S_ProductHero className="product-hero">
+    <S_ProductHero
+      className="product-hero"
+      css={{
+        ...props,
+        '@media (orientation: portrait)': { height },
+      }}
+    >
       <S_ProductImage
         src={src}
         width={imgMaxWidth}

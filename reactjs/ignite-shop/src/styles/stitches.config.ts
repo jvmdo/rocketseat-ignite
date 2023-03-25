@@ -1,7 +1,7 @@
 import { createStitches } from '@stitches/react'
 import type * as Stitches from '@stitches/react'
 
-type FluidFontSizeParams = {
+type FluidParams = {
   min: number | Stitches.ScaleValue<'fontSizes'>
   max: number | Stitches.ScaleValue<'fontSizes'>
   beginAt?: number | Stitches.ScaleValue<'media'>
@@ -9,6 +9,10 @@ type FluidFontSizeParams = {
   unit?: string
   viewportUnit?: string // 'vw' | 'vh' | 'cqi' ...
 }
+
+type FluidSpaceParams = {
+  prop: Stitches.ScaleValue<'space'>
+} & FluidParams
 
 export const { styled, css, theme, globalCss, getCssText, config } =
   createStitches({
@@ -41,6 +45,7 @@ export const { styled, css, theme, globalCss, getCssText, config } =
       },
 
       sizes: {
+        // TODO: vmin / vmax instead of vw ad vh
         vwHeaderFooterHeight: 'clamp(2rem, 1.405rem + 2.98vw, 3.25rem)',
         vhHeaderFooterHeight: 'clamp(2rem, 1.405rem + 2.98vh, 3.25rem)',
         vwMainHeight:
@@ -66,22 +71,21 @@ export const { styled, css, theme, globalCss, getCssText, config } =
     },
 
     utils: {
-      fluidFontSize: ({ ...params }: FluidFontSizeParams) => ({
+      fluidFontSize: ({ ...params }: FluidParams) => ({
         fontSize: clamp({ ...params }),
+      }),
+
+      fluidGap: ({ ...params }: FluidParams) => ({
+        gap: clamp({ ...params }),
+      }),
+
+      fluidSpace: ({ prop, ...params }: FluidSpaceParams) => ({
+        [String(prop)]: clamp({ ...params }),
       }),
     },
 
     // TODO: create util to black gradient params (deg, endColor)
-  })
-
-type ClampParams = {
-  min: number | Stitches.ScaleValue<'fontSizes'>
-  max: number | Stitches.ScaleValue<'fontSizes'>
-  beginAt?: number | Stitches.ScaleValue<'media'>
-  endAt?: number | Stitches.ScaleValue<'media'>
-  unit?: string
-  viewportUnit?: string
-}
+  } as const)
 
 function clamp({
   min,
@@ -90,7 +94,7 @@ function clamp({
   endAt,
   unit = 'rem',
   viewportUnit = 'vw',
-}: ClampParams) {
+}: FluidParams) {
   min = parseFloat(min.toString())
   max = parseFloat(max.toString())
   beginAt = parseMedia(config.media.xxs)

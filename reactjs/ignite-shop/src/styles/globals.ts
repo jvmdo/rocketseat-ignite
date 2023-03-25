@@ -18,6 +18,7 @@ export const globalStyles = globalCss({
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
+    fontFamily: 'inherit',
   },
 
   ':is(a, button):is(:focus-visible)': {
