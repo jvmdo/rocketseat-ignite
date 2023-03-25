@@ -2,10 +2,6 @@ import { ContentContainer } from '@/components/ContentContainer'
 import { ProductCard } from '@/components/ProductCard'
 import { styled, config } from '@/styles/stitches.config'
 import Link from 'next/link'
-// import { CaretLeft, CaretRight } from 'phosphor-react'
-import CaretLeft from 'public/arrow-left.svg'
-import CaretRight from 'public/arrow-right.svg'
-import { useMediaQuery } from 'react-responsive'
 import Shirt1 from 'public/beyond-the-limits.png'
 import Shirt2 from 'public/Variant5.png'
 import Shirt3 from 'public/Variant8.png'
@@ -63,6 +59,8 @@ const S_Home = styled('main', {
 
   [`& ${ContentContainer}`]: {
     height: '100cqh',
+    paddingBlock: 'calc(2 * $$fluidPadding)',
+
     display: 'flex',
     flexDirection: 'column',
     gap: 'clamp(1rem, 0.286rem + 3.57vmin, 2rem)',
@@ -79,8 +77,6 @@ const S_Home = styled('main', {
       display: 'none' /* Hide the scrollbar in Chrome, Edge and Safari */,
     },
 
-    paddingBlock: 'calc(2 * $$fluidPadding)',
-
     [`@media (orientation: landscape) or ${config.media.lg}`]: {
       alignItems: 'center',
       flexDirection: 'row',
@@ -96,26 +92,10 @@ const S_Home = styled('main', {
   Component
 */
 export default function Home() {
-  const displayArrow = useMediaQuery({
-    query: `${config.media.lg}`,
-  })
-  // const isTablet = useMediaQuery({
-  //   query: `(orientation: portrait) and ${config.media.md}`,
-  // })
-  // const isMobile = useMediaQuery({
-  //   query: `(orientation: landscape) and ${config.media.maxLg}`,
-  // })
-
   return (
     <S_Home>
       <ContentContainer>
-        <GradientSpaceLeft
-          as={displayArrow ? 'button' : undefined}
-          onClick={displayArrow ? () => console.count('clicked') : undefined}
-        >
-          {/* {displayArrow && <CaretLeft size={isMobile || isTablet ? 32 : 48} />} */}
-          {displayArrow && <img src={CaretLeft.src} />}
-        </GradientSpaceLeft>
+        <GradientSpaceLeft />
 
         <Link href="products/1">
           <ProductCard
@@ -153,13 +133,7 @@ export default function Home() {
           />
         </Link>
 
-        <GradientSpaceRight
-          as={displayArrow ? 'button' : undefined}
-          onClick={displayArrow ? () => console.count('clicked') : undefined}
-        >
-          {/* {displayArrow && <CaretRight size={isMobile || isTablet ? 32 : 48} />} */}
-          {displayArrow && <img src={CaretRight.src} />}
-        </GradientSpaceRight>
+        <GradientSpaceRight />
       </ContentContainer>
     </S_Home>
   )
