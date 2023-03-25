@@ -5,10 +5,7 @@ import ShopLogo from 'public/logo.svg'
 
 const S_Logo = styled(Image, {
   width: 'auto',
-  height: '$vwHeaderFooterHeight',
-  '@media (orientation: landscape)': {
-    height: '$vhHeaderFooterHeight',
-  },
+  height: '$heightHeaderFooter',
 })
 
 export function Header() {

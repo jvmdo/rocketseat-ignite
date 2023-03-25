@@ -15,12 +15,9 @@ const S_CardTooltip = styled('div', {
   justifyContent: 'space-between',
   gap: '0.5rem',
 
-  // TODO: check if min(clamp, auto) handles big names
-  // TODO: try viewport unit
-  height: 'clamp(4rem, 2.571rem + 7.14vw, 6rem)',
+  minHeight: 'clamp(4rem, 2.571rem + 7.14vw, 6rem)',
   margin: '0.25rem',
-  // TODO: fluid this
-  padding: '1rem 2rem',
+  padding: '1rem clamp(1rem, 0.524rem + 2.38vw, 2rem)',
 
   position: 'absolute',
   bottom: 0,
@@ -29,7 +26,7 @@ const S_CardTooltip = styled('div', {
   transition: 'transform 0.1s cubic-bezier(0.39, 0.575, 0.565, 1)',
 
   /* No translate behavior for touchscreens devices */
-  '@media (hover: none) and (pointer: coarse)': {
+  '@media (hover: none) or (pointer: coarse)': {
     transform: 'translateY(0%)',
   },
 })

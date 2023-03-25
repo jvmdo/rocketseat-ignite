@@ -4,9 +4,9 @@ import { styled } from '@/styles/stitches.config'
 const S_Footer = styled('footer', {
   // In this case, the 'content' is blank
   [`& ${ContentContainer}`]: {
-    height: '$vwHeaderFooterHeight',
-    '@media (orientation: landscape)': {
-      height: '$vhHeaderFooterHeight',
+    height: '$heightHeaderFooter',
+    '@media (orientation: landscape) and (max-height: 27em)': {
+      height: 0,
     },
   },
 })

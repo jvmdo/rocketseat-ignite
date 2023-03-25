@@ -8,7 +8,7 @@ import Shirt from 'public/beyond-the-limits.png'
   Styles
 */
 const S_Success = styled('main', {
-  overflow: 'scroll',
+  overflow: 'auto',
   display: 'grid',
   placeItems: 'center',
 
