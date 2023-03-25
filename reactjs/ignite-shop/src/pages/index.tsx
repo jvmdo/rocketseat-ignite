@@ -29,42 +29,43 @@ const GradientSpace = styled('div', {
   [`@media (orientation: landscape) or ${config.media.lg}`]: {
     insetInline: 'unset',
     width: '$$fluidPadding',
-    // [insetBlock] set here is overridden even when media matches 😠
-    // That's why I had to set it in each child
+    // ? [insetBlock] set here is overridden even when media matches 😠
+    // ? That's why I had to set it in each child
   },
 })
 
 const GradientSpaceLeft = styled(GradientSpace, {
-  background: 'linear-gradient(0deg, #12121400 0%, #121214 100%)',
+  gradientDarkSide: { deg: 0, endColor: '#121214' },
   insetBlock: '0 calc(100% - 2 * $$fluidPadding)',
 
   [`@media (orientation: landscape) or ${config.media.lg}`]: {
-    background: 'linear-gradient(-90deg, #12121400 0%, #121214bf 100%)',
+    gradientDarkSide: { deg: -90, endColor: '#121214bf' },
     insetBlock: 0,
     insetInlineStart: 0,
   },
 })
 
 const GradientSpaceRight = styled(GradientSpace, {
-  background: 'linear-gradient(180deg, #12121400 0%, #121214 100%)',
+  gradientDarkSide: { deg: 180, endColor: '#121214' },
   insetBlock: 'calc(100% - 2 * $$fluidPadding) 0',
 
   [`@media (orientation: landscape) or ${config.media.lg}`]: {
-    background: 'linear-gradient(90deg, #12121400 0%, #121214bf 100%)',
+    gradientDarkSide: { deg: 90, endColor: '#121214bf' },
     insetBlock: 0,
     insetInlineEnd: 0,
   },
 })
 
 const S_Home = styled('main', {
+  container: 'main / size',
   overflow: 'hidden',
   position: 'relative',
 
-  // TODO: try container units
   [`& ${ContentContainer}`]: {
+    height: '100cqh',
     display: 'flex',
     flexDirection: 'column',
-    gap: 'clamp(1rem, 0.286rem + 3.57vw, 2rem)',
+    gap: 'clamp(1rem, 0.286rem + 3.57vmin, 2rem)',
 
     overflow: 'auto',
     scrollSnapType: 'both mandatory',

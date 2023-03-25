@@ -45,19 +45,14 @@ export const { styled, css, theme, globalCss, getCssText, config } =
       },
 
       sizes: {
-        // TODO: vmin / vmax instead of vw ad vh
-        vwHeaderFooterHeight: 'clamp(2rem, 1.405rem + 2.98vw, 3.25rem)',
-        vhHeaderFooterHeight: 'clamp(2rem, 1.405rem + 2.98vh, 3.25rem)',
-        vwMainHeight:
-          'calc(100vh - 2 * ($space$pageBlockPadding + $vwHeaderFooterHeight + $space$defaultLayoutGridGap))',
-        vhMainHeight:
-          'calc(100vh - 2 * ($space$pageBlockPadding + $vhHeaderFooterHeight + $space$defaultLayoutGridGap))',
+        heightHeaderFooter: 'clamp(2rem, 1.405rem + 2.98vmin, 3.25rem)',
+        heightMain:
+          'calc(100vh - 2 * ($space$pageBlockPadding + $heightHeaderFooter + $space$defaultLayoutGridGap))',
       },
 
       space: {
         pageBlockPadding: 'clamp(0.75rem, 4.444vh, 5rem)',
-        defaultLayoutGridGap: '0.25rem',
-        // TODO: fluid gap based on viewport height
+        defaultLayoutGridGap: 'clamp(0.5rem, -0.214rem + 3.57vmin, 2rem)',
       },
     },
 
@@ -82,9 +77,11 @@ export const { styled, css, theme, globalCss, getCssText, config } =
       fluidSpace: ({ prop, ...params }: FluidSpaceParams) => ({
         [String(prop)]: clamp({ ...params }),
       }),
-    },
 
-    // TODO: create util to black gradient params (deg, endColor)
+      gradientDarkSide: (params: { deg: number; endColor: String }) => ({
+        background: `linear-gradient(${params.deg}deg, #12121400 0%, ${params.endColor} 100%)`,
+      }),
+    },
   } as const)
 
 function clamp({
@@ -108,6 +105,7 @@ function clamp({
 }
 
 function parseMedia(breakpoint: string) {
-  // TODO: Adapt regex to match floating point numbers
-  return Number.parseFloat(breakpoint.match(/(?<value>\d+)/)?.groups?.value!)
+  return Number.parseFloat(
+    breakpoint.match(/(?<value>\d*\.?\d+)/)?.groups?.value!,
+  )
 }

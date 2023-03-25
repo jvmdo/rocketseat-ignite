@@ -8,16 +8,11 @@ interface DefaultLayoutProps {
 }
 
 const S_Layout = styled('div', {
+  minHeight: '100vh',
   paddingBlock: '$pageBlockPadding',
 
-  $$mainHeight: '$sizes$vwMainHeight',
-  '@media (orientation: landscape)': {
-    $$mainHeight: '$sizes$vhMainHeight',
-  },
-
-  // TODO: fix centering issue in 4k screens (try set min-height: 100vh + center)
   display: 'grid',
-  gridTemplateRows: 'auto min($$mainHeight, 80rem) auto',
+  gridTemplateRows: 'auto min($heightMain, 80rem) auto',
   alignContent: 'center',
   gap: '$defaultLayoutGridGap',
 })

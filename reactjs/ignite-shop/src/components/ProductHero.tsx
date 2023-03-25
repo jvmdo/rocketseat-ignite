@@ -11,12 +11,7 @@ const S_ProductHero = styled('div', {
 
   [`@media (orientation: landscape) or ${config.media.lg}`]: {
     width: 'auto',
-    height: `calc(
-      $$mainHeight - 2 * (
-        clamp(0.25rem, -0.583rem + 4.17vh, 2rem) - 
-        $space$defaultLayoutGridGap
-      )
-    )`,
+    height: '100cqh',
   },
 })
 
