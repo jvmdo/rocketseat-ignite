@@ -2,11 +2,9 @@ import { ContentContainer } from '@/components/ContentContainer'
 import { ProductCard } from '@/components/ProductCard'
 import { styled, config } from '@/styles/stitches.config'
 import Link from 'next/link'
-import Shirt1 from 'public/beyond-the-limits.png'
-import Shirt2 from 'public/Variant5.png'
-import Shirt3 from 'public/Variant8.png'
-import Shirt4 from 'public/Variant7.png'
-import Shirt5 from 'public/Variant9.png'
+import { stripe } from '@/lib/stripe'
+import Stripe from 'stripe'
+import { GetServerSideProps } from 'next'
 
 /* 
   Styles
@@ -91,50 +89,57 @@ const S_Home = styled('main', {
 /* 
   Component
 */
-export default function Home() {
+interface HomeProps {
+  products: {
+    id: string
+    imgUrl: string
+    name: string
+    price: string
+  }[]
+}
+
+export default function Home({ products }: HomeProps) {
   return (
     <S_Home>
       <ContentContainer>
         <GradientSpaceLeft />
-
-        <Link href="products/1">
-          <ProductCard
-            imgUrl={Shirt1.src}
-            name="Beyond the Limits"
-            price="79.90"
-          />
-        </Link>
-        <Link href="products/1">
-          <ProductCard
-            imgUrl={Shirt2.src}
-            name="Beyond the Summit"
-            price="69.90"
-          />
-        </Link>
-        <Link href="products/1">
-          <ProductCard
-            imgUrl={Shirt3.src}
-            name="Além do Cumesss"
-            price="89.90"
-          />
-        </Link>
-        <Link href="products/1">
-          <ProductCard
-            imgUrl={Shirt4.src}
-            name="Além dos Limites"
-            price="49.90"
-          />
-        </Link>
-        <Link href="products/1">
-          <ProductCard
-            imgUrl={Shirt5.src}
-            name="Além dos Limites"
-            price="49.90"
-          />
-        </Link>
-
+        {products.map(({ id, ...props }) => (
+          <Link key={id} href={`products/${id}`}>
+            <ProductCard {...props} />
+          </Link>
+        ))}
         <GradientSpaceRight />
       </ContentContainer>
     </S_Home>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<
+  Pick<HomeProps, 'products'>
+> = async () => {
+  const { data } = await stripe.products.list({
+    expand: ['data.default_price', 'data.default_price.currency_options'],
+  })
+
+  const products = data.map((product) => {
+    const unitAmount = (product.default_price as Stripe.Price)?.currency_options
+      ?.usd.unit_amount
+    const priceFormatted = unitAmount
+      ? new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(unitAmount / 100)
+      : ''
+
+    return {
+      id: product.id,
+      imgUrl: product.images[0],
+      name: product.name,
+      price: priceFormatted,
+    }
+  })
+
+  return {
+    props: { products },
+  }
 }

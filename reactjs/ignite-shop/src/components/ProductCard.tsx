@@ -67,12 +67,7 @@ export function ProductCard({ imgUrl, name, price }: ProductCardProps) {
       <CardThumbnail src={imgUrl} />
       <S_CardTooltip>
         <h1>{name}</h1>
-        <span>
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(Number.parseFloat(price))}
-        </span>
+        <span>{price}</span>
       </S_CardTooltip>
     </S_ProductCard>
   )
