@@ -1,8 +1,10 @@
 import { BrandButton } from '@/components/BrandButton'
 import { ContentContainer } from '@/components/ContentContainer'
 import { ProductHero } from '@/components/ProductHero'
+import { stripe } from '@/lib/stripe'
 import { styled, config } from '@/styles/stitches.config'
-import Shirt from 'public/beyond-the-limits.png'
+import { GetServerSideProps } from 'next'
+import Stripe from 'stripe'
 
 const { fontSizes } = config.theme
 const { media } = config
@@ -72,15 +74,15 @@ const S_ProductInfo = styled('section', {
 interface ProductProps {
   imgUrl: string
   name: string
-  price: string
-  description: string
+  description: string | null
+  price: string | null
 }
 
 export default function Product({
-  imgUrl = Shirt.src,
-  name = 'Beyond the Limits',
-  price = '79.90',
-  description = 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum exercitationem, harum labore architecto, placeat maxime culpa neque, corrupti voluptate atque unde eveniet itaque! Accusantium ipsam, dolorem nam perspiciatis voluptatibus animi?',
+  imgUrl,
+  name,
+  price,
+  description,
 }: ProductProps) {
   return (
     <S_Product>
@@ -92,16 +94,40 @@ export default function Product({
         />
         <S_ProductInfo>
           <h1>{name}</h1>
-          <span>
-            {new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-            }).format(Number.parseFloat(price))}
-          </span>
+          <span>{price}</span>
           <p>{description}</p>
           <BrandButton>Buy now</BrandButton>
         </S_ProductInfo>
       </ContentContainer>
     </S_Product>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<ProductProps> = async ({
+  params,
+}) => {
+  const productId = params?.id as string
+  const data = await stripe.products.retrieve(productId, {
+    expand: ['default_price', 'default_price.currency_options'],
+  })
+
+  const unitAmount = (data.default_price as Stripe.Price).currency_options?.usd
+    .unit_amount
+  const priceFormatted = unitAmount
+    ? new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(unitAmount / 100)
+    : null
+
+  const product = {
+    imgUrl: data.images[0],
+    name: data.name,
+    description: data.description,
+    price: priceFormatted,
+  }
+
+  return {
+    props: product,
+  }
 }
