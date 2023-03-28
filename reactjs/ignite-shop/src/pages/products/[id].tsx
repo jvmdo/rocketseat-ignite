@@ -3,7 +3,9 @@ import { ContentContainer } from '@/components/ContentContainer'
 import { ProductHero } from '@/components/ProductHero'
 import { stripe } from '@/lib/stripe'
 import { styled, config } from '@/styles/stitches.config'
+import axios from 'axios'
 import { GetServerSideProps } from 'next'
+import { useState } from 'react'
 import Stripe from 'stripe'
 
 const { fontSizes } = config.theme
@@ -76,14 +78,32 @@ interface ProductProps {
   name: string
   description: string | null
   price: string | null
+  priceId: string
 }
 
 export default function Product({
   imgUrl,
   name,
-  price,
   description,
+  price,
+  priceId,
 }: ProductProps) {
+  const [isProcessingCheckout, setProcessingCheckout] = useState(false)
+
+  async function handleCheckoutClick() {
+    try {
+      setProcessingCheckout(true)
+      const response = await axios.post('/api/checkout', {
+        priceId,
+      })
+      const checkoutUrl = response.data.url
+      window.location.href = checkoutUrl
+    } catch (err) {
+      setProcessingCheckout(false)
+      console.log('[Product/handleCheckoutClick]: ', err)
+    }
+  }
+
   return (
     <S_Product>
       <ContentContainer>
@@ -96,7 +116,12 @@ export default function Product({
           <h1>{name}</h1>
           <span>{price}</span>
           <p>{description}</p>
-          <BrandButton>Buy now</BrandButton>
+          <BrandButton
+            onClick={handleCheckoutClick}
+            disabled={isProcessingCheckout}
+          >
+            Buy now
+          </BrandButton>
         </S_ProductInfo>
       </ContentContainer>
     </S_Product>
@@ -125,6 +150,7 @@ export const getServerSideProps: GetServerSideProps<ProductProps> = async ({
     name: data.name,
     description: data.description,
     price: priceFormatted,
+    priceId: (data.default_price as Stripe.Price).id,
   }
 
   return {
