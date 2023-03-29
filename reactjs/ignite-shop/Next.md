@@ -112,7 +112,17 @@ The variables can be accessed in pre-rendering methods and API routes:
 const key = process.env.PUBLIC_KEY
 ```
 
-### Activate SRR: getServerSideProps
+### Routing
+
+Next.js has a file-system based router built on the concept of pages. When a file is added to the pages directory, it's automatically available as a route.
+
+Nested routes are created from nested folders.
+
+Dynamic routes are created from files which name is surrounded by brackets, such as `pages/products/[id].ts`.
+
+`<Link href="">` component is used to create client-side navigation between pages. When a user clicks on a `<Link/>`, it automatically performs a client-side transition to the new page, without requiring a full page refresh.
+
+### Make use of SRR with getServerSideProps
 
 Exporting a function named `getServerSideProps` in a page tells Next.js that the page want to make use of its SRR features.
 
@@ -134,3 +144,67 @@ The context parameter is an object that includes, amongst other properties:
 The method should return an object that includes the props the page expects to receive.
 
 Tip: Passing `Pick<MyInterface, someProperty>` as generic for `GetServerSideProps` will type the function for an individual properties.
+
+### Make use of SSG with getStaticProps
+
+Exporting a function named `getStaticProps` in a page tells Next.js that the page want to make use of its SSG features.
+
+```ts
+  export const getStaticProps: GetStaticProps = async(context) => {
+    // code...
+    return {
+      props: { data },
+      revalidate: 60 * 60 * 24, // 24 hours
+    }
+  }
+```
+
+The main object included in `context` is `params`.
+
+`revalidate` is the amount of seconds it takes to re-generate the page.
+
+OBS: in development mode, this method runs on every request. In order to leverage its full potential, you need `npm run build` the app.
+
+### Make use of SSG for dynamic routes with getStaticPaths
+
+When you want to static generate dynamic routed pages, `getStaticPaths` is needed to retrieve the list of paths that routes to the target pages. You can control which pages will be pre-rendering by filtering this list of paths.
+
+```js
+export const getStaticPaths: GetStaticPaths =  async () => {
+  // fetch paths...
+  return {
+    paths: [
+      { params: { id: 1 } },
+      { params: { id: 2 } },
+      ...
+    ],
+    fallback: boolean | "blocking"
+  }
+}
+```
+
+The `fallback` parameter is useful for requested pages that has not been pre-built during the build process. This parameter can assume three values:
+
+1. `fallback: false`: If a page has not been pre-built, Next.js will return a 404 error. This is the default behavior.
+
+2. `fallback: true`:  When a user requests a page that has not been pre-built yet, Next.js will generate the page on the server and cache it. The next user to request the same page will receive the pre-built version instead of triggering another server-side render. This can result in faster response times for pages that are not requested frequently.
+
+3. `fallback: blocking`: similar to `true`, however the user's request is not immediately sent back a page with empty data while the page is being generated. Instead, the user's request is held until the page has been generated on the server and is ready to be returned.
+
+### API Routes
+
+API Routes provide a simple way to create serverless functions that run on the server-side and can be used to handle HTTP requests, process data, and return responses.
+
+Here are some best use cases for Next.js API Routes:
+
+1. Creating a backend for a web application - You can use API Routes to create a simple backend for your web application that handles database queries, authentication, and other server-side logic.
+
+2. Creating a REST API - API Routes provide a simple way to create a REST API that can be used by other applications or services.
+
+3. Building webhooks - You can use API Routes to build webhooks that are triggered by events in your application and perform actions in response.
+
+4. Integrating with third-party APIs - API Routes can be used to integrate with third-party APIs and services by handling the authentication, processing data, and returning responses.
+
+5. Creating custom server-side logic - You can use API Routes to create custom server-side logic that performs complex computations, generates reports, or processes data.
+
+API Routes can be created by adding a file to the pages/api directory of your Next.js app. The file should export default a function that takes in a `req` and `res` object and returns a JSON response. You can use any Node.js middleware or library in your API Route, allowing you to create complex server-side logic with ease.

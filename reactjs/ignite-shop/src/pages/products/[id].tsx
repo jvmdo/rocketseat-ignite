@@ -4,7 +4,7 @@ import { ProductHero } from '@/components/ProductHero'
 import { stripe } from '@/lib/stripe'
 import { styled, config } from '@/styles/stitches.config'
 import axios from 'axios'
-import { GetServerSideProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { useState } from 'react'
 import Stripe from 'stripe'
 
@@ -128,7 +128,17 @@ export default function Product({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<ProductProps> = async ({
+export const getStaticPaths: GetStaticPaths = async () => {
+  const { data } = await stripe.products.list()
+  const paths = data.map(({ id }) => ({ params: { id } }))
+
+  return {
+    paths,
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps: GetStaticProps<ProductProps> = async ({
   params,
 }) => {
   const productId = params?.id as string

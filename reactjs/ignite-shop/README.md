@@ -33,8 +33,17 @@ No exemplo anterior, deve-se atentar que o component `<Button>` retorna um eleme
 
 - How to type an `utils` that accepts an object as parameter? I tried to use what the docs advise but it seems it works only for single values.
 
-- How to use the media tokens in components? I tried `@md` but it did not work, then I went to `[@media ${config.media.md}]`
-
 - Why does a TypeScript error is raised when I apply the `fluidFontSize` utils in the top level of a style object? No error occurs in nested objects tho.
 
   > Type 'string' is not assignable to type 'number | { readonly [$$ScaleValue]: "fontSizes"; }'.ts(2322)
+
+- Is it possible to prevent the slider from restoring its scroll position on page navigation?
+
+  > It may be possible to achieve this by programmatically controlling the snap container's scroll behavior based on its scroll values and the offsetWidth/offsetHeight of its children.
+
+### Continued
+
+Keen-Slider
+delete src/layout and api/hello
+uni phosphor
+uni react-responsive

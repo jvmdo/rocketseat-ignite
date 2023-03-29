@@ -4,7 +4,7 @@ import { styled, config } from '@/styles/stitches.config'
 import Link from 'next/link'
 import { stripe } from '@/lib/stripe'
 import Stripe from 'stripe'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 
 /* 
   Styles
@@ -114,7 +114,7 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<
+export const getStaticProps: GetStaticProps<
   Pick<HomeProps, 'products'>
 > = async () => {
   const { data } = await stripe.products.list({
@@ -141,5 +141,6 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: { products },
+    revalidate: 60 * 60 * 24, // 24 hours
   }
 }
