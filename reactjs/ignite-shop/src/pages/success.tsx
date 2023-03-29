@@ -1,8 +1,10 @@
 import { ContentContainer } from '@/components/ContentContainer'
 import { ProductHero } from '@/components/ProductHero'
+import { stripe } from '@/lib/stripe'
 import { styled } from '@/styles/stitches.config'
+import { GetServerSideProps } from 'next'
 import Link from 'next/link'
-import Shirt from 'public/beyond-the-limits.png'
+import Stripe from 'stripe'
 
 /* 
   Styles
@@ -57,14 +59,14 @@ const S_Link = styled(Link, {
 */
 interface SuccessProps {
   imgUrl: string
-  name: string
-  item: string
+  itemName: string
+  customerName: string | undefined
 }
 
 export default function Success({
-  imgUrl = Shirt.src,
-  name = 'Diego Fernandes',
-  item = 'Beyond the Limits T-Shirt',
+  imgUrl,
+  customerName,
+  itemName,
 }: SuccessProps) {
   return (
     <S_Success>
@@ -78,12 +80,47 @@ export default function Success({
             aspectRatio="36/41"
           />
           <p>
-            Yay, <strong>{name}</strong>! Your <strong>{item}</strong> is
-            already on its way to your home.
+            Yay, <strong>{customerName}</strong>! Your{' '}
+            <strong>{itemName}</strong> t-shirt is already on its way to your
+            home.
           </p>
         </article>
         <S_Link href="/">Back to catalog</S_Link>
       </ContentContainer>
     </S_Success>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<SuccessProps> = async ({
+  query,
+}) => {
+  if (!query.session_id) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  const sessionId = query.session_id as string
+  const sessionData = await stripe.checkout.sessions.retrieve(sessionId, {
+    expand: ['line_items', 'line_items.data.price.product'],
+  })
+
+  const sessionItem = sessionData.line_items?.data[0].price
+    ?.product as Stripe.Product
+  const customerName = sessionData.customer_details?.name
+  const customerNameFormatted = customerName
+    ?.match(/(\w{2,})/g)
+    ?.map((match) => match[0] + match.slice(1).toLowerCase())
+    .join(' ')
+
+  const props = {
+    imgUrl: sessionItem.images[0],
+    itemName: sessionItem.name,
+    customerName: customerNameFormatted,
+  }
+
+  return { props }
 }
