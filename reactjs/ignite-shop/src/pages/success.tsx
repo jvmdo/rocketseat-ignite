@@ -3,6 +3,7 @@ import { ProductHero } from '@/components/ProductHero'
 import { stripe } from '@/lib/stripe'
 import { styled } from '@/styles/stitches.config'
 import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import Stripe from 'stripe'
 
@@ -69,25 +70,30 @@ export default function Success({
   itemName,
 }: SuccessProps) {
   return (
-    <S_Success>
-      <ContentContainer>
-        <h1>Successful Purchase!</h1>
-        <article>
-          <ProductHero
-            src={imgUrl}
-            imgMaxHeight={500}
-            imgMaxWidth={500}
-            aspectRatio="36/41"
-          />
-          <p>
-            Yay, <strong>{customerName}</strong>! Your{' '}
-            <strong>{itemName}</strong> t-shirt is already on its way to your
-            home.
-          </p>
-        </article>
-        <S_Link href="/">Back to catalog</S_Link>
-      </ContentContainer>
-    </S_Success>
+    <>
+      <Head>
+        <title>You bought a {itemName}!</title>
+      </Head>
+      <S_Success>
+        <ContentContainer>
+          <h1>Successful Purchase!</h1>
+          <article>
+            <ProductHero
+              src={imgUrl}
+              imgMaxHeight={500}
+              imgMaxWidth={500}
+              aspectRatio="36/41"
+            />
+            <p>
+              Yay, <strong>{customerName}</strong>! Your{' '}
+              <strong>{itemName}</strong> t-shirt is already on its way to your
+              home.
+            </p>
+          </article>
+          <S_Link href="/">Back to catalog</S_Link>
+        </ContentContainer>
+      </S_Success>
+    </>
   )
 }
 

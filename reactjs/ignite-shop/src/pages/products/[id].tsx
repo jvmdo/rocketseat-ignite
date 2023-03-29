@@ -5,6 +5,7 @@ import { stripe } from '@/lib/stripe'
 import { styled, config } from '@/styles/stitches.config'
 import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import Head from 'next/head'
 import { useState } from 'react'
 import Stripe from 'stripe'
 
@@ -105,26 +106,31 @@ export default function Product({
   }
 
   return (
-    <S_Product>
-      <ContentContainer>
-        <ProductHero
-          src={imgUrl}
-          aspectRatio="36/41"
-          height="min(40vh, 50cqmax)"
-        />
-        <S_ProductInfo>
-          <h1>{name}</h1>
-          <span>{price}</span>
-          <p>{description}</p>
-          <BrandButton
-            onClick={handleCheckoutClick}
-            disabled={isProcessingCheckout}
-          >
-            Buy now
-          </BrandButton>
-        </S_ProductInfo>
-      </ContentContainer>
-    </S_Product>
+    <>
+      <Head>
+        <title>Ignite Shop: Products</title>
+      </Head>
+      <S_Product>
+        <ContentContainer>
+          <ProductHero
+            src={imgUrl}
+            aspectRatio="36/41"
+            height="min(40vh, 50cqmax)"
+          />
+          <S_ProductInfo>
+            <h1>{name}</h1>
+            <span>{price}</span>
+            <p>{description}</p>
+            <BrandButton
+              onClick={handleCheckoutClick}
+              disabled={isProcessingCheckout}
+            >
+              Buy now
+            </BrandButton>
+          </S_ProductInfo>
+        </ContentContainer>
+      </S_Product>
+    </>
   )
 }
 

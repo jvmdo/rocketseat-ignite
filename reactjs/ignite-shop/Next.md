@@ -208,3 +208,7 @@ Here are some best use cases for Next.js API Routes:
 5. Creating custom server-side logic - You can use API Routes to create custom server-side logic that performs complex computations, generates reports, or processes data.
 
 API Routes can be created by adding a file to the pages/api directory of your Next.js app. The file should export default a function that takes in a `req` and `res` object and returns a JSON response. You can use any Node.js middleware or library in your API Route, allowing you to create complex server-side logic with ease.
+
+### Better SEO with `<Head/>`
+
+Add metadata to individual pages using the `<Head/>` component. It's also useful to set the page title.

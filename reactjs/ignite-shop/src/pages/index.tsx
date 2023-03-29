@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { stripe } from '@/lib/stripe'
 import Stripe from 'stripe'
 import { GetStaticProps } from 'next'
+import Head from 'next/head'
 
 /* 
   Styles
@@ -100,17 +101,22 @@ interface HomeProps {
 
 export default function Home({ products }: HomeProps) {
   return (
-    <S_Home>
-      <ContentContainer>
-        <GradientSpaceLeft />
-        {products.map(({ id, ...props }) => (
-          <Link key={id} href={`products/${id}`}>
-            <ProductCard {...props} />
-          </Link>
-        ))}
-        <GradientSpaceRight />
-      </ContentContainer>
-    </S_Home>
+    <>
+      <Head>
+        <title>Ignite Shop: Home</title>
+      </Head>
+      <S_Home>
+        <ContentContainer>
+          <GradientSpaceLeft />
+          {products.map(({ id, ...props }) => (
+            <Link key={id} href={`products/${id}`}>
+              <ProductCard {...props} />
+            </Link>
+          ))}
+          <GradientSpaceRight />
+        </ContentContainer>
+      </S_Home>
+    </>
   )
 }
 
