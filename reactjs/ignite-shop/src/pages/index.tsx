@@ -6,6 +6,9 @@ import { stripe } from '@/lib/stripe'
 import Stripe from 'stripe'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
+import { useRef } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import { CaretLeft, CaretRight } from 'phosphor-react'
 
 /* 
   Styles
@@ -100,20 +103,48 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
+  const isLandscape = useMediaQuery({
+    query: '(orientation: landscape)',
+  })
+  const snapContainerRef = useRef<HTMLDivElement>(null)
+
+  function handleScrollClick({ toLeft = false } = {}) {
+    if (isLandscape && snapContainerRef.current) {
+      const scrollAmount = snapContainerRef.current.offsetWidth / 2
+      const direction = toLeft ? -1 : 1
+      snapContainerRef.current.scrollTo({
+        left: snapContainerRef.current.scrollLeft + scrollAmount * direction,
+        behavior: 'smooth',
+      })
+    }
+  }
+
   return (
     <>
       <Head>
         <title>Ignite Shop: Home</title>
       </Head>
       <S_Home>
-        <ContentContainer>
-          <GradientSpaceLeft />
+        <ContentContainer ref={snapContainerRef}>
+          <GradientSpaceLeft
+            as={isLandscape ? 'button' : undefined}
+            onClick={() => handleScrollClick({ toLeft: true })}
+          >
+            {isLandscape && <CaretLeft size={32} weight={'bold'} />}
+          </GradientSpaceLeft>
+
           {products.map(({ id, ...props }) => (
             <Link key={id} href={`products/${id}`}>
               <ProductCard {...props} />
             </Link>
           ))}
-          <GradientSpaceRight />
+
+          <GradientSpaceRight
+            as={isLandscape ? 'button' : undefined}
+            onClick={() => handleScrollClick()}
+          >
+            {isLandscape && <CaretRight size={32} weight={'bold'} />}
+          </GradientSpaceRight>
         </ContentContainer>
       </S_Home>
     </>

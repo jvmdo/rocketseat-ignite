@@ -41,9 +41,9 @@ No exemplo anterior, deve-se atentar que o component `<Button>` retorna um eleme
 
   > It may be possible to achieve this by programmatically controlling the snap container's scroll behavior based on its scroll values and the offsetWidth/offsetHeight of its children.
 
+- Is it possible to prevent `container` property from creating the same context as `position: relative`? Because of that, I could not make the `GradientArrow` span the entire screen height.
+
 ### Continued
 
 Keen-Slider
 delete src/layout and api/hello
-uni phosphor
-uni react-responsive
