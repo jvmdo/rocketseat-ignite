@@ -1,7 +1,9 @@
 import { ContentContainer } from '@/components/ContentContainer'
 import { styled, config } from '@/styles/stitches.config'
 import { BadgeUnstyled as Badge, badgeUnstyledClasses } from '@mui/base'
+import { CSSProperties } from '@stitches/react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { Handbag } from 'phosphor-react'
 import ShopLogo from 'public/logo.svg'
 
@@ -59,7 +61,7 @@ const S_Header = styled('header', {
   [`& ${ContentContainer}`]: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'var(--jc, space-between)',
   },
 })
 
@@ -71,15 +73,22 @@ interface HeaderProps {
 }
 
 export function Header({ openDrawer }: HeaderProps) {
+  const { pathname } = useRouter()
+
+  const isSuccessRoute = pathname === '/success'
+  const justifyContent = isSuccessRoute ? { '--jc': 'center' } : {}
+
   return (
-    <S_Header>
+    <S_Header style={justifyContent as CSSProperties}>
       <ContentContainer>
         <S_Logo src={ShopLogo.src} width={130} height={52} alt="" />
-        <S_CartButton onClick={() => openDrawer(true)}>
-          <Badge badgeContent={3} max={9}>
-            <Handbag size={24} weight="bold" />
-          </Badge>
-        </S_CartButton>
+        {!isSuccessRoute && (
+          <S_CartButton onClick={() => openDrawer(true)}>
+            <Badge badgeContent={3} max={9}>
+              <Handbag size={24} weight="bold" />
+            </Badge>
+          </S_CartButton>
+        )}
       </ContentContainer>
     </S_Header>
   )
