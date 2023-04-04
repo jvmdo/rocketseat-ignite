@@ -13,7 +13,7 @@ const S_BrandButton = styled('button', {
   alignItems: 'center',
   justifyContent: 'center',
 
-  paddingBlock: 'clamp(0.75rem, 0.294rem + 1.94vh, 1.5rem)',
+  paddingBlock: 'clamp(0.75rem, 0.294rem + 1.94vmin, 1.5rem)',
   paddingInline: '2rem',
 
   '&': {

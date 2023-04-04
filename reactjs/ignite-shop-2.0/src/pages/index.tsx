@@ -1,7 +1,6 @@
 import { ContentContainer } from '@/components/ContentContainer'
 import { ProductCard } from '@/components/ProductCard'
 import { styled, config } from '@/styles/stitches.config'
-import Link from 'next/link'
 import { stripe } from '@/lib/stripe'
 import Stripe from 'stripe'
 import { GetStaticProps } from 'next'
@@ -70,8 +69,9 @@ const S_Home = styled('main', {
     overflow: 'auto',
     scrollSnapType: 'both mandatory',
 
-    [`& > *:not(${GradientSpace})`]: {
+    [`& ${ProductCard}`]: {
       scrollSnapAlign: 'center',
+      flex: '1 0 auto',
     },
 
     scrollbarWidth: 'none' /* Hide the scrollbar in Firefox */,
@@ -83,9 +83,6 @@ const S_Home = styled('main', {
       alignItems: 'center',
       flexDirection: 'row',
       paddingBlock: 'unset',
-      [`& > *:not(${GradientSpace})`]: {
-        flex: '1 0 auto',
-      },
     },
   },
 })
@@ -133,10 +130,8 @@ export default function Home({ products }: HomeProps) {
             {isLandscape && <CaretLeft size={32} weight={'bold'} />}
           </GradientSpaceLeft>
 
-          {products.map(({ id, ...props }) => (
-            <Link key={id} href={`products/${id}`}>
-              <ProductCard {...props} />
-            </Link>
+          {products.map((props) => (
+            <ProductCard key={props.id} {...props} />
           ))}
 
           <GradientSpaceRight

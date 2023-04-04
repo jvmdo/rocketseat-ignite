@@ -1,5 +1,7 @@
 import { config, styled } from '@/styles/stitches.config'
 import { ProductHero as CardThumbnail } from './ProductHero'
+import { Handbag } from 'phosphor-react'
+import Link from 'next/link'
 
 const { fontSizes } = config.theme
 
@@ -29,11 +31,6 @@ const S_CardTooltip = styled('div', {
   '@media (hover: none) or (pointer: coarse)': {
     transform: 'translateY(0%)',
   },
-})
-
-const S_ProductCard = styled('section', {
-  overflow: 'hidden',
-  position: 'relative',
 
   '& h1': {
     fluidFontSize: { min: fontSizes.md, max: fontSizes.lg, viewportUnit: 'vw' },
@@ -45,7 +42,27 @@ const S_ProductCard = styled('section', {
     fontWeight: 'bold',
   },
 
-  '*:is(:hover, :focus-visible) > &': {
+  '& > button': {
+    backgroundColor: '$green500',
+    borderRadius: '$rg',
+    height: '3.5rem',
+    width: '3.5rem',
+
+    '&:is(:hover, :focus-visible)': {
+      backgroundColor: '$green300',
+    },
+
+    '& > svg': {
+      color: '$white',
+    },
+  },
+})
+
+const S_ProductCard = styled('section', {
+  overflow: 'hidden',
+  position: 'relative',
+
+  '&:is(:hover, :focus-visible)': {
     [`& ${S_CardTooltip}`]: {
       transform: 'translateY(0%)',
     },
@@ -56,18 +73,28 @@ const S_ProductCard = styled('section', {
   Component
 */
 interface ProductCardProps {
+  id: string
   imgUrl: string
   name: string
   price: string
 }
 
-export function ProductCard({ imgUrl, name, price }: ProductCardProps) {
+ProductCard.toString = () => '.product-card'
+
+export function ProductCard({ id, imgUrl, name, price }: ProductCardProps) {
   return (
-    <S_ProductCard>
-      <CardThumbnail src={imgUrl} />
+    <S_ProductCard className="product-card">
+      <Link href={`products/${id}`}>
+        <CardThumbnail src={imgUrl} />
+      </Link>
       <S_CardTooltip>
-        <h1>{name}</h1>
-        <span>{price}</span>
+        <div>
+          <h1>{name}</h1>
+          <span>{price}</span>
+        </div>
+        <button>
+          <Handbag size={32} weight="bold" />
+        </button>
       </S_CardTooltip>
     </S_ProductCard>
   )
