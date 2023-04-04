@@ -25,9 +25,13 @@ export const globalStyles = globalCss({
     outline: '2px solid $white',
   },
 
-  img: {
+  ':is(img, svg)': {
     maxWidth: '100%',
     verticalAlign: 'top',
+  },
+
+  ul: {
+    listStyleType: 'none',
   },
 
   // General

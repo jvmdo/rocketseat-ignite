@@ -9,7 +9,7 @@ import Head from 'next/head'
 import { useState } from 'react'
 import Stripe from 'stripe'
 
-const { fontSizes } = config.theme
+const { fontSizes: fs } = config.theme
 const { media } = config
 
 /* 
@@ -24,7 +24,7 @@ const S_Product = styled('main', {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridAutoRows: 'min-content auto',
-    fluidGap: { min: 1.5, max: 4.5 },
+    fluidGap: { min: 1.5, max: 4.5, viewportUnit: 'vw' },
 
     '@media (orientation: landscape)': {
       placeContent: 'center',
@@ -47,22 +47,23 @@ const S_ProductInfo = styled('section', {
 
   '& h1': {
     lineHeight: '1.4',
-    fluidFontSize: { min: fontSizes.xl, max: fontSizes.xxl },
+    fluidFontSize: { min: fs.xl, max: fs.xxl, viewportUnit: 'vw' },
   },
 
   '& span': {
     color: '$green300',
-    fluidFontSize: { min: fontSizes.xl, max: fontSizes.xxl },
+    fluidFontSize: { min: fs.xl, max: fs.xxl, viewportUnit: 'vw' },
   },
 
   '& p': {
-    fluidFontSize: { min: fontSizes.rg, max: fontSizes.md },
+    fluidFontSize: { min: fs.rg, max: fs.md, viewportUnit: 'vw' },
     fluidSpace: {
       prop: 'marginTop',
       min: 0,
       max: '2rem',
       beginAt: config.media.xxs,
       endAt: config.media.lg,
+      viewportUnit: 'vw',
     },
   },
 

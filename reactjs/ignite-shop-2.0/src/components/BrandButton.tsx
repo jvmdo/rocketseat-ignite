@@ -13,7 +13,8 @@ const S_BrandButton = styled('button', {
   alignItems: 'center',
   justifyContent: 'center',
 
-  padding: '1rem 2rem 1.25rem',
+  paddingBlock: 'clamp(0.75rem, 0.294rem + 1.94vh, 1.5rem)',
+  paddingInline: '2rem',
 
   '&': {
     // ? A TypeScript error occurs when I use this utils on top level (outside a nesting)

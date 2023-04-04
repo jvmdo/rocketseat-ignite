@@ -36,12 +36,12 @@ const S_ProductCard = styled('section', {
   position: 'relative',
 
   '& h1': {
-    fluidFontSize: { min: fontSizes.md, max: fontSizes.lg },
+    fluidFontSize: { min: fontSizes.md, max: fontSizes.lg, viewportUnit: 'vw' },
   },
 
   '& span': {
     color: '$green300',
-    fluidFontSize: { min: fontSizes.lg, max: fontSizes.xl },
+    fluidFontSize: { min: fontSizes.lg, max: fontSizes.xl, viewportUnit: 'vw' },
     fontWeight: 'bold',
   },
 

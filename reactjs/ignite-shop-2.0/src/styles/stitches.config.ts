@@ -22,6 +22,7 @@ export const { styled, css, theme, globalCss, getCssText, config } =
 
         gray900: '#121214',
         gray800: '#202024',
+        gray400: '#8d8d99',
         gray300: '#c4c4cc',
         gray100: '#e1e1e6',
 
@@ -32,6 +33,8 @@ export const { styled, css, theme, globalCss, getCssText, config } =
       },
 
       fontSizes: {
+        xs: '0.75rem',
+        sm: '0.875rem',
         rg: '1rem',
         md: '1.125rem',
         lg: '1.25rem',
@@ -90,7 +93,7 @@ function clamp({
   beginAt,
   endAt,
   unit = 'rem',
-  viewportUnit = 'vw',
+  viewportUnit = 'vh',
 }: FluidParams) {
   min = parseFloat(min.toString())
   max = parseFloat(max.toString())
