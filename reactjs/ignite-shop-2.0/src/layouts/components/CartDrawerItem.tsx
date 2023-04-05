@@ -1,5 +1,6 @@
 import { ProductHero } from '@/components/ProductHero'
 import { styled, config } from '@/styles/stitches.config'
+import { useShoppingCart } from 'use-shopping-cart'
 
 const { fontSizes: fs } = config.theme
 
@@ -55,19 +56,37 @@ const S_CartDrawerItem = styled('div', {
   Component
 */
 interface CartDrawerItemProps {
+  id: string
   imgUrl: string
   name: string
-  price: string
+  price: number
 }
 
-export function CartDrawerItem({ imgUrl, name, price }: CartDrawerItemProps) {
+export function CartDrawerItem({
+  id,
+  imgUrl,
+  name,
+  price,
+}: CartDrawerItemProps) {
+  const { currency: _currency, removeItem } = useShoppingCart()
+  const currency = _currency ?? 'USD'
+
+  function handleRemoveItem() {
+    removeItem(id)
+  }
+
   return (
     <S_CartDrawerItem>
       <ProductHero src={imgUrl} />
       <S_ProductInfo>
         <span>{name}</span>
-        <strong>{price}</strong>
-        <button>Remove</button>
+        <strong>
+          {new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency,
+          }).format(price / 100)}
+        </strong>
+        <button onClick={handleRemoveItem}>Remove</button>
       </S_ProductInfo>
     </S_CartDrawerItem>
   )

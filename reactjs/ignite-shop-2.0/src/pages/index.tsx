@@ -95,7 +95,8 @@ interface HomeProps {
     id: string
     imgUrl: string
     name: string
-    price: string
+    price: number
+    priceId: string
   }[]
 }
 
@@ -156,18 +157,19 @@ export const getStaticProps: GetStaticProps<
   const products = data.map((product) => {
     const unitAmount = (product.default_price as Stripe.Price)?.currency_options
       ?.usd.unit_amount
-    const priceFormatted = unitAmount
+    /* const priceFormatted = unitAmount
       ? new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: 'USD',
         }).format(unitAmount / 100)
-      : ''
+      : '' */
 
     return {
       id: product.id,
       imgUrl: product.images[0],
       name: product.name,
-      price: priceFormatted,
+      price: unitAmount ?? 0,
+      priceId: (product.default_price as Stripe.Price).id,
     }
   })
 

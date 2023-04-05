@@ -1,9 +1,12 @@
 import { config, styled } from '@/styles/stitches.config'
 import { ProductHero as CardThumbnail } from './ProductHero'
-import { Handbag } from 'phosphor-react'
+import { Handbag, Trash } from 'phosphor-react'
 import Link from 'next/link'
+import { useShoppingCart } from 'use-shopping-cart'
+import { CSSProperties } from 'react'
+import { BrandButton } from './BrandButton'
 
-const { fontSizes } = config.theme
+const { fontSizes, colors } = config.theme
 
 /* 
   Styles
@@ -41,21 +44,6 @@ const S_CardTooltip = styled('div', {
     fluidFontSize: { min: fontSizes.lg, max: fontSizes.xl, viewportUnit: 'vw' },
     fontWeight: 'bold',
   },
-
-  '& > button': {
-    backgroundColor: '$green500',
-    borderRadius: '$rg',
-    height: '3.5rem',
-    width: '3.5rem',
-
-    '&:is(:hover, :focus-visible)': {
-      backgroundColor: '$green300',
-    },
-
-    '& > svg': {
-      color: '$white',
-    },
-  },
 })
 
 const S_ProductCard = styled('section', {
@@ -76,12 +64,42 @@ interface ProductCardProps {
   id: string
   imgUrl: string
   name: string
-  price: string
+  price: number
+  priceId: string
 }
 
 ProductCard.toString = () => '.product-card'
 
-export function ProductCard({ id, imgUrl, name, price }: ProductCardProps) {
+export function ProductCard({
+  id,
+  imgUrl,
+  name,
+  price,
+  priceId,
+}: ProductCardProps) {
+  const {
+    addItem,
+    removeItem,
+    currency: _currency,
+    cartDetails,
+  } = useShoppingCart()
+
+  const currency = _currency ?? 'USD'
+  const isInCart = Object.keys(cartDetails ?? {}).some((key) => key === id)
+  // TODO: move to component
+  const btnColor = isInCart
+    ? { '--bg': colors.gray400, '--h-bg': colors.gray300 }
+    : {}
+
+  function handleToggleItem() {
+    if (isInCart) {
+      removeItem(id)
+    } else {
+      // eslint-disable-next-line camelcase
+      addItem({ id, name, price, currency, image: imgUrl, price_id: priceId })
+    }
+  }
+
   return (
     <S_ProductCard className="product-card">
       <Link href={`products/${id}`}>
@@ -90,11 +108,23 @@ export function ProductCard({ id, imgUrl, name, price }: ProductCardProps) {
       <S_CardTooltip>
         <div>
           <h1>{name}</h1>
-          <span>{price}</span>
+          <span>
+            {new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency,
+            }).format(price / 100)}
+          </span>
         </div>
-        <button>
-          <Handbag size={32} weight="bold" />
-        </button>
+        <BrandButton
+          onClick={handleToggleItem}
+          style={btnColor as CSSProperties}
+        >
+          {isInCart ? (
+            <Trash size={32} weight="bold" />
+          ) : (
+            <Handbag size={32} weight="bold" />
+          )}
+        </BrandButton>
       </S_CardTooltip>
     </S_ProductCard>
   )

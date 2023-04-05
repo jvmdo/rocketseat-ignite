@@ -10,12 +10,17 @@ export default async function createCheckoutSession(
     res.status(405).json({ error: 'Method not allowed' })
   }
 
+  const cartDetails = JSON.parse(req.body.cartDetails as string)
+  const lineItems = cartDetails.map((product: any) => ({
+    price: product.price_id,
+    quantity: 1,
+  }))
+
   try {
-    const itemPriceId = req.body.priceId as string
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       currency: 'usd',
-      line_items: [{ price: itemPriceId, quantity: 1 }],
+      line_items: lineItems,
       success_url: `${req.headers
         .origin!}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: req.headers.origin!,

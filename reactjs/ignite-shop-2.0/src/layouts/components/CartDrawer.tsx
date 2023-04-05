@@ -3,9 +3,10 @@ import { styled, config } from '@/styles/stitches.config'
 import { X } from 'phosphor-react'
 import { BrandButton } from '@/components/BrandButton'
 import { CartDrawerItem } from './CartDrawerItem'
-import Shirt01 from 'public/01-shirt.png'
-import Shirt02 from 'public/02-shirt.png'
-import Shirt03 from 'public/03-shirt.png'
+import { useShoppingCart } from 'use-shopping-cart'
+import imagePlaceholder from 'public/placeholder.png'
+import { useState } from 'react'
+import axios from 'axios'
 
 const { fontSizes } = config.theme
 
@@ -49,6 +50,11 @@ const S_SwipeableDrawer = styled(SwipeableDrawer, {
 
     '& h2': {
       fluidFontSize: { min: fontSizes.rg, max: fontSizes.lg },
+
+      '& > span': {
+        color: '$gray300',
+        fluidFontSize: { min: fontSizes.xs, max: fontSizes.sm },
+      },
     },
 
     '& ul': {
@@ -92,10 +98,31 @@ const S_SwipeableDrawer = styled(SwipeableDrawer, {
 */
 interface CartDrawerProps {
   open: boolean
+  // TODO: check if it's possible to use shouldDisplayCart
   toggleOpen: (open: boolean) => void
 }
 
 export function CartDrawer({ open, toggleOpen }: CartDrawerProps) {
+  const { cartDetails, cartCount, formattedTotalPrice } = useShoppingCart()
+  const products = Object.values(cartDetails ?? {})
+
+  const [isProcessingCheckout, setProcessingCheckout] = useState(false)
+
+  async function handleCheckoutClick() {
+    try {
+      setProcessingCheckout(true)
+      console.log(products)
+      const response = await axios.post('/api/checkout', {
+        cartDetails: JSON.stringify(products),
+      })
+      const checkoutUrl = response.data.url
+      window.location.href = checkoutUrl
+    } catch (err) {
+      setProcessingCheckout(false)
+      console.log('[Product/handleCheckoutClick]: ', err)
+    }
+  }
+
   return (
     <S_SwipeableDrawer
       anchor="right"
@@ -109,43 +136,37 @@ export function CartDrawer({ open, toggleOpen }: CartDrawerProps) {
         </button>
       </header>
       <main>
-        <h2>Shopping Bag</h2>
+        <h2>
+          Shopping Bag <span>{!cartCount ? '(empty)' : ''}</span>
+        </h2>
         <ul>
-          <li>
-            <CartDrawerItem
-              imgUrl={Shirt01.src}
-              name="Beyond the Summit"
-              price="$69.69"
-            />
-          </li>
-          <li>
-            <CartDrawerItem
-              imgUrl={Shirt02.src}
-              name="Large Name of Disgrace"
-              price="$59.69"
-            />
-          </li>
-          <li>
-            <CartDrawerItem
-              imgUrl={Shirt03.src}
-              name="Yet Another Large Name of Disgrace"
-              price="$79.69"
-            />
-          </li>
+          {products.map(({ id, image, name, price }) => {
+            const imgUrl = image ?? imagePlaceholder.src
+            return (
+              <li key={id}>
+                <CartDrawerItem {...{ id, imgUrl, name, price }} />
+              </li>
+            )
+          })}
         </ul>
       </main>
       <footer>
         <section>
           <div>
             <span>Quantity</span>
-            <span>3 items</span>
+            <span>{cartCount} items</span>
           </div>
           <div>
             <strong>Total amount</strong>
-            <strong>$123.50</strong>
+            <strong>{formattedTotalPrice}</strong>
           </div>
         </section>
-        <BrandButton>Checkout</BrandButton>
+        <BrandButton
+          disabled={!cartCount || isProcessingCheckout}
+          onClick={handleCheckoutClick}
+        >
+          Checkout
+        </BrandButton>
       </footer>
     </S_SwipeableDrawer>
   )

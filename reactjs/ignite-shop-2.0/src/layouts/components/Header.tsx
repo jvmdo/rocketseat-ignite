@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Handbag } from 'phosphor-react'
 import ShopLogo from 'public/logo.svg'
+import { useShoppingCart } from 'use-shopping-cart'
 
 const { fontSizes } = config.theme
 
@@ -74,6 +75,7 @@ interface HeaderProps {
 
 export function Header({ openDrawer }: HeaderProps) {
   const { pathname } = useRouter()
+  const { cartCount } = useShoppingCart()
 
   const isSuccessRoute = pathname === '/success'
   const justifyContent = isSuccessRoute ? { '--jc': 'center' } : {}
@@ -84,7 +86,7 @@ export function Header({ openDrawer }: HeaderProps) {
         <S_Logo src={ShopLogo.src} width={130} height={52} alt="" />
         {!isSuccessRoute && (
           <S_CartButton onClick={() => openDrawer(true)}>
-            <Badge badgeContent={3} max={9}>
+            <Badge badgeContent={cartCount} max={9}>
               <Handbag size={24} weight="bold" />
             </Badge>
           </S_CartButton>
