@@ -29,17 +29,35 @@ const S_BrandButton = styled('button', {
     opacity: '60%',
     cursor: 'not-allowed',
   },
+
+  variants: {
+    gray: {
+      true: {
+        backgroundColor: '$gray400',
+        '&:not(:disabled):is(:hover, :focus-visible)': {
+          backgroundColor: '$gray300',
+        },
+      },
+    },
+  },
 })
 
 interface BrandButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
+  variants?: {
+    gray: boolean
+  }
 }
 
 BrandButton.toString = () => '.brand-btn'
 
-export function BrandButton({ children, ...attrs }: BrandButtonProps) {
+export function BrandButton({
+  children,
+  variants,
+  ...attrs
+}: BrandButtonProps) {
   return (
-    <S_BrandButton className="brand-btn" {...attrs}>
+    <S_BrandButton className="brand-btn" {...variants} {...attrs}>
       {children}
     </S_BrandButton>
   )
