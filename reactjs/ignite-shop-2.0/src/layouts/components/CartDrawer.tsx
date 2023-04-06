@@ -96,39 +96,36 @@ const S_SwipeableDrawer = styled(SwipeableDrawer, {
 /* 
   Component
 */
-interface CartDrawerProps {
-  open: boolean
-  // TODO: check if it's possible to use shouldDisplayCart
-  toggleOpen: (open: boolean) => void
-}
-
-export function CartDrawer({ open, toggleOpen }: CartDrawerProps) {
-  const [isProcessingCheckout, setProcessingCheckout] = useState(false)
-  const { cart, cartCount, totalPrice } = useCart()
+export function CartDrawer() {
+  const [isProcessingCheckout, setIsProcessingCheckout] = useState(false)
+  const { cart, cartCount, totalPrice, handleCartClick, shouldDisplayCart } =
+    useCart()
 
   async function handleCheckoutClick() {
     try {
-      setProcessingCheckout(true)
+      setIsProcessingCheckout(true)
       const response = await axios.post('/api/checkout', {
         cart: JSON.stringify(cart),
       })
       const checkoutUrl = response.data.url
       window.location.href = checkoutUrl
     } catch (err) {
-      setProcessingCheckout(false)
+      setIsProcessingCheckout(false)
       console.log('[Product/handleCheckoutClick]: ', err)
     }
   }
 
+  // ? An error is raised when [handleCartClick] is passed directly
+  // ? as callback. That's why I am invoking it from another function
   return (
     <S_SwipeableDrawer
       anchor="right"
-      open={open}
-      onClose={() => toggleOpen(false)}
-      onOpen={() => toggleOpen(true)}
+      open={shouldDisplayCart}
+      onClose={() => handleCartClick()}
+      onOpen={() => handleCartClick()}
     >
       <header>
-        <button onClick={() => toggleOpen(false)}>
+        <button onClick={() => handleCartClick()}>
           <X size={24} weight="bold" />
         </button>
       </header>

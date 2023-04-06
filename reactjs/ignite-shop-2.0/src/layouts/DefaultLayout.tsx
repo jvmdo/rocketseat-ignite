@@ -1,5 +1,5 @@
 import { styled } from '@/styles/stitches.config'
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { CartDrawer } from './components/CartDrawer'
@@ -25,12 +25,10 @@ interface DefaultLayoutProps {
 }
 
 export function DefaultLayout({ children }: DefaultLayoutProps) {
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <S_Layout>
-      <Header openDrawer={setIsOpen} />
-      <CartDrawer open={isOpen} toggleOpen={setIsOpen} />
+      <Header />
+      <CartDrawer />
       {children}
       <Footer />
     </S_Layout>
