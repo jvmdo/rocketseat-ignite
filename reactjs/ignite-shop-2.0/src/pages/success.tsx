@@ -8,8 +8,7 @@ import Link from 'next/link'
 import Stripe from 'stripe'
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup'
 import Avatar, { avatarClasses } from '@mui/material/Avatar'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useEffect, useRef } from 'react'
 import { useCart } from '@/hooks/useCart'
 
 /* 
@@ -82,14 +81,12 @@ export default function Success({
   customerName,
   quantity,
 }: SuccessProps) {
-  const router = useRouter()
   const { clearCart } = useCart()
+  const clearCartRef = useRef(clearCart)
 
   useEffect(() => {
-    router.events.on('routeChangeStart', () => {
-      clearCart()
-    })
-  }, [router, clearCart])
+    clearCartRef.current()
+  }, [])
 
   return (
     <>
