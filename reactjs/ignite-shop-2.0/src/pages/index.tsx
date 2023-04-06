@@ -157,12 +157,6 @@ export const getStaticProps: GetStaticProps<
   const products = data.map((product) => {
     const unitAmount = (product.default_price as Stripe.Price)?.currency_options
       ?.usd.unit_amount
-    /* const priceFormatted = unitAmount
-      ? new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
-        }).format(unitAmount / 100)
-      : '' */
 
     return {
       id: product.id,

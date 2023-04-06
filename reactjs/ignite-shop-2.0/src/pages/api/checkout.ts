@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 import { stripe } from '@/lib/stripe'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { CartEntry, Product } from 'use-shopping-cart/core'
+
+type CartProduct = CartEntry & Product
 
 export default async function createCheckoutSession(
   req: NextApiRequest,
@@ -10,10 +13,10 @@ export default async function createCheckoutSession(
     res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const cartDetails = JSON.parse(req.body.cartDetails as string)
-  const lineItems = cartDetails.map((product: any) => ({
+  const cart = JSON.parse(req.body.cart as string)
+  const lineItems = cart.map((product: CartProduct) => ({
     price: product.price_id,
-    quantity: 1,
+    quantity: product.quantity,
   }))
 
   try {

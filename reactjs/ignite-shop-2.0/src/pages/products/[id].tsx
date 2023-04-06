@@ -1,15 +1,14 @@
 import { BrandButton } from '@/components/BrandButton'
 import { ContentContainer } from '@/components/ContentContainer'
 import { ProductHero } from '@/components/ProductHero'
+import { useCart, formatCurrency } from '@/hooks/useCart'
 import { stripe } from '@/lib/stripe'
 import { styled, config } from '@/styles/stitches.config'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
-import { CSSProperties } from 'react'
 import Stripe from 'stripe'
-import { useShoppingCart } from 'use-shopping-cart'
 
-const { fontSizes: fs, colors } = config.theme
+const { fontSizes: fs } = config.theme
 const { media } = config
 
 /* 
@@ -92,40 +91,12 @@ export default function Product({
   price,
   priceId,
 }: ProductProps) {
-  const {
-    cartDetails,
-    addItem,
-    removeItem,
-    currency: _currency,
-  } = useShoppingCart()
+  const { getItem, toggleItem } = useCart()
 
-  const isInCart = Object.keys(cartDetails ?? {}).some((key) => key === id)
-  const currency = _currency ?? 'USD'
-  const btnColor = isInCart
-    ? { '--bg': colors.gray400, '--h-bg': colors.gray300 }
-    : {}
-  // const [isProcessingCheckout, setProcessingCheckout] = useState(false)
-
-  /* async function handleCheckoutClick() {
-    try {
-      setProcessingCheckout(true)
-      const response = await axios.post('/api/checkout', {
-        priceId,
-      })
-      const checkoutUrl = response.data.url
-      window.location.href = checkoutUrl
-    } catch (err) {
-      setProcessingCheckout(false)
-      console.log('[Product/handleCheckoutClick]: ', err)
-    }
-  } */
+  const isInCart = getItem(id)
 
   function handleToggleItem() {
-    if (isInCart) {
-      removeItem(id)
-    } else {
-      addItem({ id, name, price, currency, image: imgUrl })
-    }
+    toggleItem({ id, name, imgUrl, price, priceId })
   }
 
   return (
@@ -142,16 +113,11 @@ export default function Product({
           />
           <S_ProductInfo>
             <h1>{name}</h1>
-            <span>
-              {new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency,
-              }).format(price / 100)}
-            </span>
+            <span>{formatCurrency(price)}</span>
             <p>{description}</p>
             <BrandButton
               onClick={handleToggleItem}
-              style={btnColor as CSSProperties}
+              variants={{ gray: Boolean(isInCart) }}
             >
               {isInCart ? 'Remove' : 'Add to bag'}
             </BrandButton>
@@ -182,12 +148,6 @@ export const getStaticProps: GetStaticProps<ProductProps> = async ({
 
   const unitAmount = (data.default_price as Stripe.Price).currency_options?.usd
     .unit_amount
-  /* const priceFormatted = unitAmount
-    ? new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(unitAmount / 100)
-    : null */
 
   const product = {
     id: data.id,

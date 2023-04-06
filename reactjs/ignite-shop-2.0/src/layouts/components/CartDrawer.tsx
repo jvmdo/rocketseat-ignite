@@ -3,10 +3,10 @@ import { styled, config } from '@/styles/stitches.config'
 import { X } from 'phosphor-react'
 import { BrandButton } from '@/components/BrandButton'
 import { CartDrawerItem } from './CartDrawerItem'
-import { useShoppingCart } from 'use-shopping-cart'
 import imagePlaceholder from 'public/placeholder.png'
 import { useState } from 'react'
 import axios from 'axios'
+import { formatCurrency, useCart } from '@/hooks/useCart'
 
 const { fontSizes } = config.theme
 
@@ -103,17 +103,14 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ open, toggleOpen }: CartDrawerProps) {
-  const { cartDetails, cartCount, formattedTotalPrice } = useShoppingCart()
-  const products = Object.values(cartDetails ?? {})
-
   const [isProcessingCheckout, setProcessingCheckout] = useState(false)
+  const { cart, cartCount, totalPrice } = useCart()
 
   async function handleCheckoutClick() {
     try {
       setProcessingCheckout(true)
-      console.log(products)
       const response = await axios.post('/api/checkout', {
-        cartDetails: JSON.stringify(products),
+        cart: JSON.stringify(cart),
       })
       const checkoutUrl = response.data.url
       window.location.href = checkoutUrl
@@ -140,7 +137,7 @@ export function CartDrawer({ open, toggleOpen }: CartDrawerProps) {
           Shopping Bag <span>{!cartCount ? '(empty)' : ''}</span>
         </h2>
         <ul>
-          {products.map(({ id, image, name, price }) => {
+          {cart.map(({ id, image, name, price }) => {
             const imgUrl = image ?? imagePlaceholder.src
             return (
               <li key={id}>
@@ -158,7 +155,7 @@ export function CartDrawer({ open, toggleOpen }: CartDrawerProps) {
           </div>
           <div>
             <strong>Total amount</strong>
-            <strong>{formattedTotalPrice}</strong>
+            <strong>{formatCurrency(totalPrice ?? 0)}</strong>
           </div>
         </section>
         <BrandButton

@@ -2,11 +2,10 @@ import { config, styled } from '@/styles/stitches.config'
 import { ProductHero as CardThumbnail } from './ProductHero'
 import { Handbag, Trash } from 'phosphor-react'
 import Link from 'next/link'
-import { useShoppingCart } from 'use-shopping-cart'
-import { CSSProperties } from 'react'
 import { BrandButton } from './BrandButton'
+import { formatCurrency, useCart } from '@/hooks/useCart'
 
-const { fontSizes, colors } = config.theme
+const { fontSizes } = config.theme
 
 /* 
   Styles
@@ -77,27 +76,12 @@ export function ProductCard({
   price,
   priceId,
 }: ProductCardProps) {
-  const {
-    addItem,
-    removeItem,
-    currency: _currency,
-    cartDetails,
-  } = useShoppingCart()
+  const { getItem, toggleItem } = useCart()
 
-  const currency = _currency ?? 'USD'
-  const isInCart = Object.keys(cartDetails ?? {}).some((key) => key === id)
-  // TODO: move to component
-  const btnColor = isInCart
-    ? { '--bg': colors.gray400, '--h-bg': colors.gray300 }
-    : {}
+  const isInCart = getItem(id)
 
   function handleToggleItem() {
-    if (isInCart) {
-      removeItem(id)
-    } else {
-      // eslint-disable-next-line camelcase
-      addItem({ id, name, price, currency, image: imgUrl, price_id: priceId })
-    }
+    toggleItem({ id, name, imgUrl, price, priceId })
   }
 
   return (
@@ -108,16 +92,11 @@ export function ProductCard({
       <S_CardTooltip>
         <div>
           <h1>{name}</h1>
-          <span>
-            {new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency,
-            }).format(price / 100)}
-          </span>
+          <span>{formatCurrency(price)}</span>
         </div>
         <BrandButton
           onClick={handleToggleItem}
-          style={btnColor as CSSProperties}
+          variants={{ gray: Boolean(isInCart) }}
         >
           {isInCart ? (
             <Trash size={32} weight="bold" />
