@@ -1,6 +1,11 @@
 import { config, styled } from '@/styles/stitches.config'
 import Image from 'next/image'
 
+const S_ProductImage = styled(Image, {
+  width: '80%',
+  height: 'auto',
+})
+
 const S_ProductHero = styled('div', {
   aspectRatio: '87 / 82',
   background: '$imageGradient',
@@ -13,11 +18,15 @@ const S_ProductHero = styled('div', {
     width: 'auto',
     height: '100cqh',
   },
-})
 
-const S_ProductImage = styled(Image, {
-  width: '80%',
-  height: 'auto',
+  variants: {
+    avatar: {
+      true: {
+        height: '$$avatarSize',
+        width: '$$avatarSize',
+      },
+    },
+  },
 })
 
 interface ProductHeroProps {
@@ -28,6 +37,7 @@ interface ProductHeroProps {
   aspectRatio?: string
   imgMaxWidth?: number
   imgMaxHeight?: number
+  avatar?: boolean
 }
 
 ProductHero.toString = () => '.product-hero'
@@ -38,11 +48,13 @@ export function ProductHero({
   imgMaxWidth = 1203,
   imgMaxHeight = 1203,
   height,
+  avatar,
   ...props
 }: ProductHeroProps) {
   return (
     <S_ProductHero
       className="product-hero"
+      avatar={avatar}
       css={{
         ...props,
         '@media (orientation: portrait)': { height },

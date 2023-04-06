@@ -6,6 +6,8 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import Stripe from 'stripe'
+import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup'
+import Avatar, { avatarClasses } from '@mui/material/Avatar'
 
 /* 
   Styles
@@ -37,10 +39,6 @@ const S_Success = styled('main', {
       fontSize: '$lg',
       maxWidth: '50ch',
     },
-
-    [`& ${ProductHero}`]: {
-      height: '36vh',
-    },
   },
 })
 
@@ -55,19 +53,31 @@ const S_Link = styled(Link, {
   },
 })
 
+const S_AvatarGroup = styled(AvatarGroup, {
+  $$avatarSize: '20vmin',
+
+  [`&.${avatarGroupClasses.root} .${avatarClasses.root}`]: {
+    border: 'none',
+    marginLeft: 'calc($$avatarSize * -0.38)',
+    height: '$$avatarSize',
+    width: '$$avatarSize',
+    boxShadow: '0 0 calc($$avatarSize * 0.4) rgba(0, 0, 0, 0.8)',
+  },
+})
+
 /* 
   Component
 */
 interface SuccessProps {
-  imgUrl: string
-  itemName: string
+  imagesUrl: string[] | undefined
   customerName: string | undefined
+  quantity: number | undefined
 }
 
 export default function Success({
-  imgUrl,
+  imagesUrl,
   customerName,
-  itemName,
+  quantity,
 }: SuccessProps) {
   return (
     <>
@@ -76,17 +86,23 @@ export default function Success({
       </Head>
       <S_Success>
         <ContentContainer>
-          <h1>Successful Purchase!</h1>
           <article>
-            <ProductHero
-              src={imgUrl}
-              imgMaxHeight={500}
-              imgMaxWidth={500}
-              aspectRatio="36/41"
-            />
+            <S_AvatarGroup max={5}>
+              {imagesUrl?.map((imgUrl, index) => (
+                <Avatar key={imgUrl} sx={{ zIndex: index }}>
+                  <ProductHero
+                    src={imgUrl}
+                    imgMaxHeight={500}
+                    imgMaxWidth={500}
+                    avatar
+                  />
+                </Avatar>
+              ))}
+            </S_AvatarGroup>
+            <h1>Successful Purchase!</h1>
             <p>
-              Yay, <strong>{customerName}</strong>! Your{' '}
-              <strong>{itemName}</strong> t-shirt is already on its way to your
+              Yay, <strong>{customerName}</strong>! Your purchase of{' '}
+              <strong>{quantity}</strong> t-shirts is already on its way to your
               home.
             </p>
           </article>
@@ -114,8 +130,14 @@ export const getServerSideProps: GetServerSideProps<SuccessProps> = async ({
     expand: ['line_items', 'line_items.data.price.product'],
   })
 
-  const sessionItem = sessionData.line_items?.data[0].price
-    ?.product as Stripe.Product
+  const sessionItems = sessionData.line_items?.data.map(
+    (lineItem) => lineItem.price?.product as Stripe.Product,
+  )
+  const imagesUrl = sessionItems?.map(({ images }) => images[0])
+  const quantity = sessionData.line_items?.data.reduce(
+    (acc, { quantity }) => acc + (quantity ?? 0),
+    0,
+  )
   const customerName = sessionData.customer_details?.name
   const customerNameFormatted = customerName
     ?.match(/(\w{2,})/g)
@@ -123,8 +145,8 @@ export const getServerSideProps: GetServerSideProps<SuccessProps> = async ({
     .join(' ')
 
   const props = {
-    imgUrl: sessionItem.images[0],
-    itemName: sessionItem.name,
+    imagesUrl,
+    quantity,
     customerName: customerNameFormatted,
   }
 
