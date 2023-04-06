@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
       cartMode="checkout-session"
       stripe={stripePK}
       currency="USD"
-      shouldPersist={false}
+      shouldPersist={true}
     >
       <DefaultLayout>
         <Component {...pageProps} />
