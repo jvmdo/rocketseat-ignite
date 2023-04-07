@@ -134,11 +134,11 @@ export function CartDrawer() {
           Shopping Bag <span>{!cartCount ? '(empty)' : ''}</span>
         </h2>
         <ul>
-          {cart.map(({ id, image, name, price }) => {
+          {cart.map(({ id, image, name, price, quantity }) => {
             const imgUrl = image ?? imagePlaceholder.src
             return (
               <li key={id}>
-                <CartDrawerItem {...{ id, imgUrl, name, price }} />
+                <CartDrawerItem {...{ id, imgUrl, name, price, quantity }} />
               </li>
             )
           })}

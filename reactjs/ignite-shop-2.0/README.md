@@ -15,6 +15,9 @@
     ```jsx
     useEffect(() => {
         const handleRouteChange = () => {
+            // The message is logged but the method does not run
+            // Both localStorage and cart state remain untouched
+            console.log("Did run?")
             clearCart()
         }
         router.events.on('routeChangeStart', handleRouteChange)
@@ -34,3 +37,15 @@
         clearCartRef.current()
     }, [])
     ```
+
+    **ANSWER?** I asked Bing Chat, it answered:
+
+    > The problem is related to how Next.js handles server-side rendering and hydration. When a page is rendered by `getServerSideProps`, Next.js sends the HTML and JSON data to the browser, and then hydrates the page with React on the client side. This means that the `useEffect` hook runs twice: once on the server and once on the client. However, `use-shopping-cart` uses `localStorage` to store the cart state, which is only available on the client side. Therefore, when `clearCart` runs on the server, it does nothing, because there is no `localStorage` to access. When it runs on the client, it clears the localStorage, but it does not update the cart state in React, because `use-shopping-cart` uses a custom reducer that only updates when an action is dispatched.
+
+    It also mentioned that change SSG to SSR resolves the issue:
+
+    > You can change the Home page to use `getServerSideProps` instead of `getStaticProps`, so that it is also pre-rendered on the server for each request. This way, you will trigger a route change on the client side when you click on the link, and the `useEffect` hook on the Success page will run as expected.
+
+    That's correct since everything works when running in dev mode (there is no SSG in dev, only SSR).
+
+    *I am not sure what's the actual cause yet*.

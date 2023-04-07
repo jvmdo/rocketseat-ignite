@@ -15,6 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
       stripe={stripePK}
       currency="USD"
       shouldPersist={true}
+      persistKey="@ignite-shop:cart-1.0.0"
     >
       <DefaultLayout>
         <Component {...pageProps} />

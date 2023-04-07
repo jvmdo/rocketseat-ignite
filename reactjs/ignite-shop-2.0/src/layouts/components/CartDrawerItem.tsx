@@ -1,6 +1,7 @@
 import { ProductHero } from '@/components/ProductHero'
 import { styled, config } from '@/styles/stitches.config'
-import { useShoppingCart } from 'use-shopping-cart'
+import { ItemControl } from './ItemControl'
+import { formatCurrency } from '@/hooks/useCart'
 
 const { fontSizes: fs } = config.theme
 
@@ -19,16 +20,8 @@ const S_ProductInfo = styled('div', {
     fluidFontSize: { min: fs.rg, max: fs.md, viewportUnit: 'vw' },
   },
 
-  '& button': {
-    color: '$green500',
-    fluidFontSize: { min: fs.xs, max: fs.rg, viewportUnit: 'vw' },
-    fontWeight: 'bold',
-    marginTop: 'auto',
-    marginBottom: '0.25rem',
-
-    '&:is(:hover, :focus-visible)': {
-      color: '$green300',
-    },
+  '& > strong': {
+    fluidFontSize: { min: fs.rg, max: fs.md, viewportUnit: 'vw' },
   },
 })
 
@@ -60,6 +53,7 @@ interface CartDrawerItemProps {
   imgUrl: string
   name: string
   price: number
+  quantity: number
 }
 
 export function CartDrawerItem({
@@ -67,26 +61,15 @@ export function CartDrawerItem({
   imgUrl,
   name,
   price,
+  quantity,
 }: CartDrawerItemProps) {
-  const { currency: _currency, removeItem } = useShoppingCart()
-  const currency = _currency ?? 'USD'
-
-  function handleRemoveItem() {
-    removeItem(id)
-  }
-
   return (
     <S_CartDrawerItem>
       <ProductHero src={imgUrl} />
       <S_ProductInfo>
         <span>{name}</span>
-        <strong>
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency,
-          }).format(price / 100)}
-        </strong>
-        <button onClick={handleRemoveItem}>Remove</button>
+        <strong>{formatCurrency(price)}</strong>
+        <ItemControl id={id} quantity={quantity} />
       </S_ProductInfo>
     </S_CartDrawerItem>
   )
