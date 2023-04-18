@@ -34,7 +34,7 @@ export const Button = styled('button', {
         color: '$white',
         background: '$ignite500',
 
-        '&:not(:disabled):hover': {
+        '&:not(:disabled):is(:hover, :focus-visible)': {
           background: '$ignite300',
         },
 
@@ -47,7 +47,7 @@ export const Button = styled('button', {
         color: '$ignite300',
         border: '2px solid $ignite500',
 
-        '&:not(:disabled):hover': {
+        '&:not(:disabled):is(:hover, :focus-visible)': {
           background: '$ignite500',
           color: '$white',
         },
@@ -61,7 +61,7 @@ export const Button = styled('button', {
       tertiary: {
         color: '$gray100',
 
-        '&:not(:disabled):hover': {
+        '&:not(:disabled):is(:hover, :focus-visible)': {
           color: '$white',
         },
 

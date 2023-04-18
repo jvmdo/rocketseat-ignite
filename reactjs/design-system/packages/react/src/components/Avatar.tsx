@@ -9,8 +9,8 @@ import * as RadixAvatar from '@radix-ui/react-avatar'
 const AvatarContainer = styled(RadixAvatar.Root, {
   borderRadius: '$full',
   display: 'inline-block',
-  width: '$12',
-  height: '$12',
+  width: '$16',
+  height: '$16',
   overflow: 'hidden',
 })
 
