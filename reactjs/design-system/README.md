@@ -1,6 +1,6 @@
 # Projeto 05 - Design System
 
-> *O meu projeto publicado está [nesse outro repositório]().*
+> *O meu projeto publicado está [nesse outro repositório](https://github.com/jvmdo/ignite-design-system).*
 
 O quinto módulo da trilha atualizada de ReactJS do *bootcamp* Ignite da [Rocketseat](https://www.rocketseat.com.br/) faz uma introdução a Design Systems, ensinando como implementar e documentar um UI Kit baseado no sistema de design Andrômeda. React.js, Stitches, Storybook, turborepo e changesets são algumas das tecnologias utilizadas. O projeto é publicado no NPM e GitHub Pages.
 
@@ -16,6 +16,7 @@ O projeto original está disponível [neste repositório](https://github.com/roc
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
   - [Questions](#questions)
+  - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Author](#author)
 
@@ -41,9 +42,9 @@ Sem o uso de um `monorepo`, a importação de recursos de um projeto em outro se
 
 ### Links
 
-- [Remote repository]()
+- [Remote repository](https://github.com/jvmdo/ignite-design-system)
 
-- [Live preview]()
+- [Storybook live preview](https://jvmdo.github.io/ignite-design-system/)
 
 ## My process
 
@@ -125,6 +126,10 @@ It possible to cache dependencies using `actions/cache@v3`
 ### Questions
 
 1. Por que `description story` não funciona com apenas uma `StoryObj` na versão 6.5?
+
+### Continued development
+
+- Utilizar [GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
 
 ### Useful resources
 
