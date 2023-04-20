@@ -1,4 +1,4 @@
-# Projeto 05 - Design System
+# Projeto / Desafio 05 - Design System
 
 > *O meu projeto publicado está [nesse outro repositório](https://github.com/jvmdo/ignite-design-system).*
 
@@ -35,6 +35,8 @@ Sem o uso de um `monorepo`, a importação de recursos de um projeto em outro se
 3. Implementar os componentes em React
 4. Documentar cada componente em *stories*
 5. Publicar o UI Kit e o Storybook
+
+**Como desafio, implementei e documentei outros 2 componentes: Tooltip e Toast.**
 
 ### Screenshot
 
