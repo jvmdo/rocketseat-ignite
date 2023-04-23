@@ -1,10 +1,9 @@
-import { Box, Button, Text, TextInput, styled } from '@ignite-ui/react'
+import { Box, Button, TextInput, styled } from '@ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ErrorMessage } from '@hookform/error-message'
-import { breakpoints } from '@/styles/globals'
+import { ValidationMessage } from '@/components/ValidationMessage'
 
 /* 
   Styles
@@ -23,16 +22,6 @@ const Cta = styled(Box, {
 
   [`> ${Button}`]: {
     fontWeight: '$bold',
-  },
-})
-
-export const ValidationMessage = styled(Text, {
-  color: '#F75A68 !important',
-  fontSize: '$xs !important',
-  paddingLeft: '$4',
-
-  [`@media (min-width: ${breakpoints.lg})`]: {
-    fontSize: '$sm !important',
   },
 })
 
@@ -92,12 +81,10 @@ export function CtaUsername() {
           Reservar <ArrowRight size={20} weight="bold" />
         </Button>
       </Cta>
-      <ErrorMessage
-        errors={errors}
+      <ValidationMessage
         name="username"
-        render={({ message }) => (
-          <ValidationMessage as="span">{message}</ValidationMessage>
-        )}
+        errors={errors}
+        css={{ paddingLeft: '$4' }}
       />
     </FormWrapper>
   )
