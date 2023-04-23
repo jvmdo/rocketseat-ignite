@@ -16,6 +16,7 @@ export const ContentContainer = styled('div', {
   maxWidth: 'calc($$baseWidth + 2 * $$fluidPadding)',
   marginInline: 'auto',
   paddingInline: '$$fluidPadding',
+  paddingBlock: '6rem',
 
   '@media (orientation: landscape)': {
     paddingBlock: '2rem',
@@ -27,5 +28,9 @@ export const ContentContainer = styled('div', {
     [`@media (min-height: ${breakpoints.lg})`]: {
       paddingBlock: '6rem',
     },
+  },
+
+  [`@media (orientation: portrait) and (max-height: 40em)`]: {
+    paddingBlock: '2rem',
   },
 })

@@ -1,4 +1,4 @@
-import { Box, Heading, Text, globalCss } from '@ignite-ui/react'
+import { Box, Button, Heading, Text, globalCss } from '@ignite-ui/react'
 
 export const globalStyles = globalCss({
   // Reset
@@ -60,6 +60,10 @@ export const globalStyles = globalCss({
     '& div:has(> input):focus-within': {
       outlineColor: '$ignite300',
     },
+  },
+
+  [`${Button}`]: {
+    fontWeight: '$bold !important',
   },
 })
 
