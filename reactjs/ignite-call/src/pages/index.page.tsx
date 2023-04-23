@@ -1,3 +1,3 @@
-export default function Home() {
-  return <h1>I am here</h1>
-}
+// By exporting from Home directory, we tell Next.js
+// that Home/index.jsx is the home page
+export { default } from './Home'

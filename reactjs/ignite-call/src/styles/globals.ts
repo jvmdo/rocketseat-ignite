@@ -1,4 +1,4 @@
-import { globalCss } from '@ignite-ui/react'
+import { Box, Heading, Text, globalCss } from '@ignite-ui/react'
 
 export const globalStyles = globalCss({
   // Reset
@@ -37,7 +37,7 @@ export const globalStyles = globalCss({
   // General
   html: {
     backgroundColor: '$gray900',
-    color: '$gray100',
+    color: '$gray200',
     fontFamily: 'var(--font-family)', // See _app.tsx
     fontWeight: '$regular',
     lineHeight: '$base',
@@ -47,4 +47,27 @@ export const globalStyles = globalCss({
     minHeight: '100vh',
     minWidth: '20rem',
   },
+
+  [`${Heading}`]: {
+    color: '$white !important',
+  },
+
+  [`${Text}`]: {
+    color: '$gray200 !important',
+  },
+
+  [`${Box}`]: {
+    '& div:has(> input):focus-within': {
+      outlineColor: '$ignite300',
+    },
+  },
 })
+
+export const breakpoints = {
+  xs: '23.4375em',
+  sm: '36em',
+  md: '48em',
+  lg: '62em',
+  xl: '75em',
+  xxl: '87.5em',
+} as const
