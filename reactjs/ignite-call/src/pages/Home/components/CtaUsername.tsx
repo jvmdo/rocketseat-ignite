@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
+import { useRouter } from 'next/router'
 
 /* 
   Styles
@@ -54,7 +55,6 @@ export function CtaUsername() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { isSubmitting, errors },
   } = useForm<CtaFormData>({
     resolver: zodResolver(CtaUsernameSchema),
@@ -62,11 +62,17 @@ export function CtaUsername() {
       username: '',
     },
   })
+  const router = useRouter()
 
   async function handleCtaForm(data: CtaFormData) {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
     console.log(data)
-    reset()
+    router.push({
+      pathname: '/register',
+      query: {
+        username: data.username,
+      },
+    })
   }
 
   return (
