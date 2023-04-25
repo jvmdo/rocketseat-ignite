@@ -25,7 +25,7 @@ export const ContentContainer = styled('div', {
       paddingBlock: '4rem',
     },
 
-    [`@media (min-height: ${breakpoints.lg})`]: {
+    [`@media (min-width: ${breakpoints.lg})`]: {
       paddingBlock: '6rem',
     },
   },

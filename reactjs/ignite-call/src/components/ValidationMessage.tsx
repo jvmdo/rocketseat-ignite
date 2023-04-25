@@ -6,7 +6,7 @@ import { ComponentProps } from 'react'
 /* 
   Styles
 */
-const Message = styled(Text, {
+export const Message = styled(Text, {
   color: '#F75A68 !important',
   fontSize: '$xs !important',
 
