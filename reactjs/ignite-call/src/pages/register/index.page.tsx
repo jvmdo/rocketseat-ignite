@@ -31,7 +31,6 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
     setValue,
   } = useForm<RegisterFormData>({
@@ -52,7 +51,7 @@ export default function Register() {
   async function handleRegister(data: RegisterFormData) {
     try {
       await api.post('/users', data)
-      reset()
+      router.push('/register/calendar')
     } catch (err) {
       const e = err as AxiosError<{ message: string }>
       if (e.response?.data.message) {
