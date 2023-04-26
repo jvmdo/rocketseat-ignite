@@ -2,41 +2,42 @@ import { Heading, Text, styled } from '@ignite-ui/react'
 import pattern from '../../assets/pattern.png'
 import { breakpoints } from '@/styles/globals'
 import Image from 'next/image'
-import { ContentContainer } from '@/components/ContentContainer'
 
 export const S_Home = styled('main', {
-  minHeight: '100vh',
-  backgroundImage: `url(${pattern.src})`,
-  backgroundPosition: 'top 60% center',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: '100% 50%',
-  overflow: 'hidden',
+  // From 32px to 64px at 320px to 992px
+  $$fluidGap: 'clamp(2rem, 1.048rem + 4.76vw, 4rem)',
+
+  display: 'grid',
+  gridAutoRows: 'min-content 1fr',
+  gap: '$$fluidGap',
+  placeContent: 'center',
 
   [`@media (min-width: ${breakpoints.lg})`]: {
-    backgroundPosition: 'left center',
-    backgroundSize: 'auto 76%',
+    // From 64px to 96px at 992px to 1200px
+    $$fluidGap: 'clamp(4rem, -5.538rem + 15.38vw, 6rem)',
+
+    gridTemplateColumns: '41.38% 1fr',
+    alignItems: 'center',
+    gap: '$$fluidGap',
+
+    position: 'relative',
+    left: '8.333%',
   },
 
-  [`${ContentContainer}`]: {
-    minHeight: 'inherit',
-    display: 'grid',
-    placeContent: 'center',
-    gap: '2rem',
+  '&::before': {
+    content: '',
+    inset: 0,
+    position: 'fixed',
+    zIndex: -1,
+
+    backgroundImage: `url(${pattern.src})`,
+    backgroundPosition: 'top calc(40vmin - $$fluidGap) center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% 50%',
 
     [`@media (min-width: ${breakpoints.lg})`]: {
-      $$baseWidth: '72.5em',
-      $$fluidPadding: 0,
-
-      gridTemplateColumns: '41.38% 1fr',
-      alignItems: 'center',
-      gap: '4rem',
-
-      position: 'relative',
-      left: '8.333%',
-    },
-
-    [`@media (min-width: ${breakpoints.xl})`]: {
-      gap: '6rem',
+      backgroundPosition: 'left center',
+      backgroundSize: 'auto 76%',
     },
   },
 })

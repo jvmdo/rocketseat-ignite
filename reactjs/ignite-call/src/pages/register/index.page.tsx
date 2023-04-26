@@ -1,8 +1,7 @@
-import { Button, MultiStep, TextInput } from '@ignite-ui/react'
+import { Button, TextInput } from '@ignite-ui/react'
 import { StepInstructions } from './components/StepInstructions'
 import { ArrowRight } from 'phosphor-react'
-import { S_Box, S_Register } from './styles'
-import { ContentContainer } from '@/components/ContentContainer'
+import { RegistrationBox, S_Register } from './styles'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,6 +10,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { api } from '@/lib/axios'
 import { AxiosError } from 'axios'
+import { AppContainer } from '@/components/AppContainer'
 
 const RegisterFormSchema = z.object({
   username: z
@@ -61,14 +61,14 @@ export default function Register() {
   }
 
   return (
-    <S_Register>
-      <ContentContainer>
-        <StepInstructions
-          title="Bem-vindo ao Ignite Call!"
-          body="Precisamos de algumas informações para criar seu perfil! Ah, você pode editar essas informações depois."
-        />
-        <MultiStep size={4} currentStep={1} />
-        <S_Box as="form" onSubmit={handleSubmit(handleRegister)}>
+    <AppContainer>
+      <StepInstructions
+        title="Bem-vindo ao Ignite Call!"
+        body="Precisamos de algumas informações para criar seu perfil! Ah, você pode editar essas informações depois."
+        step={1}
+      />
+      <S_Register>
+        <RegistrationBox as="form" onSubmit={handleSubmit(handleRegister)}>
           <div>
             <label htmlFor="username">Nome de usuário</label>
             <TextInput
@@ -87,8 +87,8 @@ export default function Register() {
           <Button disabled={isSubmitting}>
             Próximo passo <ArrowRight size={20} weight="bold" />
           </Button>
-        </S_Box>
-      </ContentContainer>
-    </S_Register>
+        </RegistrationBox>
+      </S_Register>
+    </AppContainer>
   )
 }

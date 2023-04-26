@@ -1,31 +1,9 @@
-import { ContentContainer } from '@/components/ContentContainer'
 import { breakpoints } from '@/styles/globals'
 import { Box, styled } from '@ignite-ui/react'
 
-export const S_Calendar = styled('main', {
-  [`> ${ContentContainer}`]: {
-    display: 'grid',
-    gap: '$6',
+export const S_Calendar = styled('main', {})
 
-    [`>:not(${Box})`]: {
-      paddingInline: '$3',
-    },
-
-    [`@media (min-width: ${breakpoints.md})`]: {
-      [`>:not(${Box})`]: {
-        paddingInline: '$4',
-      },
-    },
-
-    [`@media (min-width: ${breakpoints.lg})`]: {
-      [`>:not(${Box})`]: {
-        paddingInline: '$6',
-      },
-    },
-  },
-})
-
-export const S_Box = styled(Box, {
+export const CalendarConnectionBox = styled(Box, {
   display: 'grid',
   gap: '$4',
   padding: '$3',

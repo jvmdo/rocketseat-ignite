@@ -1,13 +1,13 @@
+import { AppContainer } from '@/components/AppContainer'
 import { Heading, Text } from '@ignite-ui/react'
 import { Hero, HeroContent, S_Home } from './styles'
-import { ContentContainer } from '@/components/ContentContainer'
-import hero from '../../assets/hero.png'
 import { CtaUsername } from './components/CtaUsername'
+import hero from '../../assets/hero.png'
 
 export default function Home() {
   return (
-    <S_Home>
-      <ContentContainer>
+    <AppContainer landing>
+      <S_Home>
         <Hero
           src={hero.src}
           width={827}
@@ -24,7 +24,7 @@ export default function Home() {
           </Text>
           <CtaUsername />
         </HeroContent>
-      </ContentContainer>
-    </S_Home>
+      </S_Home>
+    </AppContainer>
   )
 }

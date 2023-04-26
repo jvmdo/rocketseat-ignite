@@ -1,12 +1,12 @@
-import { MultiStep, Box, Text, Button } from '@ignite-ui/react'
+import { Box, Text, Button } from '@ignite-ui/react'
 import { StepInstructions } from '../components/StepInstructions'
 import { ArrowRight } from 'phosphor-react'
-import { S_Box, S_Calendar } from './styles'
-import { ContentContainer } from '@/components/ContentContainer'
+import { CalendarConnectionBox, S_Calendar } from './styles'
 import { useRouter } from 'next/router'
 import { Message } from '@/components/ValidationMessage'
 import { signIn, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
+import { AppContainer } from '@/components/AppContainer'
 
 export default function Calendar() {
   const router = useRouter()
@@ -29,14 +29,14 @@ export default function Calendar() {
   }
 
   return (
-    <S_Calendar>
-      <ContentContainer>
-        <StepInstructions
-          title="Conecte sua agenda!"
-          body="Conecte o seu calendário para verificar automaticamente as horas ocupadas e os novos eventos à medida em que são agendados."
-        />
-        <MultiStep size={4} currentStep={2} />
-        <S_Box>
+    <AppContainer>
+      <StepInstructions
+        title="Conecte sua agenda!"
+        body="Conecte o seu calendário para verificar automaticamente as horas ocupadas e os novos eventos à medida em que são agendados."
+        step={2}
+      />
+      <S_Calendar>
+        <CalendarConnectionBox>
           <Box>
             <Text as="span">Google Agenda</Text>
             {isSignedIn ? (
@@ -59,8 +59,8 @@ export default function Calendar() {
           <Button disabled={!isSignedIn}>
             Próximo passo <ArrowRight size={20} weight="bold" />
           </Button>
-        </S_Box>
-      </ContentContainer>
-    </S_Calendar>
+        </CalendarConnectionBox>
+      </S_Calendar>
+    </AppContainer>
   )
 }
