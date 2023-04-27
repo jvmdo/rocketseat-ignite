@@ -8,6 +8,7 @@ import { Formatter } from '@/utils/formatter'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
+import { api } from '@/lib/axios'
 
 const IntervalsFormSchema = z.object({
   intervals: z
@@ -44,7 +45,7 @@ const IntervalsFormSchema = z.object({
 })
 
 type IntervalsFormData = z.input<typeof IntervalsFormSchema>
-type IntervalsFormDataValidated = z.output<typeof IntervalsFormSchema>
+type IntervalsFormDataFine = z.output<typeof IntervalsFormSchema>
 
 export default function Intervals() {
   const {
@@ -76,9 +77,10 @@ export default function Intervals() {
   })
 
   async function handleOnSubmit(data: any) {
-    const validatedData = data as IntervalsFormDataValidated
-    await new Promise((resolve) => setTimeout(resolve, 250))
-    console.log(validatedData)
+    const { intervals } = data as IntervalsFormDataFine
+    await api.post('/users/time-intervals', {
+      intervals,
+    })
   }
 
   return (
