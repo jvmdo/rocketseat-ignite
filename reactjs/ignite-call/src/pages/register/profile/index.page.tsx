@@ -11,6 +11,8 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
+import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
 
 const ProfileFormSchema = z.object({
   bio: z
@@ -36,9 +38,14 @@ export default function Profile() {
       bio: '',
     },
   })
+  const router = useRouter()
 
-  function handleOnSubmit(data: ProfileFormData) {
-    console.log(data)
+  async function handleOnSubmit(data: ProfileFormData) {
+    const { bio } = data
+    await api.put('/users/profile', {
+      bio,
+    })
+    router.push(`/schedule/${session.data?.user.username}`)
   }
 
   return (
