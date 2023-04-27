@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
 import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
 
 const IntervalsFormSchema = z.object({
   intervals: z
@@ -75,12 +76,14 @@ export default function Intervals() {
     control,
     name: 'intervals',
   })
+  const router = useRouter()
 
   async function handleOnSubmit(data: any) {
     const { intervals } = data as IntervalsFormDataFine
     await api.post('/users/time-intervals', {
       intervals,
     })
+    router.push('/register/profile')
   }
 
   return (
