@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse, NextPageContext } from 'next'
 import { Adapter } from 'next-auth/adapters'
 import { parseCookies, destroyCookie } from 'nookies'
 import { prisma } from '../prisma'
 
 export function PrismaAdapter(
-  req: NextApiRequest,
-  res: NextApiResponse,
+  req: NextApiRequest | NextPageContext['req'],
+  res: NextApiResponse | NextPageContext['res'],
 ): Adapter {
   return {
     async createUser(user) {

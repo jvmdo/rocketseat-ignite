@@ -1,15 +1,15 @@
 /* eslint-disable camelcase */
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse, NextPageContext } from 'next'
 import { PrismaAdapter } from '@/lib/auth/prisma-adapter'
 
 const clientId = process.env.GOOGLE_AUTH_CLIENT_ID ?? ''
 const clientSecret = process.env.GOOGLE_AUTH_SECRET_KEY ?? ''
 
 export function buildNextAuthOptions(
-  req: NextApiRequest,
-  res: NextApiResponse,
+  req: NextApiRequest | NextPageContext['req'],
+  res: NextApiResponse | NextPageContext['res'],
 ): NextAuthOptions {
   return {
     adapter: PrismaAdapter(req, res),
