@@ -28,6 +28,10 @@ export default function Calendar() {
     await signIn('google')
   }
 
+  function handleNextStepNavigation() {
+    router.push('/register/intervals')
+  }
+
   return (
     <AppContainer>
       <StepInstructions
@@ -56,7 +60,7 @@ export default function Calendar() {
               habilitou as permissões de acesso ao Google Calendar.
             </Message>
           )}
-          <Button disabled={!isSignedIn}>
+          <Button disabled={!isSignedIn} onClick={handleNextStepNavigation}>
             Próximo passo <ArrowRight size={20} weight="bold" />
           </Button>
         </CalendarConnectionBox>
