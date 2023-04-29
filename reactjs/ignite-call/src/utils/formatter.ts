@@ -4,15 +4,16 @@ export const Formatter = {
    * of the day of the week in the default language of the user's browser.
    *
    * @param {number} day - A number between 0 and 6, where 0 is Sunday and 6 is Saturday.
+   * @param {boolean} short - A boolean indicating whether the name should be in short format.
    *
    * @returns {string} A string representing the weekday name.
    */
-  weekdayName: function (day: number): string {
+  weekdayName: function (day: number, short: boolean = false): string {
     const date = new Date()
     date.setDate(day - date.getDate())
 
     const weekdayName = new Intl.DateTimeFormat(undefined, {
-      weekday: 'long',
+      weekday: short ? 'short' : 'long',
     }).format(date)
 
     return weekdayName.slice(0, 1).toUpperCase().concat(weekdayName.slice(1))
