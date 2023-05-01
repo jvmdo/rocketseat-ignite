@@ -23,12 +23,15 @@ export const AppContainer = styled('div', {
 
   display: 'grid',
   gap: '$$containerGap',
+
   maxWidth: 'calc($$baseWidth + 2 * $$fluidInlinePadding)',
   marginInline: 'auto',
   paddingBlock: '$$fluidBlockPadding',
   paddingInline: '$$fluidInlinePadding',
 
-  // The default one should layout all the other pages
+  transition: '500ms',
+
+  // TODO: named variants
   variants: {
     landing: {
       true: {
@@ -38,6 +41,15 @@ export const AppContainer = styled('div', {
 
           minHeight: '100vh',
           overflow: 'hidden',
+        },
+      },
+    },
+    larger: {
+      true: {
+        [`@media (min-width: ${breakpoints.lg})`]: {
+          $$baseWidth: '51.25rem',
+
+          justifyContent: 'center',
         },
       },
     },

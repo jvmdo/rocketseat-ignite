@@ -10,21 +10,35 @@ import { useCalendarDates } from '../hooks/useCalendarDates'
   Styles
 */
 const CalendarBox = styled(Box, {
-  zIndex: 1,
+  display: 'grid',
+  maxWidth: '33.75rem',
   padding: '$3',
+  zIndex: 1,
 
   [`@media (min-width: ${breakpoints.md})`]: {
     padding: '$4',
   },
 
-  [`@media (min-width: ${breakpoints.md})`]: {
+  [`@media (min-width: ${breakpoints.lg})`]: {
+    width: '33.75rem',
     padding: '$6',
+  },
+
+  variants: {
+    withPicker: {
+      true: {
+        [`@media (min-width: ${breakpoints.lg})`]: {
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+        },
+      },
+    },
   },
 })
 
 const CalendarContent = styled('table', {
   display: 'grid',
-  // TODO: check font-family
+  gridAutoRows: 'auto 1fr',
 })
 
 const CalendarHeader = styled('thead', {
@@ -88,8 +102,10 @@ const CalendarHeader = styled('thead', {
 })
 
 const CalendarBody = styled('tbody', {
-  display: 'grid',
+  display: 'flex',
+  flexDirection: 'column',
   gap: '$1',
+  justifyContent: 'space-around',
 
   tr: {
     display: 'flex',
@@ -179,7 +195,7 @@ export function Calendar({ selectedDate, setSelectedDate }: CalendarProps) {
   }
 
   return (
-    <CalendarBox>
+    <CalendarBox withPicker={Boolean(selectedDate)}>
       <CalendarContent>
         <CalendarHeader>
           <tr>
