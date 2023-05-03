@@ -120,12 +120,14 @@ export default function Intervals() {
               <div>
                 <TextInput
                   type="time"
+                  step="3600"
                   inputMode="numeric"
                   {...register(`intervals.${index}.start` as const)}
                   disabled={!inputs[index].checked}
                 />
                 <TextInput
                   type="time"
+                  step="3600"
                   inputMode="numeric"
                   disabled={!inputs[index].checked}
                   {...register(`intervals.${index}.end` as const)}

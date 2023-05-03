@@ -1,6 +1,7 @@
 import { breakpoints } from '@/styles/globals'
 import { Box, Text, styled } from '@ignite-ui/react'
 import dayjs from 'dayjs'
+import { Times } from './SchedulingCalendar'
 
 /* 
   Styles
@@ -86,6 +87,7 @@ const Time = styled('button', {
 
   '&:disabled': {
     backgroundColor: '$gray700',
+    cursor: 'not-allowed',
 
     [`> ${Text}`]: {
       color: '$gray300 !important',
@@ -100,30 +102,25 @@ const Time = styled('button', {
 /* 
   Component
 */
-export type Times = {
-  available: Array<number>
-  busy: Array<number>
-}
-
 interface TimePickerProps {
   date: dayjs.Dayjs | null
   times: Times
 }
 
 export function TimePicker({ date, times }: TimePickerProps) {
+  const availableTimes = new Map(times.available.map((time) => [time, true]))
+
   return (
     <S_TimePicker active={Boolean(date)}>
       {date && (
         <>
           <Head>
             <Text as="strong">{date.format('dddd')}</Text>
-            <Text as="span">{`, ${date.format('DD')} ${date.format(
-              'MMMM',
-            )}`}</Text>
+            <Text as="span">{`, ${date.format('DD[ de ]MMMM')}`}</Text>
           </Head>
           <Body>
-            {times.available.map((time) => (
-              <Time key={time}>
+            {times.slots.map((time) => (
+              <Time key={time} disabled={!availableTimes.has(time)}>
                 <Text as="span">{`${time}h00`}</Text>
               </Time>
             ))}

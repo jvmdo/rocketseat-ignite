@@ -1,10 +1,15 @@
 import { styled } from '@ignite-ui/react'
 import { Calendar } from './Calendar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import { TimePicker, Times } from './TimePicker'
+import { TimePicker } from './TimePicker'
 import { breakpoints } from '@/styles/globals'
+import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
 
+/* 
+  Styles
+*/
 const S_SchedulingCalendar = styled('main', {
   display: 'grid',
   gridTemplateRows: 'auto 0',
@@ -33,13 +38,44 @@ const S_SchedulingCalendar = styled('main', {
   },
 })
 
+/* 
+  Component
+*/
+export type Times = {
+  slots: Array<number>
+  available: Array<number>
+}
+
 export function SchedulingCalendar() {
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null)
+  const [times, setTimes] = useState<Times>({
+    slots: [],
+    available: [],
+  })
+  const router = useRouter()
 
-  const times: Times = {
-    available: [9, 10, 11, 12, 13, 14, 15, 16],
-    busy: [8, 12, 17],
-  }
+  const username = router.query.username as string
+
+  useEffect(() => {
+    async function fetchTimes() {
+      if (!username || !selectedDate) {
+        return
+      }
+
+      const date = selectedDate.format('YYYY-MM-DD')
+
+      const response = await api.get(`/users/${username}/availability`, {
+        params: { date },
+      })
+
+      setTimes({
+        slots: response.data.timeSlots,
+        available: response.data.availableTimes,
+      })
+    }
+
+    fetchTimes()
+  }, [username, selectedDate])
 
   return (
     <S_SchedulingCalendar withPicker={Boolean(selectedDate)}>
