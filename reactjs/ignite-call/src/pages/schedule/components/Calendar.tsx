@@ -166,7 +166,7 @@ const CalendarDay = styled('button', {
   Component
 */
 const weekdays = Array.from({ length: 7 }, (_, i) =>
-  Formatter.weekdayName(i + 3, true),
+  Formatter.weekdayName(i, true),
 )
 
 interface CalendarProps {

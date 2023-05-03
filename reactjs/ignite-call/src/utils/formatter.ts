@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 export const Formatter = {
   /**
    * Formats a number representing a day of the week to its corresponding name
@@ -9,19 +11,19 @@ export const Formatter = {
    * @returns {string} A string representing the weekday name.
    */
   weekdayName: function (day: number, short: boolean = false): string {
-    const date = new Date()
-    date.setDate(day - date.getDate())
+    const date = dayjs().startOf('week').set('day', day)
 
-    const weekdayName = new Intl.DateTimeFormat(undefined, {
-      weekday: short ? 'short' : 'long',
-    }).format(date)
+    const weekdayName = date.format(short ? 'ddd[.]' : 'dddd')
 
     return weekdayName.slice(0, 1).toUpperCase().concat(weekdayName.slice(1))
   },
+
   /**
    * Converts a time string in the format HH:MM to minutes.
+   *
    * @param {string} calendarTime - The time string to convert.
    * @returns {number} The time in minutes.
+   *
    */
   calendarTimeToMinutes: function (calendarTime: string): number {
     const [hours, minutes] = calendarTime.split(':')
