@@ -1,11 +1,12 @@
 import { styled } from '@ignite-ui/react'
 import { Calendar } from './Calendar'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import dayjs from 'dayjs'
 import { TimePicker } from './TimePicker'
 import { breakpoints } from '@/styles/globals'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
+import { useQuery } from '@tanstack/react-query'
 
 /* 
   Styles
@@ -48,34 +49,34 @@ export type Times = {
 
 export function SchedulingCalendar() {
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null)
-  const [times, setTimes] = useState<Times>({
-    slots: [],
-    available: [],
-  })
   const router = useRouter()
 
-  const username = router.query.username as string
+  const date = selectedDate?.format('YYYY-MM-DD')
 
-  useEffect(() => {
-    async function fetchTimes() {
-      if (!username || !selectedDate) {
-        return
-      }
-
-      const date = selectedDate.format('YYYY-MM-DD')
+  const { data } = useQuery({
+    queryKey: ['times', { date }],
+    queryFn: async ({ queryKey }) => {
+      const username = router.query.username as string
+      const [, { date }] = queryKey as [string, { date: string | undefined }]
 
       const response = await api.get(`/users/${username}/availability`, {
         params: { date },
       })
 
-      setTimes({
+      const data: Times = {
         slots: response.data.timeSlots,
         available: response.data.availableTimes,
-      })
-    }
+      }
 
-    fetchTimes()
-  }, [username, selectedDate])
+      return data
+    },
+    enabled: Boolean(selectedDate),
+  })
+
+  const times = data ?? {
+    slots: [],
+    available: [],
+  }
 
   return (
     <S_SchedulingCalendar withPicker={Boolean(selectedDate)}>

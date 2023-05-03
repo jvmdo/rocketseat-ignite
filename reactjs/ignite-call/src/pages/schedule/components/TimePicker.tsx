@@ -121,7 +121,7 @@ export function TimePicker({ date, times }: TimePickerProps) {
           <Body>
             {times.slots.map((time) => (
               <Time key={time} disabled={!availableTimes.has(time)}>
-                <Text as="span">{`${time}h00`}</Text>
+                <Text as="span">{`${String(time).padStart(2, '0')}h00`}</Text>
               </Time>
             ))}
           </Body>
