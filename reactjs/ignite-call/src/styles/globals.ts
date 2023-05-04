@@ -38,7 +38,7 @@ export const globalStyles = globalCss({
   html: {
     backgroundColor: '$gray900',
     color: '$gray200',
-    fontFamily: 'var(--font-family)', // See _app.tsx
+    fontFamily: '$default',
     fontWeight: '$regular',
     lineHeight: '$base',
   },
@@ -63,7 +63,7 @@ export const globalStyles = globalCss({
   },
 
   [`${Button}`]: {
-    fontWeight: '$bold !important',
+    fontWeight: '$medium !important',
   },
 })
 

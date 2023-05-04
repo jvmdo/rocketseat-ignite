@@ -56,7 +56,6 @@ const CalendarHeader = styled('thead', {
 
       strong: {
         color: '$white !important',
-        fontFamily: 'var(--font-family)',
         textTransform: 'capitalize',
       },
 
