@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const ProfileFormSchema = z.object({
   bio: z
@@ -49,30 +50,34 @@ export default function Profile() {
   }
 
   return (
-    <AppContainer>
-      <StepInstructions
-        title="Defina sua disponibilidade"
-        body="Por último, uma breve descrição e uma foto de perfil."
-        step={4}
-      />
-      <ProfileBox as="form" onSubmit={handleSubmit(handleOnSubmit)}>
-        <div className="head">
-          <Text>Foto de perfil</Text>
-          <Avatar
-            src={session.data?.user.avatar_url}
-            alt={session.data?.user.name}
-          />
-        </div>
-        <div className="body">
-          <Text>Sobre você</Text>
-          <TextArea placeholder="Breve biografia" {...register('bio')} />
-          <ValidationMessage name="bio" errors={errors} />
-        </div>
-        <Button disabled={isSubmitting}>
-          Finalizar <ArrowRight size={20} weight="bold" />
-        </Button>
-      </ProfileBox>
-    </AppContainer>
+    <>
+      <NextSeo title="Atualize seu perfil | Ignite Call" noindex />
+
+      <AppContainer>
+        <StepInstructions
+          title="Quase lá"
+          body="Por último, uma breve descrição e uma foto de perfil."
+          step={4}
+        />
+        <ProfileBox as="form" onSubmit={handleSubmit(handleOnSubmit)}>
+          <div className="head">
+            <Text>Foto de perfil</Text>
+            <Avatar
+              src={session.data?.user.avatar_url}
+              alt={session.data?.user.name}
+            />
+          </div>
+          <div className="body">
+            <Text>Sobre você</Text>
+            <TextArea placeholder="Breve biografia" {...register('bio')} />
+            <ValidationMessage name="bio" errors={errors} />
+          </div>
+          <Button disabled={isSubmitting}>
+            Finalizar <ArrowRight size={20} weight="bold" />
+          </Button>
+        </ProfileBox>
+      </AppContainer>
+    </>
   )
 }
 

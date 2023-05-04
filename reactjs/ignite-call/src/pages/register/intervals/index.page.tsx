@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const IntervalsFormSchema = z.object({
   intervals: z
@@ -87,64 +88,69 @@ export default function Intervals() {
   }
 
   return (
-    <AppContainer>
-      <StepInstructions
-        title="Quase lá"
-        body="Defina o intervalo de horários que você está disponível em cada dia da semana."
-        step={3}
-      />
-      <IntervalsOuterBox as="main">
-        <IntervalsInnerBox
-          as="form"
-          id="intervals"
-          onSubmit={handleSubmit(handleOnSubmit)}
-        >
-          {fields.map((field, index) => (
-            <IntervalsItem key={field.id}>
-              <div>
-                <Controller
-                  control={control}
-                  name={`intervals.${index}.checked`}
-                  render={({ field: { onChange, value } }) => (
-                    <Checkbox
-                      id={String(field.weekday)}
-                      checked={value}
-                      onCheckedChange={(checked) => onChange(checked === true)}
-                    />
-                  )}
-                />
-                <Text as="label" htmlFor={String(field.weekday)}>
-                  {Formatter.weekdayName(field.weekday)}
-                </Text>
-              </div>
-              <div>
-                <TextInput
-                  type="time"
-                  step="3600"
-                  inputMode="numeric"
-                  {...register(`intervals.${index}.start` as const)}
-                  disabled={!inputs[index].checked}
-                />
-                <TextInput
-                  type="time"
-                  step="3600"
-                  inputMode="numeric"
-                  disabled={!inputs[index].checked}
-                  {...register(`intervals.${index}.end` as const)}
-                />
-              </div>
-            </IntervalsItem>
-          ))}
-        </IntervalsInnerBox>
-        <ValidationMessage
-          name="intervals"
-          errors={errors}
-          css={{ marginTop: '-$3' }}
+    <>
+      <NextSeo title="Intervalos | Ignite Call" noindex />
+      <AppContainer>
+        <StepInstructions
+          title="Defina sua disponibilidade"
+          body="Defina o intervalo de horários que você está disponível em cada dia da semana."
+          step={3}
         />
-        <Button type="submit" form="intervals" disabled={isSubmitting}>
-          Próximo passo <ArrowRight size={20} weight="bold" />
-        </Button>
-      </IntervalsOuterBox>
-    </AppContainer>
+        <IntervalsOuterBox as="main">
+          <IntervalsInnerBox
+            as="form"
+            id="intervals"
+            onSubmit={handleSubmit(handleOnSubmit)}
+          >
+            {fields.map((field, index) => (
+              <IntervalsItem key={field.id}>
+                <div>
+                  <Controller
+                    control={control}
+                    name={`intervals.${index}.checked`}
+                    render={({ field: { onChange, value } }) => (
+                      <Checkbox
+                        id={String(field.weekday)}
+                        checked={value}
+                        onCheckedChange={(checked) =>
+                          onChange(checked === true)
+                        }
+                      />
+                    )}
+                  />
+                  <Text as="label" htmlFor={String(field.weekday)}>
+                    {Formatter.weekdayName(field.weekday)}
+                  </Text>
+                </div>
+                <div>
+                  <TextInput
+                    type="time"
+                    step="3600"
+                    inputMode="numeric"
+                    {...register(`intervals.${index}.start` as const)}
+                    disabled={!inputs[index].checked}
+                  />
+                  <TextInput
+                    type="time"
+                    step="3600"
+                    inputMode="numeric"
+                    disabled={!inputs[index].checked}
+                    {...register(`intervals.${index}.end` as const)}
+                  />
+                </div>
+              </IntervalsItem>
+            ))}
+          </IntervalsInnerBox>
+          <ValidationMessage
+            name="intervals"
+            errors={errors}
+            css={{ marginTop: '-$3' }}
+          />
+          <Button type="submit" form="intervals" disabled={isSubmitting}>
+            Próximo passo <ArrowRight size={20} weight="bold" />
+          </Button>
+        </IntervalsOuterBox>
+      </AppContainer>
+    </>
   )
 }

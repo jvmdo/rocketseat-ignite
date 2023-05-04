@@ -11,6 +11,7 @@ import { useEffect } from 'react'
 import { api } from '@/lib/axios'
 import { AxiosError } from 'axios'
 import { AppContainer } from '@/components/AppContainer'
+import { NextSeo } from 'next-seo'
 
 const RegisterFormSchema = z.object({
   username: z
@@ -61,34 +62,40 @@ export default function Register() {
   }
 
   return (
-    <AppContainer>
-      <StepInstructions
-        title="Bem-vindo ao Ignite Call!"
-        body="Precisamos de algumas informações para criar seu perfil! Ah, você pode editar essas informações depois."
-        step={1}
+    <>
+      <NextSeo
+        title="Cadastro | Ignite Call"
+        description="Bem-vindo(a) ao Ignite Call! Precisamos de algumas informações para criar seu perfil! Ah, você pode editar essas informações depois."
       />
-      <S_Register>
-        <RegistrationBox as="form" onSubmit={handleSubmit(handleRegister)}>
-          <div>
-            <label htmlFor="username">Nome de usuário</label>
-            <TextInput
-              id="username"
-              prefix="ignite.com/"
-              size="sm"
-              {...register('username')}
-            />
-            <ValidationMessage name="username" errors={errors} />
-          </div>
-          <div>
-            <label htmlFor="name">Nome completo</label>
-            <TextInput id="name" {...register('name')} />
-            <ValidationMessage name="name" errors={errors} />
-          </div>
-          <Button disabled={isSubmitting}>
-            Próximo passo <ArrowRight size={20} weight="bold" />
-          </Button>
-        </RegistrationBox>
-      </S_Register>
-    </AppContainer>
+      <AppContainer>
+        <StepInstructions
+          title="Bem-vindo ao Ignite Call!"
+          body="Precisamos de algumas informações para criar seu perfil! Ah, você pode editar essas informações depois."
+          step={1}
+        />
+        <S_Register>
+          <RegistrationBox as="form" onSubmit={handleSubmit(handleRegister)}>
+            <div>
+              <label htmlFor="username">Nome de usuário</label>
+              <TextInput
+                id="username"
+                prefix="ignite.com/"
+                size="sm"
+                {...register('username')}
+              />
+              <ValidationMessage name="username" errors={errors} />
+            </div>
+            <div>
+              <label htmlFor="name">Nome completo</label>
+              <TextInput id="name" {...register('name')} />
+              <ValidationMessage name="name" errors={errors} />
+            </div>
+            <Button disabled={isSubmitting}>
+              Próximo passo <ArrowRight size={20} weight="bold" />
+            </Button>
+          </RegistrationBox>
+        </S_Register>
+      </AppContainer>
+    </>
   )
 }

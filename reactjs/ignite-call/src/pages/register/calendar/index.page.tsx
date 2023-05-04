@@ -7,6 +7,7 @@ import { Message } from '@/components/ValidationMessage'
 import { signIn, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { AppContainer } from '@/components/AppContainer'
+import { NextSeo } from 'next-seo'
 
 export default function Calendar() {
   const router = useRouter()
@@ -33,38 +34,45 @@ export default function Calendar() {
   }
 
   return (
-    <AppContainer>
-      <StepInstructions
-        title="Conecte sua agenda!"
-        body="Conecte o seu calendário para verificar automaticamente as horas ocupadas e os novos eventos à medida em que são agendados."
-        step={2}
-      />
-      <S_Calendar>
-        <CalendarConnectionBox>
-          <Box>
-            <Text as="span">Google Agenda</Text>
-            {isSignedIn ? (
-              <Button size="sm" disabled>
-                Conectado
-              </Button>
-            ) : (
-              <Button size="sm" variant="secondary" onClick={handleAuthSignIn}>
-                Conectar
-                <ArrowRight size={20} />
-              </Button>
+    <>
+      <NextSeo title="Conecte sua agenda | Ignite Call" noindex />
+      <AppContainer>
+        <StepInstructions
+          title="Conecte sua agenda!"
+          body="Conecte o seu calendário para verificar automaticamente as horas ocupadas e os novos eventos à medida em que são agendados."
+          step={2}
+        />
+        <S_Calendar>
+          <CalendarConnectionBox>
+            <Box>
+              <Text as="span">Google Agenda</Text>
+              {isSignedIn ? (
+                <Button size="sm" disabled>
+                  Conectado
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={handleAuthSignIn}
+                >
+                  Conectar
+                  <ArrowRight size={20} />
+                </Button>
+              )}
+            </Box>
+            {hasPermissionError && (
+              <Message css={{ marginTop: '-0.75rem' }}>
+                Falha ao se conectar a sua conta Google. Verifique se você
+                habilitou as permissões de acesso ao Google Calendar.
+              </Message>
             )}
-          </Box>
-          {hasPermissionError && (
-            <Message css={{ marginTop: '-0.75rem' }}>
-              Falha ao se conectar a sua conta Google. Verifique se você
-              habilitou as permissões de acesso ao Google Calendar.
-            </Message>
-          )}
-          <Button disabled={!isSignedIn} onClick={handleNextStepNavigation}>
-            Próximo passo <ArrowRight size={20} weight="bold" />
-          </Button>
-        </CalendarConnectionBox>
-      </S_Calendar>
-    </AppContainer>
+            <Button disabled={!isSignedIn} onClick={handleNextStepNavigation}>
+              Próximo passo <ArrowRight size={20} weight="bold" />
+            </Button>
+          </CalendarConnectionBox>
+        </S_Calendar>
+      </AppContainer>
+    </>
   )
 }

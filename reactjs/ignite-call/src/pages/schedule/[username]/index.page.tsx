@@ -6,6 +6,7 @@ import { SchedulingCalendar } from '../views/SchedulingCalendar'
 import { SchedulingForm } from '../views/SchedulingForm'
 import dayjs from 'dayjs'
 import { useState } from 'react'
+import { NextSeo } from 'next-seo'
 
 interface ScheduleProps {
   name: string
@@ -21,17 +22,21 @@ export default function Schedule(props: ScheduleProps) {
   }
 
   return (
-    <AppContainer larger>
-      <ProfileHeader {...props} />
-      {scheduleDate ? (
-        <SchedulingForm
-          scheduleDate={scheduleDate}
-          onBackToCalendar={handleOnBackToCalendar}
-        />
-      ) : (
-        <SchedulingCalendar setScheduleDate={setScheduleDate} />
-      )}
-    </AppContainer>
+    <>
+      <NextSeo title={`Agendar com ${props.name} | Ignite Call`} />
+
+      <AppContainer larger>
+        <ProfileHeader {...props} />
+        {scheduleDate ? (
+          <SchedulingForm
+            scheduleDate={scheduleDate}
+            onBackToCalendar={handleOnBackToCalendar}
+          />
+        ) : (
+          <SchedulingCalendar setScheduleDate={setScheduleDate} />
+        )}
+      </AppContainer>
+    </>
   )
 }
 
