@@ -52,8 +52,7 @@ export function SchedulingCalendar() {
   const router = useRouter()
 
   const date = selectedDate?.format('YYYY-MM-DD')
-
-  const { data } = useQuery({
+  const { data: times } = useQuery({
     queryKey: ['times', { date }],
     queryFn: async ({ queryKey }) => {
       const username = router.query.username as string
@@ -71,12 +70,11 @@ export function SchedulingCalendar() {
       return data
     },
     enabled: Boolean(selectedDate),
+    initialData: {
+      slots: [],
+      available: [],
+    } as Times,
   })
-
-  const times = data ?? {
-    slots: [],
-    available: [],
-  }
 
   return (
     <S_SchedulingCalendar withPicker={Boolean(selectedDate)}>

@@ -1,5 +1,8 @@
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
+import { api } from '@/lib/axios'
 
 type CalendarDate = {
   date: dayjs.Dayjs
@@ -13,7 +16,38 @@ type CalendarDates = {
 
 type CalendarDatesPerWeek = CalendarDates[]
 
+type BusyDates = {
+  busy: Array<number>
+  unscheduled: Array<number>
+}
+
 export function useCalendarDates(currentDate: dayjs.Dayjs) {
+  const router = useRouter()
+  const [year, month] = currentDate.format('YYYY-MM').split('-')
+
+  const { data: busyDates } = useQuery({
+    queryKey: ['busyDates', { year, month }],
+    queryFn: async ({ queryKey }) => {
+      const username = router.query.username as string
+      const { year, month } = queryKey[1] as { year: string; month: string }
+
+      const response = await api.get(`/users/${username}/busy-dates`, {
+        params: { year, month },
+      })
+
+      const data: BusyDates = {
+        busy: response.data.busyDates,
+        unscheduled: response.data.unscheduledDates,
+      }
+
+      return data
+    },
+    initialData: {
+      busy: [],
+      unscheduled: [],
+    } as BusyDates,
+  })
+
   return useMemo(() => {
     const datesInMonth = Array.from(
       { length: currentDate.daysInMonth() },
@@ -42,7 +76,10 @@ export function useCalendarDates(currentDate: dayjs.Dayjs) {
       ...datesInMonth.map(
         (date): CalendarDate => ({
           date,
-          disabled: date.endOf('day').isBefore(dayjs()),
+          disabled:
+            date.endOf('day').isBefore(dayjs()) ||
+            busyDates.unscheduled.includes(date.get('day')) ||
+            busyDates.busy.includes(date.get('date')),
         }),
       ),
       ...datesInNextMonth.map(
@@ -62,5 +99,5 @@ export function useCalendarDates(currentDate: dayjs.Dayjs) {
     )
 
     return calendarDatesPerWeek
-  }, [currentDate])
+  }, [currentDate, busyDates])
 }
