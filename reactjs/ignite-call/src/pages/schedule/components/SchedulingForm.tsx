@@ -14,6 +14,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
 import dayjs from 'dayjs'
+import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
 
 /* 
   Styles
@@ -83,17 +85,13 @@ interface SchedulingFormProps {
 }
 
 const SchedulingFormSchema = z.object({
-  username: z
-    .string()
-    .min(3, { message: 'Insira pelo menos 3 caracteres' })
-    .regex(/^[a-z-]+$/i, {
-      message: 'Insira apenas letras ou traços (-)',
-    })
-    .transform((value) => value.toLowerCase()),
-  email: z
+  guestName: z.string().regex(/^[a-zA-Z]+(?:['., -][a-zA-Z]+)*$/, {
+    message: 'Insira um nome válido',
+  }),
+  guestEmail: z
     .string()
     .min(1, {
-      message: 'Insira seu email',
+      message: 'Email do convidado é obrigatório',
     })
     .refine((value) => isEmail(value), {
       message: 'Formato de email incorreto',
@@ -110,17 +108,28 @@ export function SchedulingForm({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SchedulingFormData>({
     resolver: zodResolver(SchedulingFormSchema),
     defaultValues: {
-      username: '',
-      email: '',
+      guestName: '',
+      guestEmail: '',
     },
   })
+  const router = useRouter()
 
-  function handleOnSubmit(data: SchedulingFormData) {
-    console.log(data)
+  async function handleOnSubmit(data: SchedulingFormData) {
+    const username = String(router.query.username)
+    const { guestName, guestEmail, observations } = data
+
+    await api.post(`/users/${username}/schedule`, {
+      guestName,
+      guestEmail,
+      observations,
+      date: scheduleDate.toISOString(),
+    })
+
+    onBackToCalendar()
   }
 
   function handleCancelSubmit() {
@@ -142,24 +151,19 @@ export function SchedulingForm({
       <hr />
       <Form>
         <InputField>
-          <label htmlFor="username">Seu nome de usuário</label>
-          <TextInput
-            id="username"
-            prefix="ignite.com/"
-            size="sm"
-            {...register('username')}
-          />
+          <label htmlFor="guestName">Nome do convidado</label>
+          <TextInput id="guestName" {...register('guestName')} />
           <ValidationMessage
-            name="username"
+            name="guestName"
             errors={errors}
             css={{ marginTop: '-$2' }}
           />
         </InputField>
         <InputField>
-          <label htmlFor="email">Endereço de email</label>
-          <TextInput id="email" {...register('email')} type="email" />
+          <label htmlFor="guestEmail">Endereço de email do convidado</label>
+          <TextInput id="guestEmail" {...register('guestEmail')} type="email" />
           <ValidationMessage
-            name="email"
+            name="guestEmail"
             errors={errors}
             css={{ marginTop: '-$2' }}
           />
@@ -169,10 +173,15 @@ export function SchedulingForm({
           <TextArea id="observations" {...register('observations')} />
         </InputField>
         <div>
-          <Button variant="tertiary" type="button" onClick={handleCancelSubmit}>
+          <Button
+            variant="tertiary"
+            type="button"
+            onClick={handleCancelSubmit}
+            disabled={isSubmitting}
+          >
             Cancelar
           </Button>
-          <Button>Confirmar</Button>
+          <Button disabled={isSubmitting}>Confirmar</Button>
         </div>
       </Form>
     </S_SchedulingForm>
