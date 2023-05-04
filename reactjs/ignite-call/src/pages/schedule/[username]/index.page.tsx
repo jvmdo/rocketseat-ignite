@@ -25,7 +25,7 @@ export default function Schedule(props: ScheduleProps) {
     <>
       <NextSeo title={`Agendar com ${props.name} | Ignite Call`} />
 
-      <AppContainer larger>
+      <AppContainer size="large">
         <ProfileHeader {...props} />
         {scheduleDate ? (
           <SchedulingForm

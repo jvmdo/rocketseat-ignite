@@ -31,10 +31,9 @@ export const AppContainer = styled('div', {
 
   transition: '500ms',
 
-  // TODO: named variants
   variants: {
-    landing: {
-      true: {
+    size: {
+      landing: {
         [`@media (min-width: ${breakpoints.lg})`]: {
           $$baseWidth: '72.5rem',
           $$fluidInlinePadding: 0,
@@ -43,9 +42,8 @@ export const AppContainer = styled('div', {
           overflow: 'hidden',
         },
       },
-    },
-    larger: {
-      true: {
+
+      large: {
         [`@media (min-width: ${breakpoints.lg})`]: {
           $$baseWidth: '51.25rem',
 

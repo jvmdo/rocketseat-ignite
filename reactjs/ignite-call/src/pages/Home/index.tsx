@@ -12,7 +12,8 @@ export default function Home() {
         title="Home | Ignite Call"
         description="Agendamento descomplicado. Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre."
       />
-      <AppContainer landing>
+
+      <AppContainer size="landing">
         <S_Home>
           <Hero
             src={hero.src}
