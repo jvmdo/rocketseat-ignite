@@ -1,12 +1,4 @@
-import { breakpoints } from '@/styles/globals'
-import {
-  Box,
-  Button,
-  Text,
-  TextArea,
-  TextInput,
-  styled,
-} from '@ignite-ui/react'
+import { Button, Text, TextArea, TextInput } from '@ignite-ui/react'
 import { CalendarBlank, Clock } from 'phosphor-react'
 import { z } from 'zod'
 import isEmail from 'validator/lib/isEmail'
@@ -16,69 +8,8 @@ import { ValidationMessage } from '@/components/ValidationMessage'
 import dayjs from 'dayjs'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
+import { Form, InputField, S_SchedulingForm, ScheduleInfo } from './styled'
 
-/* 
-  Styles
-*/
-const S_SchedulingForm = styled(Box, {
-  display: 'grid',
-  gap: '$6',
-
-  maxWidth: '33.75rem',
-  padding: '$3',
-
-  [`@media (min-width: ${breakpoints.md})`]: {
-    padding: '$4',
-  },
-
-  [`@media (min-width: ${breakpoints.lg})`]: {
-    width: '33.75rem',
-    padding: '$6',
-  },
-
-  '> hr': {
-    border: 'none',
-    borderBottom: '1px solid $gray600',
-  },
-})
-
-const ScheduleInfo = styled('div', {
-  display: 'flex',
-  gap: '$4',
-
-  '> span': {
-    display: 'inline-flex',
-    gap: '$2',
-    alignItems: 'center',
-
-    [`> ${Text}`]: {
-      color: '$white !important',
-    },
-  },
-})
-
-const Form = styled('form', {
-  display: 'grid',
-  gap: '$6',
-
-  '> div:last-of-type': {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-})
-
-const InputField = styled('div', {
-  display: 'grid',
-  gap: '$2',
-
-  '> label': {
-    color: '$white',
-  },
-})
-
-/* 
-  Component
-*/
 interface SchedulingFormProps {
   scheduleDate: dayjs.Dayjs
   onBackToCalendar: () => void

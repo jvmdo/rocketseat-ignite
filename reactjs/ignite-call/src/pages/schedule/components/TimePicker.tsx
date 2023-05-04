@@ -1,7 +1,7 @@
 import { breakpoints } from '@/styles/globals'
 import { Box, Text, styled } from '@ignite-ui/react'
 import dayjs from 'dayjs'
-import { Times } from './SchedulingCalendar'
+import { Times } from '../views/SchedulingCalendar'
 
 /* 
   Styles
