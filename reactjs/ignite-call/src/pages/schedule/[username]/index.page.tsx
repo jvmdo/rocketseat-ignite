@@ -4,6 +4,8 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { prisma } from '@/lib/prisma'
 import { SchedulingCalendar } from '../components/SchedulingCalendar'
 import { SchedulingForm } from '../components/SchedulingForm'
+import dayjs from 'dayjs'
+import { useState } from 'react'
 
 interface ScheduleProps {
   name: string
@@ -12,11 +14,23 @@ interface ScheduleProps {
 }
 
 export default function Schedule(props: ScheduleProps) {
+  const [scheduleDate, setScheduleDate] = useState<dayjs.Dayjs | undefined>()
+
+  function handleOnBackToCalendar() {
+    setScheduleDate(undefined)
+  }
+
   return (
     <AppContainer larger>
       <ProfileHeader {...props} />
-      <SchedulingCalendar />
-      <SchedulingForm />
+      {scheduleDate ? (
+        <SchedulingForm
+          scheduleDate={scheduleDate}
+          onBackToCalendar={handleOnBackToCalendar}
+        />
+      ) : (
+        <SchedulingCalendar setScheduleDate={setScheduleDate} />
+      )}
     </AppContainer>
   )
 }

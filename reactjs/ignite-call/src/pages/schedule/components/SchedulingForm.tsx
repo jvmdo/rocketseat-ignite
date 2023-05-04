@@ -13,6 +13,7 @@ import isEmail from 'validator/lib/isEmail'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ValidationMessage } from '@/components/ValidationMessage'
+import dayjs from 'dayjs'
 
 /* 
   Styles
@@ -76,6 +77,11 @@ const InputField = styled('div', {
 /* 
   Component
 */
+interface SchedulingFormProps {
+  scheduleDate: dayjs.Dayjs
+  onBackToCalendar: () => void
+}
+
 const SchedulingFormSchema = z.object({
   username: z
     .string()
@@ -97,7 +103,10 @@ const SchedulingFormSchema = z.object({
 
 type SchedulingFormData = z.infer<typeof SchedulingFormSchema>
 
-export function SchedulingForm() {
+export function SchedulingForm({
+  scheduleDate,
+  onBackToCalendar,
+}: SchedulingFormProps) {
   const {
     register,
     handleSubmit,
@@ -115,7 +124,7 @@ export function SchedulingForm() {
   }
 
   function handleCancelSubmit() {
-    console.count('Cancelled!')
+    onBackToCalendar()
   }
 
   return (
@@ -123,11 +132,11 @@ export function SchedulingForm() {
       <ScheduleInfo>
         <span>
           <CalendarBlank size={20} />
-          <Text as="span">30 de Abril de 2023</Text>
+          <Text as="span">{scheduleDate.format('DD[ de ]MMMM[ de ]YYYY')}</Text>
         </span>
         <span>
           <Clock size={20} />
-          <Text as="span">20h30</Text>
+          <Text as="span">{scheduleDate.format('HH[h]mm')}</Text>
         </span>
       </ScheduleInfo>
       <hr />
@@ -148,7 +157,7 @@ export function SchedulingForm() {
         </InputField>
         <InputField>
           <label htmlFor="email">Endereço de email</label>
-          <TextInput id="email" {...register('email')} />
+          <TextInput id="email" {...register('email')} type="email" />
           <ValidationMessage
             name="email"
             errors={errors}

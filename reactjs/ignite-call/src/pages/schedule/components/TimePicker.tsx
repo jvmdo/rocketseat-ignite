@@ -105,9 +105,10 @@ const Time = styled('button', {
 interface TimePickerProps {
   date: dayjs.Dayjs | null
   times: Times
+  setDateHour: (time: number) => void
 }
 
-export function TimePicker({ date, times }: TimePickerProps) {
+export function TimePicker({ date, times, setDateHour }: TimePickerProps) {
   const availableTimes = new Map(times.available.map((time) => [time, true]))
 
   return (
@@ -120,7 +121,11 @@ export function TimePicker({ date, times }: TimePickerProps) {
           </Head>
           <Body>
             {times.slots.map((time) => (
-              <Time key={time} disabled={!availableTimes.has(time)}>
+              <Time
+                key={time}
+                disabled={!availableTimes.has(time)}
+                onClick={() => setDateHour(time)}
+              >
                 <Text as="span">{`${String(time).padStart(2, '0')}h00`}</Text>
               </Time>
             ))}

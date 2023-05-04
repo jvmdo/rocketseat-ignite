@@ -47,11 +47,18 @@ export type Times = {
   available: Array<number>
 }
 
-export function SchedulingCalendar() {
+interface SchedulingCalendarProps {
+  setScheduleDate: (date: dayjs.Dayjs) => void
+}
+
+export function SchedulingCalendar({
+  setScheduleDate,
+}: SchedulingCalendarProps) {
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null)
   const router = useRouter()
 
   const date = selectedDate?.format('YYYY-MM-DD')
+
   const { data: times } = useQuery({
     queryKey: ['times', { date }],
     queryFn: async ({ queryKey }) => {
@@ -76,10 +83,15 @@ export function SchedulingCalendar() {
     } as Times,
   })
 
+  function setDateHour(time: number) {
+    const scheduleDate = dayjs(selectedDate).startOf('hour').set('hour', time)
+    setScheduleDate(scheduleDate)
+  }
+
   return (
     <S_SchedulingCalendar withPicker={Boolean(selectedDate)}>
       <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-      <TimePicker date={selectedDate} times={times} />
+      <TimePicker date={selectedDate} times={times} setDateHour={setDateHour} />
     </S_SchedulingCalendar>
   )
 }
