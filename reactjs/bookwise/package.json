@@ -1,0 +1,48 @@
+{
+  "name": "bookwise",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.13.0",
+    "@stitches/react": "^1.2.8",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "axios": "^1.4.0",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.1",
+    "next": "13.4.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^1.2.0",
+    "@storybook/addon-essentials": "^7.0.10",
+    "@storybook/addon-interactions": "^7.0.10",
+    "@storybook/addon-links": "^7.0.10",
+    "@storybook/addon-styling": "^1.0.0-next.2",
+    "@storybook/blocks": "^7.0.10",
+    "@storybook/manager-api": "^7.0.10",
+    "@storybook/nextjs": "^7.0.10",
+    "@storybook/react": "^7.0.10",
+    "@storybook/testing-library": "^0.0.14-next.2",
+    "@storybook/theming": "^7.0.10",
+    "@types/node": "^20.1.1",
+    "@types/uuid": "^9.0.1",
+    "prisma": "^4.13.0",
+    "storybook": "^7.0.10",
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.0"
+  }
+}
