@@ -2,13 +2,13 @@
 import { PrismaClient } from '@prisma/client'
 import { books } from './constants/books'
 import { categories } from './constants/categories'
-import { ratings } from './constants/ratings'
+import { reviews } from './constants/reviews'
 import { users } from './constants/users'
 import { shelves } from './constants/shelves'
 const prisma = new PrismaClient()
 
 async function main() {
-  await prisma.rating.deleteMany()
+  await prisma.review.deleteMany()
   await prisma.user.deleteMany()
   await prisma.categoriesOnBooks.deleteMany()
   await prisma.category.deleteMany()
@@ -60,17 +60,17 @@ async function main() {
     })
   })
 
-  const ratingsSeed = ratings.map((rating) => {
-    return prisma.rating.create({
+  const reviewsSeed = reviews.map((review) => {
+    return prisma.review.create({
       data: {
-        id: rating.id,
-        rate: rating.rate,
-        description: rating.description,
+        id: review.id,
+        rate: review.rate,
+        description: review.description,
         user: {
-          connect: { id: rating.user_id },
+          connect: { id: review.user_id },
         },
         book: {
-          connect: { id: rating.book_id },
+          connect: { id: review.book_id },
         },
       },
     })
@@ -95,7 +95,7 @@ async function main() {
     ...categoriesSeed,
     ...booksSeed,
     ...usersSeed,
-    ...ratingsSeed,
+    ...reviewsSeed,
     ...shelvesSeed,
   ])
 }

@@ -18,7 +18,5 @@ export default function Home() {
       .catch((error) => console.log({ error }))
   }, [])
 
-  console.log({ data })
-
   return <MyComponent {...data} />
 }

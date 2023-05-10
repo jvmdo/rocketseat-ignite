@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { v4 as uuidv4 } from 'uuid'
 
-export const ratings = [
+export const reviews = [
   {
     id: uuidv4(),
     rate: 4,

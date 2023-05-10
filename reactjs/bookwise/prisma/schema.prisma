@@ -15,7 +15,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
-  ratings  Rating[]
+  reviews  Review[]
   shelves  Shelf[]
 
   @@map("users")
@@ -45,7 +45,7 @@ model Book {
   created_at  DateTime @default(now())
 
   categories CategoriesOnBooks[]
-  ratings    Rating[]
+  reviews    Review[]
   shelves    Shelf[]
 
   @@map("books")
@@ -70,7 +70,7 @@ model CategoriesOnBooks {
   @@id([book_id, categoryId])
 }
 
-model Rating {
+model Review {
   id          String   @id @default(uuid())
   rate        Int
   description String
@@ -82,7 +82,7 @@ model Rating {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  @@map("ratings")
+  @@map("reviews")
 }
 
 model Account {
