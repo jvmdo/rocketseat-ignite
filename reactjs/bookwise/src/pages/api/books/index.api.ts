@@ -1,4 +1,7 @@
 import { prisma } from '@/lib/prisma'
+import { calculateBookRating } from '@/utils/calculate-rating'
+import { formatCategories } from '@/utils/format-categories'
+import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -13,20 +16,36 @@ export default async function handler(
 
   let limit
 
-  if (popular !== undefined && typeof popular === 'string') {
+  if (typeof popular === 'string') {
     limit = Number(popular)
   }
 
   let text
 
-  if (typeof search === 'string') {
+  if (search !== undefined && typeof search === 'string') {
     text = String(search)
   }
 
-  let books
+  try {
+    const booksData = await findBooksData(limit, text, tags)
+
+    const books = formatData(booksData)
+
+    return res.status(200).json(books)
+  } catch (error) {
+    return res.status(500).json({ error })
+  }
+}
+
+async function findBooksData(
+  limit: number | undefined,
+  text: string | undefined,
+  tags: string | string[] | undefined,
+) {
+  let booksData
 
   try {
-    books = await prisma.book.findMany({
+    booksData = await prisma.book.findMany({
       where: {
         AND: [
           {
@@ -56,6 +75,22 @@ export default async function handler(
           },
         ],
       },
+      include: {
+        reviews: {
+          select: {
+            rate: true,
+          },
+        },
+        categories: {
+          select: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
       orderBy: [
         {
           reviews: {
@@ -71,9 +106,20 @@ export default async function handler(
       take: limit,
     })
   } catch (error) {
-    console.error({ ERROR_BOOKS: error })
-    return res.status(500).json({ error })
+    console.error({ ERROR_GET_BOOKS: error })
+    throw error
   }
 
-  return res.status(200).json({ books })
+  return booksData
+}
+
+type BooksData = Awaited<ReturnType<typeof findBooksData>>
+
+function formatData(booksData: BooksData) {
+  return booksData.map(({ categories, reviews, summary, ...book }) => ({
+    ...columnsToCamelCase(book), // book without summary
+    categories: formatCategories(categories),
+    rating: calculateBookRating(reviews),
+    totalReviews: reviews.length,
+  }))
 }
