@@ -1,16 +1,19 @@
 /* eslint-disable camelcase */
 import { prisma } from '@/lib/prisma'
+import { calculateBookRating } from '@/utils/calculate-rating'
+import { formatCategories } from '@/utils/format-categories'
+import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod'
 
-const ReviewSchema = z.object({
+const ReviewBodySchema = z.object({
   bookId: z.string().uuid(),
   userId: z.string().uuid(),
   rate: z.number().min(1).max(5),
   description: z.string().min(1),
 })
 
-type ReviewData = z.infer<typeof ReviewSchema>
+type ReviewBody = z.infer<typeof ReviewBodySchema>
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,11 +21,12 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'GET') {
-      const reviews = await findReviews()
-      return res.status(200).json({ reviews })
+      const reviewsData = await findReviewsData()
+      const reviews = formatReviewsData(reviewsData)
+      return res.status(200).json(reviews)
     } else if (req.method === 'POST') {
       // TODO: check for user session / authentication
-      const body = ReviewSchema.parse(req.body)
+      const body = ReviewBodySchema.parse(req.body)
       const newReview = await createReview(body)
       return res.status(201).json({ newReview })
     } else {
@@ -33,11 +37,32 @@ export default async function handler(
   }
 }
 
-async function findReviews() {
-  let reviews
+async function findReviewsData() {
+  let reviewsData
 
   try {
-    reviews = await prisma.review.findMany({
+    reviewsData = await prisma.review.findMany({
+      include: {
+        user: true,
+        book: {
+          include: {
+            reviews: {
+              select: {
+                rate: true,
+              },
+            },
+            categories: {
+              select: {
+                category: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       orderBy: {
         created_at: 'desc',
       },
@@ -47,14 +72,14 @@ async function findReviews() {
     throw error
   }
 
-  return reviews
+  return reviewsData
 }
 
-async function createReview(body: ReviewData) {
-  let review
+async function createReview(body: ReviewBody) {
+  let newReview
 
   try {
-    review = await prisma.review.create({
+    newReview = await prisma.review.create({
       data: {
         description: body.description,
         rate: body.rate,
@@ -75,39 +100,29 @@ async function createReview(body: ReviewData) {
     throw error
   }
 
-  return review
+  return newReview
 }
 
-/* async function findUser(userId: string) {
-  let user
+type ReviewsData = Awaited<ReturnType<typeof findReviewsData>>
 
-  try {
-    user = await prisma.user.findFirstOrThrow({
-      where: {
-        id: userId,
+function formatReviewsData(reviewsData: ReviewsData) {
+  return reviewsData.map(
+    ({
+      id,
+      rate,
+      description,
+      user,
+      book: { reviews, categories, ...book },
+    }) => ({
+      id,
+      rate,
+      description,
+      user,
+      book: {
+        ...columnsToCamelCase(book),
+        rating: calculateBookRating(reviews),
+        categories: formatCategories(categories),
       },
-    })
-  } catch (error) {
-    console.log({ ERROR_FIND_USER: error })
-    throw error
-  }
-
-  return user
-} */
-
-/* async function findBook(bookId: string) {
-  let book
-
-  try {
-    book = await prisma.book.findFirstOrThrow({
-      where: {
-        id: bookId,
-      },
-    })
-  } catch (error) {
-    console.log({ ERROR_FIND_BOOK: error })
-    throw error
-  }
-
-  return book
-} */
+    }),
+  )
+}
