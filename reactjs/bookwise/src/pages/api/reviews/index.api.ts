@@ -22,12 +22,16 @@ export default async function handler(
   try {
     if (req.method === 'GET') {
       const reviewsData = await findReviewsData()
+
       const reviews = formatReviewsData(reviewsData)
+
       return res.status(200).json(reviews)
     } else if (req.method === 'POST') {
       // TODO: check for user session / authentication
       const body = ReviewBodySchema.parse(req.body)
+
       const newReview = await createReview(body)
+
       return res.status(201).json({ newReview })
     } else {
       return res.status(405).json({ message: 'Method not allowed' })
@@ -117,7 +121,7 @@ function formatReviewsData(reviewsData: ReviewsData) {
       id,
       rate,
       description,
-      user,
+      user: { ...columnsToCamelCase(user) },
       book: {
         ...columnsToCamelCase(book),
         rating: calculateBookRating(reviews),
