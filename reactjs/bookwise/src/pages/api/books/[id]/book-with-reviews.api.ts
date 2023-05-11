@@ -14,6 +14,9 @@ export default async function handler(
 
   let bookWithReviews
 
+  // * There is no need to use this endpoint, since all the book data
+  // * will already be in the frontend, so it could be passed as props
+
   try {
     bookWithReviews = await prisma.book.findUniqueOrThrow({
       where: {
