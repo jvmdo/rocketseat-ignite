@@ -113,19 +113,22 @@ function formatReviewsData(reviewsData: ReviewsData) {
   return reviewsData.map(
     ({
       id,
-      rate,
+      created_at,
       description,
+      rate,
       user,
-      book: { reviews, categories, ...book },
+      book: { categories, reviews, ...book },
     }) => ({
       id,
-      rate,
+      createdAt: created_at,
       description,
+      rate,
       user: { ...columnsToCamelCase(user) },
       book: {
         ...columnsToCamelCase(book),
-        rating: calculateBookRating(reviews),
         categories: formatCategories(categories),
+        rating: calculateBookRating(reviews),
+        totalReviews: reviews.length,
       },
     }),
   )
