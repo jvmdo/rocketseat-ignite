@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
+import { Shelf } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -22,12 +23,16 @@ export default async function handler(
 
   let text
 
-  if (search !== undefined && typeof search === 'string') {
+  if (typeof search === 'string') {
     text = String(search)
   }
 
+  // TODO: get userId from auth session
+  // If userId does not exits, userId ??= ''
+  const userId = ''
+
   try {
-    const booksData = await findBooksData(limit, text, tags)
+    const booksData = await findBooksData(limit, text, tags, userId)
 
     const books = formatData(booksData)
 
@@ -41,6 +46,7 @@ async function findBooksData(
   limit: number | undefined,
   text: string | undefined,
   tags: string | string[] | undefined,
+  userId: string,
 ) {
   let booksData
 
@@ -90,6 +96,11 @@ async function findBooksData(
             },
           },
         },
+        shelves: {
+          where: {
+            userId,
+          },
+        },
       },
       orderBy: [
         {
@@ -116,10 +127,18 @@ async function findBooksData(
 type BooksData = Awaited<ReturnType<typeof findBooksData>>
 
 function formatData(booksData: BooksData) {
-  return booksData.map(({ categories, reviews, summary, ...book }) => ({
-    ...columnsToCamelCase(book), // book without summary
-    categories: formatCategories(categories),
-    rating: calculateBookRating(reviews),
-    totalReviews: reviews.length,
-  }))
+  return booksData.map(
+    ({ categories, reviews, shelves, summary, ...book }) => ({
+      ...columnsToCamelCase(book), // book without summary
+      categories: formatCategories(categories),
+      rating: calculateBookRating(reviews),
+      totalReviews: reviews.length,
+      userHasRead: isBookInUserShelf(shelves),
+    }),
+  )
+}
+
+function isBookInUserShelf(shelves: Array<Shelf>) {
+  // If the user has read a book, Shelves contains at least 1 Shelf
+  return shelves.length > 0
 }
