@@ -1,5 +1,8 @@
 /* eslint-disable camelcase */
 import { prisma } from '@/lib/prisma'
+import { calculateBookRating } from '@/utils/calculate-rating'
+import { formatCategories } from '@/utils/format-categories'
+import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -19,16 +22,26 @@ export default async function handler(
     text = String(search)
   }
 
-  let userReviews
+  try {
+    const userReviewsData = await findUserReviewsData(userId, text)
+
+    const userReviews = formatData(userReviewsData)
+
+    return res.status(200).json(userReviews)
+  } catch (error) {
+    return res.status(404).json({ message: 'User does not exist' })
+  }
+}
+
+async function findUserReviewsData(userId: string, text: string | undefined) {
+  let userReviewsData
 
   try {
-    userReviews = await prisma.user.findUniqueOrThrow({
+    userReviewsData = await prisma.review.findMany({
       where: {
-        id: userId,
-      },
-      select: {
-        reviews: {
-          where: {
+        AND: [
+          { user_id: userId },
+          {
             OR: [
               {
                 description: {
@@ -51,14 +64,27 @@ export default async function handler(
               },
             ],
           },
-          select: {
-            description: true,
-            rate: true,
-            book: {
+        ],
+      },
+      select: {
+        id: true,
+        created_at: true,
+        description: true,
+        rate: true,
+        book: {
+          include: {
+            reviews: {
               select: {
-                author: true,
-                cover_url: true,
-                name: true,
+                rate: true,
+              },
+            },
+            categories: {
+              select: {
+                category: {
+                  select: {
+                    name: true,
+                  },
+                },
               },
             },
           },
@@ -67,8 +93,24 @@ export default async function handler(
     })
   } catch (error) {
     console.error({ ERROR_USER_REVIEWS: error })
-    return res.status(404).json({ message: 'User does not exist' })
+    throw error
   }
 
-  return res.status(200).json(userReviews)
+  return userReviewsData
+}
+
+type UserReviewsData = Awaited<ReturnType<typeof findUserReviewsData>>
+
+function formatData(userReviewsData: UserReviewsData) {
+  return userReviewsData.map(
+    ({ book: { categories, reviews, ...book }, ...review }) => ({
+      ...columnsToCamelCase(review),
+      book: {
+        ...columnsToCamelCase(book),
+        categories: formatCategories(categories),
+        rating: calculateBookRating(reviews),
+        totalReviews: reviews.length,
+      },
+    }),
+  )
 }
