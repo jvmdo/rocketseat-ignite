@@ -26,11 +26,11 @@ model Shelf {
   updated_at DateTime
   created_at DateTime @default(now())
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
 
-  book   Book   @relation(fields: [bookId], references: [id])
-  bookId String
+  book    Book   @relation(fields: [book_id], references: [id])
+  book_id String
 
   @@map("shelves")
 }
@@ -61,13 +61,13 @@ model Category {
 }
 
 model CategoriesOnBooks {
-  book_id    String
-  categoryId String
+  book_id     String
+  category_id String
 
   book     Book     @relation(fields: [book_id], references: [id])
-  category Category @relation(fields: [categoryId], references: [id])
+  category Category @relation(fields: [category_id], references: [id])
 
-  @@id([book_id, categoryId])
+  @@id([book_id, category_id])
 }
 
 model Review {

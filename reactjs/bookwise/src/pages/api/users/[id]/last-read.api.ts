@@ -36,7 +36,7 @@ async function findUserLastReadData(userId: string) {
   try {
     userLastReadData = await prisma.shelf.findFirst({
       where: {
-        userId,
+        user_id: userId,
       },
       select: {
         updated_at: true,

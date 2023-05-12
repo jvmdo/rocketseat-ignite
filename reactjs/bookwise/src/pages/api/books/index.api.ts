@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { prisma } from '@/lib/prisma'
 import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
@@ -98,7 +99,7 @@ async function findBooksData(
         },
         shelves: {
           where: {
-            userId,
+            user_id: userId,
           },
         },
       },
