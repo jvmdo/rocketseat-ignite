@@ -4,29 +4,47 @@ import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { ZodError, z } from 'zod'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' })
-  }
-
+  const method = req.method
   const userId = String(req.query.id)
 
   try {
-    const userLastReadData = await findUserLastReadData(userId)
+    switch (method) {
+      case 'GET': {
+        const userLastReadData = await findUserLastReadData(userId)
 
-    if (!userLastReadData) {
-      return res.status(204).end()
+        if (!userLastReadData) {
+          return res.status(204).end()
+        }
+
+        const userLastRead = formatData(userLastReadData)
+
+        return res.status(200).json(userLastRead)
+      }
+
+      case 'PUT': {
+        // TODO: check for authentication
+        const bookId = z.string().uuid().parse(req.body.bookId)
+        const userShelf = await createOrUpdateUserShelf(userId, bookId)
+        console.warn(userShelf)
+        return res.status(201).json(userShelf)
+      }
+
+      default: {
+        return res.status(405).json({ message: 'Method not allowed' })
+      }
     }
-
-    const userLastRead = formatData(userLastReadData)
-
-    return res.status(200).json(userLastRead)
   } catch (error) {
-    return res.status(404).json({ message: 'User does not exist' })
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: 'Improper UUID format' })
+    }
+    // PrismaClientValidationError
+    return res.status(404).json({ message: 'User or Book does not exist' })
   }
 }
 
@@ -89,5 +107,34 @@ function formatData(userLastReadData: UserLastReadData) {
       rating: calculateBookRating(reviews),
       totalReviews: reviews.length,
     },
+  }
+}
+
+async function createOrUpdateUserShelf(userId: string, bookId: string) {
+  try {
+    return await prisma.shelf.upsert({
+      where: {
+        user_id_book_id: {
+          user_id: userId,
+          book_id: bookId,
+        },
+      },
+      create: {
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        book: {
+          connect: {
+            id: bookId,
+          },
+        },
+      },
+      update: {}, // update_at field is auto updated
+    })
+  } catch (error) {
+    console.error({ ERROR_USER_LAST_READ: error })
+    throw error
   }
 }

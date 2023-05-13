@@ -22,8 +22,7 @@ model User {
 }
 
 model Shelf {
-  id         String   @id @default(uuid())
-  updated_at DateTime
+  updated_at DateTime @updatedAt
   created_at DateTime @default(now())
 
   user    User   @relation(fields: [user_id], references: [id])
@@ -32,6 +31,7 @@ model Shelf {
   book    Book   @relation(fields: [book_id], references: [id])
   book_id String
 
+  @@id([user_id, book_id])
   @@map("shelves")
 }
 

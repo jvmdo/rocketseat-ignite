@@ -79,7 +79,6 @@ async function main() {
   const shelvesSeed = shelves.map((shelf) => {
     return prisma.shelf.create({
       data: {
-        id: shelf.id,
         updated_at: new Date(shelf.updated_at),
         user: {
           connect: { id: shelf.user_id },
