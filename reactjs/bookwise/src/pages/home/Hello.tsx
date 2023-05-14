@@ -1,4 +1,5 @@
 import { styled } from '@/styles/stitches.config'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { ComponentProps } from 'react'
 
@@ -23,6 +24,10 @@ export function MyComponent({
   userName,
   updatedAt,
 }: MyComponentProps) {
+  const { status } = useSession()
+
+  console.warn({ status })
+
   return (
     <S_MyComponent>
       <Image src={bookCover} alt="Foda" width={216} height={304} />
@@ -35,6 +40,17 @@ export function MyComponent({
         </time>
       </hgroup>
       <p>{bookSummary}</p>
+      {status === 'authenticated' ? (
+        <div>
+          <p>This paragraph is displayed for signed in users only 😲🤯</p>
+          <button onClick={() => signOut()}>Sign out</button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+          <button onClick={() => signIn('google')}>Sign In with Google</button>
+          <button onClick={() => signIn('github')}>Sign In with GitHub</button>
+        </div>
+      )}
     </S_MyComponent>
   )
 }

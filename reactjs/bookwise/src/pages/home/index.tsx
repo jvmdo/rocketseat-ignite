@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react'
 import { MyComponent } from './Hello'
 import { api } from '@/lib/axios'
 
+type Data = {
+  bookName: string
+  bookCover: string
+  bookSummary: string
+  userName: string
+  updatedAt: string
+}
+
 export default function Home() {
-  const [data, setData] = useState({
-    bookName: '',
-    bookCover: '',
-    bookSummary: '',
-    userName: '',
-    updatedAt: '',
-  })
+  const [data, setData] = useState<Data | undefined>()
 
   useEffect(() => {
     api
@@ -18,5 +20,5 @@ export default function Home() {
       .catch((error) => console.log({ error }))
   }, [])
 
-  return <MyComponent {...data} />
+  return data && <MyComponent {...data} />
 }

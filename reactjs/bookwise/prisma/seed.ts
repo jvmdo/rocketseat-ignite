@@ -5,6 +5,7 @@ import { categories } from './constants/categories'
 import { reviews } from './constants/reviews'
 import { users } from './constants/users'
 import { shelves } from './constants/shelves'
+
 const prisma = new PrismaClient()
 
 async function main() {
@@ -20,7 +21,7 @@ async function main() {
       data: {
         id: user.id,
         name: user.name,
-        avatar_url: user.avatar_url,
+        image: user.image,
       },
     })
   })
