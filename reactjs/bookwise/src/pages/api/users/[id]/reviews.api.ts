@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable camelcase */
 import { prisma } from '@/lib/prisma'
 import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
+import dayjs from 'dayjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -26,9 +28,11 @@ export default async function handler(
     const userReviewsData = await findUserReviewsData(userId, text)
 
     const userReviews = formatData(userReviewsData)
+    const userReviewsGrouped = groupReviewsByDate(userReviews)
 
-    return res.status(200).json(userReviews)
+    return res.status(200).json(userReviewsGrouped)
   } catch (error) {
+    console.error(error)
     return res.status(404).json({ message: 'User does not exist' })
   }
 }
@@ -113,4 +117,47 @@ function formatData(userReviewsData: UserReviewsData) {
       },
     }),
   )
+}
+
+type UserReviews = ReturnType<typeof formatData>
+
+type ReviewGroup = {
+  name: string | undefined
+  reviews: UserReviews | undefined
+}
+
+function groupReviewsByDate(userReviews: UserReviews) {
+  const groups = Array.from(
+    { length: 4 }, // Groups: Today, This Week, This Month, Older
+    (): ReviewGroup => ({ name: undefined, reviews: undefined }),
+  )
+
+  const group = (
+    name: string,
+    review: UserReviews[0],
+    index: number,
+  ): ReviewGroup => ({
+    name,
+    reviews: [...(groups[index]?.reviews ?? []), review],
+  })
+
+  const now = dayjs()
+
+  for (const review of userReviews) {
+    const diff = now.diff(new Date(review.createdAt), 'days')
+
+    const index = diff === 0 ? 0 :
+                  diff <=  7 ? 1 :
+                  diff <= 30 ? 2 :
+                               3;
+
+    const name = diff === 0 ? 'Hoje' : 
+                 diff <=  7 ? 'Nesta semana' : 
+                 diff <= 30 ? 'Neste mês' : 
+                              'Há mais de um mês'
+
+    groups[index] = group(name, review, index)
+  }
+
+  return groups
 }
