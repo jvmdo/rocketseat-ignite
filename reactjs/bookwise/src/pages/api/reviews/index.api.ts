@@ -4,7 +4,9 @@ import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { z } from 'zod'
+import { getServerSession } from 'next-auth'
+import { ZodError, z } from 'zod'
+import { authOptions } from '../auth/[...nextauth].api'
 
 const ReviewBodySchema = z.object({
   bookId: z.string().uuid(),
@@ -27,9 +29,13 @@ export default async function handler(
 
       return res.status(200).json(reviews)
     } else if (req.method === 'POST') {
-      // TODO: check for user session / authentication
-      const body = ReviewBodySchema.parse(req.body)
+      const session = await getServerSession(req, res, authOptions)
 
+      if (!session) {
+        return res.status(401).end()
+      }
+
+      const body = ReviewBodySchema.parse(req.body)
       const newReview = await createReview(body)
 
       return res.status(201).json({ newReview })
@@ -37,7 +43,10 @@ export default async function handler(
       return res.status(405).json({ message: 'Method not allowed' })
     }
   } catch (error) {
-    return res.status(500).json({ error })
+    if (error instanceof ZodError) {
+      return res.status(400).json(error)
+    }
+    return res.status(500).json(error)
   }
 }
 

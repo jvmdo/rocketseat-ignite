@@ -4,7 +4,9 @@ import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
 import { ZodError, z } from 'zod'
+import { authOptions } from '../../auth/[...nextauth].api'
 
 export default async function handler(
   req: NextApiRequest,
@@ -28,10 +30,15 @@ export default async function handler(
       }
 
       case 'PUT': {
-        // TODO: check for authentication
+        const session = await getServerSession(req, res, authOptions)
+
+        if (!session) {
+          return res.status(401).end()
+        }
+
         const bookId = z.string().uuid().parse(req.body.bookId)
         const userShelf = await createOrUpdateUserShelf(userId, bookId)
-        console.warn(userShelf)
+
         return res.status(201).json(userShelf)
       }
 

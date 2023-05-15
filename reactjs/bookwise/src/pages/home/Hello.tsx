@@ -24,9 +24,9 @@ export function MyComponent({
   userName,
   updatedAt,
 }: MyComponentProps) {
-  const { status } = useSession()
+  const { data, status } = useSession()
 
-  console.warn({ status })
+  console.warn({ data, status })
 
   return (
     <S_MyComponent>

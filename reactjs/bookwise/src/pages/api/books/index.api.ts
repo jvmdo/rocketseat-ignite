@@ -5,6 +5,8 @@ import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
 import { Shelf } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth].api'
 
 export default async function handler(
   req: NextApiRequest,
@@ -28,9 +30,15 @@ export default async function handler(
     text = String(search)
   }
 
-  // TODO: get userId from auth session
-  // If userId does not exits, userId ??= ''
-  const userId = ''
+  // I am quite sure there is a better way to get the user id
+  const session = await getServerSession(req, res, authOptions)
+  const userEmail = session?.user?.email ?? ''
+
+  let userId = ''
+
+  if (session) {
+    userId = await findUserIdByEmail(userEmail)
+  }
 
   try {
     const booksData = await findBooksData(limit, text, tags, userId)
@@ -142,4 +150,21 @@ function formatData(booksData: BooksData) {
 function isBookInUserShelf(shelves: Array<Shelf>) {
   // If the user has read a book, Shelves contains at least 1 Shelf
   return shelves.length > 0
+}
+
+async function findUserIdByEmail(email: string) {
+  let user
+
+  try {
+    user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    })
+  } catch (error) {
+    console.error({ BOOKS_FIND_USER: error })
+    throw error
+  }
+
+  return user?.id ?? ''
 }
