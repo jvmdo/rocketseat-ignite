@@ -16,7 +16,7 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
-  staticDirs: ['../public/images/books'],
+  staticDirs: ['../public'],
   webpackFinal: async (config) => {
     if (!config.resolve) {
       return config;

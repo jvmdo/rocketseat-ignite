@@ -1,4 +1,6 @@
 import { createStitches } from '@stitches/react'
+import type { ScaleValue } from '@stitches/react'
+import { FluidFontSize, clamp, formatPadding } from './utils'
 
 export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
   createStitches({
@@ -26,7 +28,7 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         md: '1rem',
         lg: '1.125rem',
         xl: '1.25rem',
-        '2xl': '1.5rem',
+        xxl: '1.5rem',
       },
 
       fontWeights: {
@@ -68,19 +70,108 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
 
       radii: {
         xs: '2.5px',
-        sm: '5px',
+        sm: '8px',
         md: '10px',
         lg: '20px',
         full: '99999px',
       },
+
+      transitions: {
+        'action-in-out': ' 150ms cubic-bezier(0.25, 0.1, 0.25, 1.0)',
+      },
     },
 
     media: {
-      xs: '23.4375em',
-      sm: '36em',
-      md: '48em',
-      lg: '62em',
-      xl: '75em',
-      xxl: '87.5em',
+      xs: '(min-width: 23.4375em)', // 375px
+      sm: '(min-width: 36em)', // 576px
+      md: '(min-width: 48em)', // 768px
+      lg: '(min-width: 62em)', // 992px
+      xl: '(min-width: 75em)', // 1200px
+      xxl: '(min-width: 87.5em)', // 1400px
+
+      l: '(orientation: landscape)',
+      p: '(orientation: portrait)',
+    },
+
+    utils: {
+      responsiveFontSize: (values: Array<ScaleValue<'fontSizes'>>) => ({
+        fontSize: values[0],
+        '@sm': {
+          fontSize: values[1],
+        },
+        '@md': {
+          fontSize: values[2],
+        },
+        '@lg': {
+          fontSize: values[3],
+        },
+        '@xl': {
+          fontSize: values[4],
+        },
+        '@xxl': {
+          fontSize: values[5],
+        },
+      }),
+
+      responsivePaddingBlock: (values: Array<ScaleValue<'space'>>) => ({
+        paddingBlock: formatPadding(values[0]),
+        '@sm': {
+          paddingBlock: formatPadding(values[1]),
+        },
+        '@md': {
+          paddingBlock: formatPadding(values[2]),
+        },
+        '@lg': {
+          paddingBlock: formatPadding(values[3]),
+        },
+        '@xl': {
+          paddingBlock: formatPadding(values[4]),
+        },
+        '@xxl': {
+          paddingBlock: formatPadding(values[5]),
+        },
+      }),
+
+      responsivePaddingInline: (values: Array<ScaleValue<'space'>>) => ({
+        paddingInline: formatPadding(values[0]),
+        '@sm': {
+          paddingInline: formatPadding(values[1]),
+        },
+        '@md': {
+          paddingInline: formatPadding(values[2]),
+        },
+        '@lg': {
+          paddingInline: formatPadding(values[3]),
+        },
+        '@xl': {
+          paddingInline: formatPadding(values[4]),
+        },
+        '@xxl': {
+          paddingInline: formatPadding(values[5]),
+        },
+      }),
+
+      responsiveGap: (values: Array<ScaleValue<'space'>>) => ({
+        gap: values[0],
+        '@sm': {
+          gap: values[1],
+        },
+        '@md': {
+          gap: values[2],
+        },
+        '@lg': {
+          gap: values[3],
+        },
+        '@xl': {
+          gap: values[4],
+        },
+        '@xxl': {
+          gap: values[5],
+        },
+      }),
+
+      fluidFontSize: (params: FluidFontSize) => ({
+        fontSize: clamp({ ...params }),
+      }),
     },
   } as const)

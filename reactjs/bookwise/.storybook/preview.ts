@@ -15,7 +15,8 @@ export default {
     },
     docs: {
       theme: themes.dark,
-    }
+    },
+    layout: 'fullscreen'
   },
 } as Preview
 
