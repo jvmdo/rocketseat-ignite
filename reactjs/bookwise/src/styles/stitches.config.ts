@@ -1,6 +1,11 @@
 import { createStitches } from '@stitches/react'
 import type { ScaleValue } from '@stitches/react'
-import { FluidFontSize, clamp, formatPadding } from './utils'
+import {
+  FluidFontSize,
+  LogicalValue,
+  clamp,
+  formatLogicalProp,
+} from './helpers'
 
 export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
   createStitches({
@@ -11,6 +16,7 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
 
       space: {
         px: '1px',
+        0: 0,
         1: '0.25rem',
         2: '0.5rem',
         3: '0.75rem',
@@ -20,6 +26,8 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         7: '1.75rem',
         8: '2rem',
         10: '2.5rem',
+        12: '3rem',
+        16: '4rem',
       },
 
       fontSizes: {
@@ -47,6 +55,7 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
       colors: {
         white: '#FFFFFF',
         black: '#000000',
+        danger: '#F75A68',
 
         green100: '#50B2C0',
         green200: '#255D6A',
@@ -66,18 +75,23 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
 
         'gradient-vertical': `linear-gradient(180deg, #7FD1CC 0%, #9694F5 100%)`,
         'gradient-horizontal': `linear-gradient(90deg, #7FD1CC 0%, #9694F5 100%)`,
+
+        'gray200-0a': '#E6E8F20A',
+        'purple100-0f': '#8381D90F',
       },
 
       radii: {
-        xs: '2.5px',
+        xs: '4px',
         sm: '8px',
         md: '10px',
-        lg: '20px',
+        lg: '12px',
+        xlg: '20px',
         full: '99999px',
       },
 
       transitions: {
-        'action-in-out': ' 150ms cubic-bezier(0.25, 0.1, 0.25, 1.0)',
+        'action-in-out': '150ms cubic-bezier(0.25, 0.1, 0.25, 1.0)',
+        collapse: '300ms cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
     },
 
@@ -113,41 +127,79 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         },
       }),
 
-      responsivePaddingBlock: (values: Array<ScaleValue<'space'>>) => ({
-        paddingBlock: formatPadding(values[0]),
+      responsivePaddingBlock: (values: Array<LogicalValue>) => ({
+        paddingBlock: formatLogicalProp(values[0]),
         '@sm': {
-          paddingBlock: formatPadding(values[1]),
+          paddingBlock: formatLogicalProp(values[1]),
         },
         '@md': {
-          paddingBlock: formatPadding(values[2]),
+          paddingBlock: formatLogicalProp(values[2]),
         },
         '@lg': {
-          paddingBlock: formatPadding(values[3]),
+          paddingBlock: formatLogicalProp(values[3]),
         },
         '@xl': {
-          paddingBlock: formatPadding(values[4]),
+          paddingBlock: formatLogicalProp(values[4]),
         },
         '@xxl': {
-          paddingBlock: formatPadding(values[5]),
+          paddingBlock: formatLogicalProp(values[5]),
         },
       }),
 
-      responsivePaddingInline: (values: Array<ScaleValue<'space'>>) => ({
-        paddingInline: formatPadding(values[0]),
+      responsivePaddingInline: (values: Array<LogicalValue>) => ({
+        paddingInline: formatLogicalProp(values[0]),
         '@sm': {
-          paddingInline: formatPadding(values[1]),
+          paddingInline: formatLogicalProp(values[1]),
         },
         '@md': {
-          paddingInline: formatPadding(values[2]),
+          paddingInline: formatLogicalProp(values[2]),
         },
         '@lg': {
-          paddingInline: formatPadding(values[3]),
+          paddingInline: formatLogicalProp(values[3]),
         },
         '@xl': {
-          paddingInline: formatPadding(values[4]),
+          paddingInline: formatLogicalProp(values[4]),
         },
         '@xxl': {
-          paddingInline: formatPadding(values[5]),
+          paddingInline: formatLogicalProp(values[5]),
+        },
+      }),
+
+      responsiveMarginBlock: (values: Array<LogicalValue>) => ({
+        marginBlock: formatLogicalProp(values[0]),
+        '@sm': {
+          marginBlock: formatLogicalProp(values[1]),
+        },
+        '@md': {
+          marginBlock: formatLogicalProp(values[2]),
+        },
+        '@lg': {
+          marginBlock: formatLogicalProp(values[3]),
+        },
+        '@xl': {
+          marginBlock: formatLogicalProp(values[4]),
+        },
+        '@xxl': {
+          marginBlock: formatLogicalProp(values[5]),
+        },
+      }),
+
+      responsiveMarginInline: (values: Array<LogicalValue>) => ({
+        marginInline: formatLogicalProp(values[0]),
+        '@sm': {
+          marginInline: formatLogicalProp(values[1]),
+        },
+        '@md': {
+          marginInline: formatLogicalProp(values[2]),
+        },
+        '@lg': {
+          marginInline: formatLogicalProp(values[3]),
+        },
+        '@xl': {
+          marginInline: formatLogicalProp(values[4]),
+        },
+        '@xxl': {
+          marginInline: formatLogicalProp(values[5]),
         },
       }),
 
@@ -167,6 +219,44 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         },
         '@xxl': {
           gap: values[5],
+        },
+      }),
+
+      responsiveWidth: (values: Array<string>) => ({
+        width: values[0],
+        '@sm': {
+          width: values[1],
+        },
+        '@md': {
+          width: values[2],
+        },
+        '@lg': {
+          width: values[3],
+        },
+        '@xl': {
+          width: values[4],
+        },
+        '@xxl': {
+          width: values[5],
+        },
+      }),
+
+      responsiveHeight: (values: Array<string>) => ({
+        height: values[0],
+        '@sm': {
+          height: values[1],
+        },
+        '@md': {
+          height: values[2],
+        },
+        '@lg': {
+          height: values[3],
+        },
+        '@xl': {
+          height: values[4],
+        },
+        '@xxl': {
+          height: values[5],
         },
       }),
 

@@ -1,5 +1,5 @@
-import { ScaleValue } from '@stitches/react'
 import { config } from './stitches.config'
+import type { $$ScaleValue } from '@stitches/react'
 
 type ViewportUnits =
   | 'vw'
@@ -11,6 +11,27 @@ type ViewportUnits =
   | 'cqh'
   | 'cqmin'
   | 'cqmax'
+
+// Unfortunately, I can't define a type as
+// ScaleValue<'space'> | [ScaleValue<'space'>, ScaleValue<'space'>]
+// It's related to https://github.com/stitchesjs/stitches/issues/763
+type SpaceTokens = {
+  $px: $$ScaleValue
+  $0: $$ScaleValue
+  $1: $$ScaleValue
+  $2: $$ScaleValue
+  $3: $$ScaleValue
+  $4: $$ScaleValue
+  $5: $$ScaleValue
+  $6: $$ScaleValue
+  $7: $$ScaleValue
+  $8: $$ScaleValue
+  $10: $$ScaleValue
+  $16: $$ScaleValue
+}
+export type LogicalValue =
+  | keyof SpaceTokens
+  | [keyof SpaceTokens, keyof SpaceTokens]
 
 // Cannot use because of declaration-call order
 // keyof typeof config.theme.fontSizes
@@ -51,15 +72,21 @@ function parseMedia(breakpoint: string) {
   )
 }
 
-export function formatPadding(scale: ScaleValue<'space'>) {
-  const values = String(scale).split(' ')
+export function formatLogicalProp(scale: LogicalValue) {
+  // const values = String(scale).split(' ')
   let padding
 
-  if (values.length === 1) {
-    padding = values[0]
-  } else if (values.length >= 2) {
-    padding = `${values[0]} ${values[1]}`
+  if (Array.isArray(scale)) {
+    padding = `${scale[0]} ${scale[1]}`
+  } else {
+    padding = String(scale)
   }
+
+  // if (values.length === 1) {
+  //   padding = values[0]
+  // } else if (values.length >= 2) {
+  //   padding = `${values[0]} ${values[1]}`
+  // }
 
   return padding
 }
