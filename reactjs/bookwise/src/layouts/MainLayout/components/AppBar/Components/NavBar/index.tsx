@@ -5,7 +5,7 @@ import {
   NavigationMenuList,
   NavigationMenuRoot,
 } from './styles'
-import { Binoculars, ChartLineUp, User } from 'phosphor-react'
+import { Binoculars, ChartLineUp, User } from '@phosphor-icons/react'
 import { AuthFoot } from '../AuthFoot'
 
 export function NavBar() {

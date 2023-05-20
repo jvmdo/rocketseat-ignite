@@ -52,7 +52,7 @@ export const CollapsibleContent = styled(Content, {
   overflow: 'hidden',
 
   '&[data-state="open"]': {
-    animation: `${slideDown} $transitions$action-in-out`,
+    animation: `${slideDown} $transitions$collapse`,
   },
 
   '&[data-state="closed"]': {

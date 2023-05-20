@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { SignInFoot, SignOutFoot, UserFoot } from './styles'
-import { SignIn, SignOut } from 'phosphor-react'
+import { SignIn, SignOut } from '@phosphor-icons/react'
 
 AuthFoot.toString = () => '.auth-foot'
 
