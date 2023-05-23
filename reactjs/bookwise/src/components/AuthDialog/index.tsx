@@ -4,9 +4,14 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { X } from '@phosphor-icons/react'
 import { AuthButton } from '../AuthButton'
 
-export function AuthDialog() {
+interface AuthDialogProps {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+export function AuthDialog({ open, setOpen }: AuthDialogProps) {
   return (
-    <Dialog.Root defaultOpen={true}>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
         <DialogOverlay />
         <DialogContent>

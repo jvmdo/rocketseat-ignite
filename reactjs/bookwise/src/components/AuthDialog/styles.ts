@@ -47,7 +47,7 @@ export const DialogContent = styled(Dialog.Content, {
   margin: 'auto',
 
   '&[data-state="open"]': {
-    animation: `${contentShow} $transitions$content`,
+    animation: `${contentShow} $transitions$content forwards`,
   },
 
   '&[data-state="closed"]': {
@@ -91,12 +91,13 @@ const fadeOut = keyframes({
 export const DialogOverlay = styled(Dialog.Overlay, {
   position: 'fixed',
   inset: 0,
-
-  '&[data-state="closed"]': {
-    animation: `${fadeOut} $transitions$overlay forwards`,
-  },
+  zIndex: -1,
 
   '&[data-state="open"]': {
     animation: `${fadeIn} $transitions$overlay forwards`,
+  },
+
+  '&[data-state="closed"]': {
+    animation: `${fadeOut} $transitions$overlay`,
   },
 })
