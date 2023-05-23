@@ -15,8 +15,10 @@
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.6",
+    "@phosphor-icons/react": "^2.0.9",
     "@prisma/client": "^4.13.0",
     "@radix-ui/react-collapsible": "^1.0.2",
+    "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-navigation-menu": "^1.1.2",
     "@stitches/react": "^1.2.8",
     "@types/react": "18.2.6",
@@ -28,12 +30,11 @@
     "eslint-config-next": "13.4.1",
     "next": "13.4.1",
     "next-auth": "^4.22.1",
-    "phosphor-react": "^1.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-responsive": "^9.0.2",
-    "typescript": "5.0.4",
-    "zod": "^3.21.4"
+    "react-simple-star-rating": "^5.1.7",
+    "typescript": "5.0.4"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^1.2.0",

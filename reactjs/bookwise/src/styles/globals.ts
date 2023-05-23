@@ -5,7 +5,7 @@ export const globalStyles = globalCss({
   '*, *::before, *::after': {
     boxSizing: 'border-box',
     margin: 0,
-    outlineColor: '$white',
+    outlineColor: 'transparent',
     padding: 0,
   },
 
@@ -22,7 +22,15 @@ export const globalStyles = globalCss({
   },
 
   ':is(a, button):is(:focus-visible)': {
-    outlineWidth: '2px',
+    outline: '1px solid $white',
+  },
+
+  ':is(input, textarea)': {
+    fontFamily: 'inherit',
+  },
+
+  ':is(input, textarea):is(:focus-within)': {
+    outline: '1px solid $green100',
   },
 
   ':is(img, svg)': {
@@ -30,7 +38,7 @@ export const globalStyles = globalCss({
     verticalAlign: 'top',
   },
 
-  ul: {
+  ':is(ul, ol)': {
     listStyleType: 'none',
   },
 
@@ -41,10 +49,28 @@ export const globalStyles = globalCss({
     fontFamily: '$default', // See _app.tsx
     fontWeight: '$regular',
     lineHeight: '$base',
+
+    scrollbarColor: '$colors$gray600 $colors$gray700',
+
+    '::-webkit-scrollbar-track': {
+      backgroundColor: '$colors$gray700',
+      borderRadius: '$full',
+    },
+
+    '::-webkit-scrollbar-thumb': {
+      backgroundColor: '$colors$gray600',
+      borderRadius: '$full',
+
+      '&:hover': {
+        backgroundColor: 'color-mix(in srgb, $gray600 50%, $gray500)',
+      },
+    },
   },
 
   body: {
     minHeight: '100vh',
     minWidth: '20rem',
   },
+
+  // I should've set `line-height`s globally
 })

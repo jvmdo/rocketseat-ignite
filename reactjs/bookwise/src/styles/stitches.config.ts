@@ -92,6 +92,8 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
       transitions: {
         'action-in-out': '150ms cubic-bezier(0.25, 0.1, 0.25, 1.0)',
         collapse: '300ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+        content: '500ms cubic-bezier(0.23, 1, 0.32, 1)',
+        overlay: '250ms cubic-bezier(0.55, 0.085, 0.68, 0.53)',
       },
     },
 

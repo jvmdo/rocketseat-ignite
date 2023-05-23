@@ -27,6 +27,7 @@ type SpaceTokens = {
   $7: $$ScaleValue
   $8: $$ScaleValue
   $10: $$ScaleValue
+  $12: $$ScaleValue
   $16: $$ScaleValue
 }
 export type LogicalValue =
