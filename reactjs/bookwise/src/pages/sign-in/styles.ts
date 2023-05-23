@@ -33,7 +33,7 @@ export const SignInOptions = styled('main', {
 
 export const HeadingGroup = styled('hgroup', {
   textAlign: 'center',
-  width: 'min(100cqw, 23.25rem)',
+  width: 'min(84cqw, 23.25rem)',
 
   h1: {
     color: '$gray100',

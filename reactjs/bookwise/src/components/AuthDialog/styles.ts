@@ -35,8 +35,6 @@ export const DialogContent = styled(Dialog.Content, {
   alignItems: 'center',
   responsiveGap: ['$3', '$3', '$4'],
 
-  container: 'dialog / inline-size',
-
   height: 'min-content',
   width: 'min(84vw, 32.25rem)',
   responsivePaddingBlock: ['$6', '$8', '$12', '$14'],

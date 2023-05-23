@@ -10,9 +10,9 @@ export const S_AuthButton = styled('button', {
   alignItems: 'center',
 
   maxHeight: '4.5rem',
-  responsivePaddingBlock: ['$3', '$3', '$4', '$5'],
+  responsivePaddingBlock: ['$3', '$4', '$4', '$5'],
   responsivePaddingInline: ['$5', '$5', '$6', '$6'],
-  width: 'min(100cqw, 23.25rem)',
+  width: 'min(100%, 23.25rem)',
 
   transition: 'background-color $action-in-out',
 
@@ -21,8 +21,8 @@ export const S_AuthButton = styled('button', {
   },
 
   [`${SpriteIcon}`]: {
-    height: 32,
-    width: 32,
+    responsiveHeight: ['1.25rem', '1.5rem', '1.75rem', '2rem'],
+    responsiveWidth: ['1.25rem', '1.5rem', '1.75rem', '2rem'],
   },
 
   span: {
