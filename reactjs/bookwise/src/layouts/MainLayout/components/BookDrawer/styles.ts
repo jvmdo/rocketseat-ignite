@@ -1,5 +1,5 @@
 import { keyframes, styled } from '@/styles/stitches.config'
-import * as Dialog from '@radix-ui/react-dialog'
+import * as Drawer from '@radix-ui/react-dialog'
 
 const contentShow = keyframes({
   '0%': { opacity: 0, transform: 'translateX(0%) scale(.96)' },
@@ -11,7 +11,7 @@ const contentHide = keyframes({
   '100%': { opacity: 0, transform: 'translateX(0%) scale(.96)' },
 })
 
-export const DialogContent = styled(Dialog.Content, {
+export const DrawerContent = styled(Drawer.Content, {
   backgroundColor: '$gray800',
   boxShadow: '-4px 0px 30px rgba(0, 0, 0, 0.5)',
 
@@ -28,11 +28,12 @@ export const DialogContent = styled(Dialog.Content, {
   position: 'fixed',
   left: '100%',
 
-  "&[data-state='open']": {
-    animation: `${contentShow} $transitions$content  forwards`,
+  '&[data-state="open"]': {
+    animation: `${contentShow} $transitions$content forwards`,
   },
-  "&[data-state='closed']": {
-    animation: `${contentHide} $transitions$content  forwards`,
+
+  '&[data-state="closed"]': {
+    animation: `${contentHide} $transitions$content`,
   },
 
   overflowY: 'auto',
@@ -45,47 +46,49 @@ export const DialogContent = styled(Dialog.Content, {
   },
 })
 
-export const DialogCloseButton = styled('button', {
-  color: '$gray400',
+export const DrawerCloseButton = styled(Drawer.Close, {
   lineHeight: 0,
-  responsiveFontSize: ['$md', '$xl', '$xxl'],
-
   responsivePaddingBlock: ['$1', '$3', ['$4', '$3'], ['$6', '$4']],
   paddingInline: 'inherit',
 
   position: 'absolute',
-  top: 0,
-  right: 0,
+  insetBlockStart: 0,
+  insetInlineEnd: 0,
 
-  transition: 'all $action-in-out',
+  svg: {
+    responsiveHeight: ['1rem', '1.25rem', '1.5rem'],
+    responsiveWidth: ['1rem', '1.25rem', '1.5rem'],
 
-  '&:is(:hover, :focus-visible)': {
-    svg: {
+    color: '$gray400',
+
+    transition: 'color $action-in-out',
+
+    '&:is(:hover, :focus-visible)': {
       color: '$gray300',
     },
   },
 })
 
-const overlayShow = keyframes({
-  '0%': { opacity: 0 },
-  '100%': { opacity: 0.6 },
+const fadeIn = keyframes({
+  '0%': { backgroundColor: 'transparent' },
+  '100%': { backgroundColor: 'color-mix(in srgb, transparent, $black 60%)' },
 })
 
-const overlayHide = keyframes({
-  '0%': { opacity: 0.6 },
-  '100%': { opacity: 0 },
+const fadeOut = keyframes({
+  '0%': { backgroundColor: 'color-mix(in srgb, transparent, $black 60%)' },
+  '100%': { backgroundColor: 'transparent' },
 })
 
-export const DialogOverlay = styled(Dialog.Overlay, {
-  backgroundColor: '$black',
-
+export const DrawerOverlay = styled(Drawer.Overlay, {
   position: 'fixed',
   inset: 0,
+  zIndex: -1,
 
-  "&[data-state='open']": {
-    animation: `${overlayShow} $transitions$overlay`,
+  '&[data-state="open"]': {
+    animation: `${fadeIn} $transitions$overlay forwards`,
   },
-  "&[data-state='closed']": {
-    animation: `${overlayHide} $transitions$overlay`,
+
+  '&[data-state="closed"]': {
+    animation: `${fadeOut} $transitions$overlay`,
   },
 })

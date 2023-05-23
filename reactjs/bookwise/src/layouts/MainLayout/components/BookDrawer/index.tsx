@@ -1,28 +1,31 @@
-import * as Dialog from '@radix-ui/react-dialog'
-import { DialogCloseButton, DialogContent, DialogOverlay } from './styles'
+import * as Drawer from '@radix-ui/react-dialog'
+import { DrawerCloseButton, DrawerContent, DrawerOverlay } from './styles'
 import { X } from '@phosphor-icons/react'
 import { BookDetails } from './components/BookDetails'
 import { BookReviews } from './components/BookReviews'
 
-export function BookDrawer() {
+interface BookDrawerProps {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+export function BookDrawer({ open, setOpen }: BookDrawerProps) {
   return (
     <div>
-      <Dialog.Root defaultOpen /* open={open} onOpenChange={setOpen} */>
-        <Dialog.Portal>
-          <DialogOverlay />
-          <DialogContent asChild>
+      <Drawer.Root open={open} onOpenChange={setOpen}>
+        <Drawer.Portal>
+          <DrawerOverlay />
+          <DrawerContent asChild>
             <article>
               <BookDetails />
               <BookReviews />
-              <Dialog.Close asChild>
-                <DialogCloseButton>
-                  <X />
-                </DialogCloseButton>
-              </Dialog.Close>
+              <DrawerCloseButton>
+                <X />
+              </DrawerCloseButton>
             </article>
-          </DialogContent>
-        </Dialog.Portal>
-      </Dialog.Root>
+          </DrawerContent>
+        </Drawer.Portal>
+      </Drawer.Root>
     </div>
   )
 }
