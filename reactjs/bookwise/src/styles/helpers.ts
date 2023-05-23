@@ -28,7 +28,9 @@ type SpaceTokens = {
   $8: $$ScaleValue
   $10: $$ScaleValue
   $12: $$ScaleValue
+  $14: $$ScaleValue
   $16: $$ScaleValue
+  $18: $$ScaleValue
 }
 export type LogicalValue =
   | keyof SpaceTokens
@@ -61,8 +63,7 @@ export function clamp({
   const y = parseMedia(config.media[endAt])
 
   return `clamp(
-    ${a}${unit},
-    calc(${a}${unit} + (${b} - ${a}) * (100${viewportUnit} - ${x}${unit}) / (${y} - ${x})),
+    ${a}${unit},calc(${a}${unit} + (${b} - ${a}) * (100${viewportUnit} - ${x}${unit}) / (${y} - ${x})),
     ${b}${unit}
   )`
 }

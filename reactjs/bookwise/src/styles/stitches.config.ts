@@ -15,7 +15,6 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
       },
 
       space: {
-        px: '1px',
         0: 0,
         1: '0.25rem',
         2: '0.5rem',
@@ -27,7 +26,9 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         8: '2rem',
         10: '2.5rem',
         12: '3rem',
+        14: '3.5rem',
         16: '4rem',
+        18: '4.5rem',
       },
 
       fontSizes: {
@@ -93,7 +94,7 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         'action-in-out': '150ms cubic-bezier(0.25, 0.1, 0.25, 1.0)',
         collapse: '300ms cubic-bezier(0.34, 1.56, 0.64, 1)',
         content: '500ms cubic-bezier(0.23, 1, 0.32, 1)',
-        overlay: '250ms cubic-bezier(0.55, 0.085, 0.68, 0.53)',
+        overlay: '250ms cubic-bezier(0.42, 0, 0.58, 1)',
       },
     },
 
