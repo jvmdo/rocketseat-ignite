@@ -8,12 +8,12 @@ import { ComponentProps } from 'react'
 const { theme } = config
 
 export interface BookCardProps extends ComponentProps<typeof S_BookCard> {
-  imgSrc: string
-  title: string
-  author: string
-  rate: number
-  description: string
-  read: boolean
+  imgSrc?: string
+  title?: string
+  author?: string
+  rate?: number
+  description?: string
+  read?: boolean
 }
 
 export function BookCard({
@@ -25,11 +25,20 @@ export function BookCard({
   read = false,
   ...props
 }: BookCardProps) {
+  function handleOpenBookDrawer() {
+    console.count('Clicked!')
+  }
+
   return (
-    <S_BookCard {...props}>
+    <S_BookCard
+      role="button"
+      tabIndex={0}
+      onClick={handleOpenBookDrawer}
+      {...props}
+    >
       <Image src={imgSrc} width={108} height={152} alt={description} />
       <hgroup>
-        <h3>{title}</h3>
+        <h4>{title}</h4>
         <p>{author}</p>
       </hgroup>
       <Rating

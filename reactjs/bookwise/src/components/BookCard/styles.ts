@@ -3,6 +3,14 @@ import { styled } from '@/styles/stitches.config'
 export const S_BookCard = styled('div', {
   backgroundColor: '$gray700',
   borderRadius: '$sm',
+  cursor: 'pointer',
+  outline: '2px solid transparent',
+
+  transition: 'outline-color $action-in-out',
+
+  '&:is(:hover, :focus-visible)': {
+    outlineColor: '$gray600',
+  },
 
   display: 'grid',
   gridTemplateColumns: 'auto 1fr',
@@ -24,7 +32,7 @@ export const S_BookCard = styled('div', {
   hgroup: {
     gridArea: 'hgroup',
 
-    h3: {
+    h4: {
       color: '$gray100',
       fontWeight: '$bold',
       lineHeight: '$short',
