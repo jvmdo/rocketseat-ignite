@@ -73,4 +73,6 @@ export const globalStyles = globalCss({
   },
 
   // I should've set `line-height`s globally
+  // I should've set `font-weight`s globally
+  // I should've set `responsive font-size`s globally
 })
