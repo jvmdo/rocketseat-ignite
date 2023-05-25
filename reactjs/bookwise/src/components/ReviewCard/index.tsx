@@ -8,6 +8,7 @@ import { config } from '@/styles/stitches.config'
 import { useParagraphTrimmer } from './useParagraphTrimmer'
 import MediaQuery from 'react-responsive'
 import { getBreakpoint } from '@/utils/get-breakpoint'
+import { LinkWrapper } from '../LinkWrapper'
 
 const { theme, media } = config
 
@@ -54,7 +55,9 @@ export function ReviewCard({
     <S_ReviewCard>
       <CardHeader>
         <div className="user-info">
-          <Image src={user.image!} width={40} height={40} alt="" />
+          <LinkWrapper href={`/profile/${user.id}`} size="round">
+            <Image src={user.image!} width={40} height={40} alt="" />
+          </LinkWrapper>
           <hgroup>
             <h4>{user.name}</h4>
             <p>

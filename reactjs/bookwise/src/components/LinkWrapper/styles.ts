@@ -7,9 +7,17 @@ export const S_LinkWrapper = styled(Link, {
   borderRadius: '$sm',
   outline: 'none !important',
 
-  transition: 'border $action-in-out',
+  transition: 'box-shadow $action-in-out',
 
   '&:is(:hover, :focus-visible)': {
     boxShadow: '0 0 0 2px $colors$gray500',
+  },
+
+  variants: {
+    size: {
+      round: {
+        borderRadius: '50%',
+      },
+    },
   },
 })
