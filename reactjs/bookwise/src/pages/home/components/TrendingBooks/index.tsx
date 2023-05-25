@@ -14,7 +14,7 @@ export interface TrendingBooksProps
 
 export function TrendingBooks() {
   return (
-    <S_TrendingBooks>
+    <S_TrendingBooks className="trending-books">
       <header>
         <h3>Livros populares</h3>
         <PageLink href="/explorar" color="purple">
@@ -45,3 +45,5 @@ export function TrendingBooks() {
     </S_TrendingBooks>
   )
 }
+
+TrendingBooks.toString = () => '.trending-books'

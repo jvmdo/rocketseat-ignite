@@ -1,14 +1,23 @@
-// import { ButtonWithIcon } from '@/components/ButtonWithIcon'
-// import { CustomIcon } from '@/components/CustomIcon'
+import { ChartLine } from '@phosphor-icons/react'
+import { S_Home } from './styles'
+import { TrendingBooks } from './components/TrendingBooks'
+import { RecentBookReviews } from './components/RecentBookReviews'
+import { LastReadSection } from './components/LastReadSection'
 
-import { AppBar } from '@/layouts/MainLayout/components/AppBar'
+export interface HomeProps {}
 
-export default function Home() {
+export default function Home(props: HomeProps) {
+  const userHasRead = true
+
   return (
-    <div>
-      <AppBar />
-      <h1>Home</h1>
-      {/* <ButtonWithIcon icon={CustomIcon} text="I like that" /> */}
-    </div>
+    <S_Home withReadSection={userHasRead}>
+      <header>
+        <ChartLine />
+        <h2>Início</h2>
+      </header>
+      {userHasRead && <LastReadSection />}
+      <TrendingBooks />
+      <RecentBookReviews />
+    </S_Home>
   )
 }

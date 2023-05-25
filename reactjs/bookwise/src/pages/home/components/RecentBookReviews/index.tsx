@@ -7,7 +7,7 @@ export interface RecentBookReviewsProps
 
 export function RecentBookReviews() {
   return (
-    <S_RecentBookReviews>
+    <S_RecentBookReviews className="recent-book-reviews">
       <header>
         <h3>Avaliações mais recentes</h3>
       </header>
@@ -28,3 +28,5 @@ export function RecentBookReviews() {
     </S_RecentBookReviews>
   )
 }
+
+RecentBookReviews.toString = () => '.recent-book-reviews'

@@ -10,13 +10,13 @@ const { theme } = config
 
 export interface LastReadCardProps
   extends ComponentProps<typeof S_LastReadCard> {
-  imgSrc: string
-  title: string
-  author: string
-  rate: number
-  review: string
-  date: string
-  description: string
+  imgSrc?: string
+  title?: string
+  author?: string
+  rate?: number
+  review?: string
+  date?: string
+  description?: string
 }
 
 export function LastReadCard({
@@ -27,9 +27,19 @@ export function LastReadCard({
   rate = 4,
   review = 'Definitely one of the books in history',
   description = 'A book cover',
+  ...props
 }: LastReadCardProps) {
+  function handleOpenBookDrawer() {
+    console.count('Clicked!')
+  }
+
   return (
-    <S_LastReadCard>
+    <S_LastReadCard
+      role="button"
+      tabIndex={0}
+      onClick={handleOpenBookDrawer}
+      {...props}
+    >
       <header>
         <p>
           {formatDistanceToNow(new Date(date), {

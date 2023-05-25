@@ -3,6 +3,7 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 
 export const S_TrendingBooks = styled('aside', {
   display: 'grid',
+  gridAutoRows: 'min-content 1fr',
   responsiveGap: ['$2', '$2', '$3'],
 
   header: {
