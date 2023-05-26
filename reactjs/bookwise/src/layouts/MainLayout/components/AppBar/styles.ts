@@ -16,15 +16,19 @@ export const S_AppBar = styled('header', {
   display: 'grid',
   gridTemplateRows: '2rem auto',
 
+  position: 'sticky',
+  insetBlockStart: 0,
+  inlineSize: '100%',
+  zIndex: 90,
+
   '@lg': {
     backgroundImage: 'url("/appbar-bg-desktop.svg")',
     backgroundPosition: 'left top',
     borderRadius: '$md',
 
-    position: 'fixed',
-    insetBlock: 0,
+    blockSize: 'calc(100dvh - 2 * $$layoutPaddingBlock)',
     insetInlineStart: 0,
-    width: 'clamp(11.5rem, 16.11%, 14.5rem)',
+    inlineSize: 'clamp(11.5rem, 4.206rem + 11.76vw, 14.5rem)', // from 992px to 1400px
 
     justifyItems: 'center',
   },

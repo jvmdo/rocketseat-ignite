@@ -55,7 +55,14 @@ export const S_BookCard = styled('div', {
       responsiveFontSize: ['$xs', '$xs', '$sm'],
     },
 
-    responsiveWidth: ['10rem', '11.125rem', '12.25rem'],
+    responsiveWidth: [
+      '10rem',
+      '10rem',
+      '10rem',
+      'max(10rem, 100%)',
+      'max(11.125rem, 100%)',
+      '12.25rem',
+    ],
   },
 
   // Stars wrapper

@@ -16,7 +16,6 @@ export const S_LastReadCard = styled('div', {
 
   responsivePaddingBlock: ['$3', '$4', '$5'],
   responsivePaddingInline: ['$4', '$5', '$6'],
-  responsiveWidth: ['17.5rem', '22.625rem', '27.75rem', '32.875rem', '38rem'],
 
   header: {
     display: 'flex',

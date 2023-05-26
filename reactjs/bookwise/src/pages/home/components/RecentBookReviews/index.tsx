@@ -24,6 +24,24 @@ export function RecentBookReviews() {
         <li>
           <ReviewCard />
         </li>
+        <li>
+          <ReviewCard />
+        </li>
+        <li>
+          <ReviewCard />
+        </li>
+        <li>
+          <ReviewCard />
+        </li>
+        <li>
+          <ReviewCard />
+        </li>
+        <li>
+          <ReviewCard />
+        </li>
+        <li>
+          <ReviewCard />
+        </li>
       </ol>
     </S_RecentBookReviews>
   )

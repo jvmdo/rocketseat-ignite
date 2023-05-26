@@ -23,12 +23,16 @@ export const S_TrendingBooks = styled('aside', {
 
 export const ScrollAreaRoot = styled(ScrollArea.Root, {
   overflow: 'auto',
-  // marginInline: -24, // Should be calc(-1 * $$layoutPaddingInline)
+
+  marginInline: 'calc(-1 * $$containerPaddingInline)',
+  '@lg': { marginInline: 'unset' },
 })
 
 export const ScrollAreaViewport = styled(ScrollArea.Viewport, {
-  paddingBlock: 2, // Otherwise, card's `outline` would be trimmed
-  // paddingInline: 24, // Should be $$layoutPaddingInline
+  // Otherwise, card's `outline` would be trimmed
+  paddingBlock: 2,
+  // "Overflow" parent effect
+  paddingInline: '$$containerPaddingInline',
 
   scrollSnapType: 'both mandatory',
 
@@ -39,16 +43,25 @@ export const ScrollAreaViewport = styled(ScrollArea.Viewport, {
     li: {
       flex: '1 0 auto',
       scrollSnapAlign: 'center',
+
+      // Align last carrousel item
+      '&:last-of-type': {
+        paddingInlineEnd: '$$containerPaddingInline',
+      },
     },
   },
 
   '@lg': {
-    maxHeight: '84dvh',
+    maxHeight: '92dvh',
     paddingInline: 2,
 
     ol: {
       flexDirection: 'column',
       gap: '$3',
+
+      'li:last-of-type': {
+        paddingInlineEnd: 'unset',
+      },
     },
   },
 })

@@ -5,7 +5,7 @@ import { LastReadSection } from './components/LastReadSection'
 
 export const S_Home = styled('main', {
   display: 'grid',
-  responsiveGap: ['$5', '$6', '$8', '$10'],
+  responsiveGap: ['$5', '$6', '$8', '$8', '$8', '$10'],
 
   '> header': {
     display: 'flex',
@@ -26,6 +26,7 @@ export const S_Home = styled('main', {
   },
 
   '@lg': {
+    gridTemplateColumns: '3fr 2fr',
     gridTemplateAreas: `
       'header     .    '
       'reviews trending'
@@ -47,6 +48,7 @@ export const S_Home = styled('main', {
       position: 'sticky',
       insetBlockStart: 0,
       marginBlockStart: 'calc(-1 * $3)', // small alignment fix
+      '@lg': { marginBlockStart: 'unset' },
     },
 
     [`${RecentBookReviews}`]: {
@@ -56,6 +58,10 @@ export const S_Home = styled('main', {
 
   '@xl': {
     columnGap: '$16',
+  },
+
+  '@xxl': {
+    gridTemplateColumns: 'unset',
   },
 
   variants: {

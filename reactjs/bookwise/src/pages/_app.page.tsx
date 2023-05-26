@@ -6,6 +6,7 @@ import { Nunito_Sans } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 import { setDefaultOptions } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { MainLayout } from '@/layouts/MainLayout'
 
 const nunito = Nunito_Sans({ subsets: ['latin'] })
 
@@ -28,7 +29,9 @@ export default function App({
       `}</style>
 
       <SessionProvider session={session}>
-        <Component {...pageProps} />
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
       </SessionProvider>
     </>
   )

@@ -11,7 +11,7 @@ export function LastReadSection(props: LastReadSectionProps) {
   return (
     <S_LastReadSection className="last-read-section">
       <header>
-        <h3>Livros populares</h3>
+        <h3>Sua última leitura</h3>
         <PageLink href="/profile/userId" color="purple">
           <span>Ver todas</span>
           <CaretRight />

@@ -26,7 +26,7 @@ export function BookReviews() {
       <ReviewCardsList>
         <li>
           <ReviewCard
-            imgSrc=""
+            imgSrc="https://picsum.photos/200"
             name="Brandom Botosh"
             date="2023-05-20T12:58:00"
             rate={4}
@@ -35,7 +35,7 @@ export function BookReviews() {
         </li>
         <li>
           <ReviewCard
-            imgSrc=""
+            imgSrc="https://picsum.photos/200"
             name="Brandom Botosh"
             date="2023-05-20T12:58:00"
             rate={4}
@@ -44,7 +44,7 @@ export function BookReviews() {
         </li>
         <li>
           <ReviewCard
-            imgSrc=""
+            imgSrc="https://picsum.photos/200"
             name="Brandom Botosh"
             date="2023-05-20T12:58:00"
             rate={4}

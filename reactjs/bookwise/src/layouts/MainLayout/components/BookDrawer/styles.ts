@@ -26,7 +26,7 @@ export const DrawerContent = styled(Drawer.Content, {
   responsiveGap: ['$6', '$7', '$8', '$10'],
 
   position: 'fixed',
-  left: '100%',
+  insetInlineStart: '100%',
 
   '&[data-state="open"]': {
     animation: `${contentShow} $transitions$content forwards`,
@@ -82,7 +82,7 @@ const fadeOut = keyframes({
 export const DrawerOverlay = styled(Drawer.Overlay, {
   position: 'fixed',
   inset: 0,
-  zIndex: -1,
+  zIndex: 91,
 
   '&[data-state="open"]': {
     animation: `${fadeIn} $transitions$overlay forwards`,

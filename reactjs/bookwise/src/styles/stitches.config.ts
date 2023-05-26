@@ -29,6 +29,7 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         14: '3.5rem',
         16: '4rem',
         18: '4.5rem',
+        24: '6rem',
       },
 
       fontSizes: {
