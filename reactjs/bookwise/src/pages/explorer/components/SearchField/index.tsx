@@ -7,9 +7,11 @@ export interface SearchFieldProps
 
 export function SearchField() {
   return (
-    <S_SearchField tabIndex={0}>
+    <S_SearchField tabIndex={0} className="search-field">
       <input type="search" placeholder="Buscar livro ou autor" />
       <MagnifyingGlass />
     </S_SearchField>
   )
 }
+
+SearchField.toString = () => '.search-field'

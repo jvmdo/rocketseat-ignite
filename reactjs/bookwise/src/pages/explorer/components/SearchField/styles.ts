@@ -13,6 +13,8 @@ export const S_SearchField = styled('div', {
   gap: '$2',
 
   input: {
+    flex: 1,
+
     backgroundColor: 'inherit',
     border: 'none',
     color: '$gray200',
