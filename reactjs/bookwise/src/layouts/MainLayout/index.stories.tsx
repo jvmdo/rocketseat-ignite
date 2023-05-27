@@ -9,8 +9,8 @@ export default {
   component: MainLayout,
   decorators: [(Story) => <SessionProvider>{Story()}</SessionProvider>],
   args: {
-    // children: <Home />,
-    children: <Explorer />,
+    children: <Home />,
+    // children: <Explorer />,
   },
 } as Meta<MainLayoutProps>
 

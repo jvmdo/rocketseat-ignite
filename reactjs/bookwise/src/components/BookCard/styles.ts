@@ -2,14 +2,14 @@ import { styled } from '@/styles/stitches.config'
 
 export const S_BookCard = styled('div', {
   backgroundColor: '$gray700',
+  border: '2px solid transparent',
   borderRadius: '$sm',
   cursor: 'pointer',
-  outline: '2px solid transparent',
 
   transition: 'outline-color $action-in-out',
 
   '&:is(:hover, :focus-visible)': {
-    outlineColor: '$gray600',
+    borderColor: '$gray600',
   },
 
   display: 'grid',
@@ -54,15 +54,6 @@ export const S_BookCard = styled('div', {
       color: '$gray400',
       responsiveFontSize: ['$xs', '$xs', '$sm'],
     },
-
-    responsiveWidth: [
-      '10rem',
-      '10rem',
-      '10rem',
-      'max(10rem, 100%)',
-      'max(11.125rem, 100%)',
-      '12.25rem',
-    ],
   },
 
   // Stars wrapper
@@ -93,7 +84,7 @@ export const S_BookCard = styled('div', {
         },
 
         hgroup: {
-          responsiveWidth: ['7.4173rem', '8.3575rem', '9.4169rem'],
+          h4: { '-webkit-line-clamp': 4 },
         },
       },
     },

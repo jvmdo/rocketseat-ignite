@@ -29,11 +29,15 @@ export function BookCard({
     console.count('Clicked!')
   }
 
+  // TODO: read
+
   return (
     <S_BookCard
       role="button"
       tabIndex={0}
       onClick={handleOpenBookDrawer}
+      title={title}
+      className="book-card"
       {...props}
     >
       <Image src={imgSrc} width={108} height={152} alt={description} />
@@ -53,3 +57,5 @@ export function BookCard({
     </S_BookCard>
   )
 }
+
+BookCard.toString = () => '.book-card'
