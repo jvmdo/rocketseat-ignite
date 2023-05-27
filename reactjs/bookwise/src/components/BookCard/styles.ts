@@ -76,6 +76,8 @@ export const S_BookCard = styled('div', {
   responsivePaddingBlock: ['$2', '$3', '$4'],
   responsivePaddingInline: ['$3', '$4', '$5'],
 
+  position: 'relative',
+
   variants: {
     size: {
       big: {
@@ -89,4 +91,24 @@ export const S_BookCard = styled('div', {
       },
     },
   },
+})
+
+export const ReadTag = styled('i', {
+  backgroundColor: '$green300',
+  borderTopRightRadius: 'inherit',
+  borderBottomLeftRadius: '$xs',
+
+  color: '$green100',
+  lineHeight: '$shorter',
+  fontSize: '$xs',
+  fontStyle: 'normal',
+  fontWeight: '$bold',
+  textTransform: 'uppercase',
+
+  paddingBlock: '$1',
+  responsivePaddingInline: ['$2', '$2', '$3'],
+
+  position: 'absolute',
+  insetBlockStart: '-2px', // card border
+  insetInlineEnd: '-2px',
 })

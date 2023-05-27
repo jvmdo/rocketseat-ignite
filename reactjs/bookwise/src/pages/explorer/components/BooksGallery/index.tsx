@@ -9,46 +9,46 @@ export function BooksGallery() {
   return (
     <S_BooksGallery className="books-gallery">
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
       <li>
-        <BookCard size="big" />
+        <BookCard size="big" read={true} />
       </li>
     </S_BooksGallery>
   )

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { S_BookCard } from './styles'
+import { ReadTag, S_BookCard } from './styles'
 import { Rating } from 'react-simple-star-rating'
 import { Star } from '@phosphor-icons/react'
 import { config } from '@/styles/stitches.config'
@@ -29,8 +29,6 @@ export function BookCard({
     console.count('Clicked!')
   }
 
-  // TODO: read
-
   return (
     <S_BookCard
       role="button"
@@ -54,6 +52,7 @@ export function BookCard({
         fillIcon={<Star weight="fill" />}
         fillColor={theme.colors.purple100}
       ></Rating>
+      {read && <ReadTag>Lido</ReadTag>}
     </S_BookCard>
   )
 }
