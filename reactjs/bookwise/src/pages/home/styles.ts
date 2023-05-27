@@ -26,7 +26,7 @@ export const S_Home = styled('main', {
   },
 
   '@lg': {
-    gridTemplateColumns: '3fr 2fr',
+    gridTemplateColumns: '9fr 5fr',
     gridTemplateAreas: `
       'header     .    '
       'reviews trending'
@@ -47,8 +47,7 @@ export const S_Home = styled('main', {
 
       position: 'sticky',
       insetBlockStart: 0,
-      marginBlockStart: 'calc(-1 * $3)', // small alignment fix
-      '@lg': { marginBlockStart: 'unset' },
+      marginBlockStart: 'calc(-1 * ($3 - 1px))', // small alignment fix
     },
 
     [`${RecentBookReviews}`]: {
@@ -76,6 +75,10 @@ export const S_Home = styled('main', {
 
           [`${LastReadSection}`]: {
             gridArea: 'last-read',
+          },
+
+          [`${TrendingBooks}`]: {
+            '@lg': { marginBlockStart: 'unset' },
           },
         },
       },
