@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { SearchField, SearchFieldProps } from '.'
 
 export default {
-  title: 'Explorer / SearchField',
+  title: 'Components / SearchField',
   component: SearchField,
   parameters: {
     layout: 'centered',

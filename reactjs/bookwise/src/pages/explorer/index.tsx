@@ -1,6 +1,6 @@
 import { Binoculars } from '@phosphor-icons/react'
 import { S_Explorer } from './styles'
-import { SearchField } from './components/SearchField'
+import { SearchField } from '../../components/SearchField'
 import { CategoryChips } from './components/CategoryChips'
 import { BooksGallery } from './components/BooksGallery'
 

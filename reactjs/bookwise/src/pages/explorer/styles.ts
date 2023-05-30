@@ -1,5 +1,5 @@
 import { styled } from '@/styles/stitches.config'
-import { SearchField } from './components/SearchField'
+import { SearchField } from '../../components/SearchField'
 import { BooksGallery } from './components/BooksGallery'
 
 export const S_Explorer = styled('main', {
