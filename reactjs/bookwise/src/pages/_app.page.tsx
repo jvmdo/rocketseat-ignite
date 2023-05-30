@@ -7,6 +7,8 @@ import { SessionProvider } from 'next-auth/react'
 import { setDefaultOptions } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { MainLayout } from '@/layouts/MainLayout'
+import { ReactElement, ReactNode } from 'react'
+import { NextPage } from 'next'
 
 const nunito = Nunito_Sans({ subsets: ['latin'] })
 
@@ -16,10 +18,21 @@ setDefaultOptions({
   locale: ptBR,
 })
 
+type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
-}: AppProps) {
+}: AppPropsWithLayout) {
+  const getLayout =
+    Component.getLayout ?? ((page) => <MainLayout>{page}</MainLayout>)
+
   return (
     <>
       <style jsx global>{`
@@ -29,9 +42,7 @@ export default function App({
       `}</style>
 
       <SessionProvider session={session}>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
+        {getLayout(<Component {...pageProps} />)}
       </SessionProvider>
     </>
   )
