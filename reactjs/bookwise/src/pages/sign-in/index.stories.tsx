@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
-import SignIn, { SignInProps } from '.'
+import SignIn from '.'
 
 export default {
   title: 'Pages / Sign In',
   component: SignIn,
-} as Meta<SignInProps>
+} as Meta
 
-export const Default = {} as StoryObj<SignInProps>
+export const Default = {} as StoryObj

@@ -1,11 +1,9 @@
-import { ComponentProps, ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Hero } from './components/Hero'
 import { ButtonGroup, HeadingGroup, S_SignIn, SignInOptions } from './styles'
 import { AuthButton } from '@/components/AuthButton'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
-
-export interface SignInProps extends ComponentProps<typeof S_SignIn> {}
 
 SignIn.getLayout = function getLayout(page: ReactElement) {
   // This page has no layout
