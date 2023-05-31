@@ -2,14 +2,14 @@ import { styled } from '@/styles/stitches.config'
 
 export const S_LastReadCard = styled('div', {
   backgroundColor: '$gray600',
+  border: '2px solid transparent',
   borderRadius: '$sm',
   cursor: 'pointer',
-  outline: '2px solid transparent',
 
-  transition: 'outline-color $action-in-out',
+  transition: 'border-color $action-in-out',
 
   '&:is(:hover, :focus-visible)': {
-    outlineColor: '$gray500',
+    borderColor: '$gray500',
   },
 
   responsiveFontSize: ['$xs', '$sm'],

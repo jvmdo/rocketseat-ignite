@@ -134,9 +134,8 @@ export const CardBody = styled('div', {
       alignSelf: 'center',
       gridArea: 'book',
 
-      display: 'block',
       height: 'auto',
-      responsiveWidth: '6.75rem',
+      width: '6.75rem',
 
       cursor: 'pointer',
 

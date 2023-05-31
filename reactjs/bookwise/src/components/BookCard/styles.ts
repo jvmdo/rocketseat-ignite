@@ -6,7 +6,7 @@ export const S_BookCard = styled('div', {
   borderRadius: '$sm',
   cursor: 'pointer',
 
-  transition: 'outline-color $action-in-out',
+  transition: 'border-color $action-in-out',
 
   '&:is(:hover, :focus-visible)': {
     borderColor: '$gray600',
@@ -26,7 +26,7 @@ export const S_BookCard = styled('div', {
     gridArea: 'book',
 
     height: 'auto',
-    width: '4rem',
+    width: '4.25rem',
   },
 
   hgroup: {
@@ -73,8 +73,8 @@ export const S_BookCard = styled('div', {
     },
   },
 
-  responsivePaddingBlock: ['$2', '$3', '$4'],
-  responsivePaddingInline: ['$3', '$4', '$5'],
+  responsivePaddingBlock: ['$2', '$2', '$3', '$4'],
+  responsivePaddingInline: ['$3', '$3', '$4', '$5'],
 
   position: 'relative',
 
