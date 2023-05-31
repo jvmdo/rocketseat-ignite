@@ -1,13 +1,13 @@
-import { ComponentProps } from 'react'
 import { S_LastReadSection } from './styles'
 import { PageLink } from '@/components/PageLink'
 import { CaretRight } from '@phosphor-icons/react'
-import { LastReadCard } from '@/components/LastReadCard'
+import { LastReadCard, LastReadCardProps } from '@/components/LastReadCard'
 
-interface LastReadSectionProps
-  extends ComponentProps<typeof S_LastReadSection> {}
+interface LastReadSectionProps {
+  data: LastReadCardProps
+}
 
-export function LastReadSection(props: LastReadSectionProps) {
+export function LastReadSection({ data }: LastReadSectionProps) {
   return (
     <S_LastReadSection className="last-read-section">
       <header>
@@ -17,7 +17,7 @@ export function LastReadSection(props: LastReadSectionProps) {
           <CaretRight />
         </PageLink>
       </header>
-      <LastReadCard />
+      <LastReadCard {...data} />
     </S_LastReadSection>
   )
 }

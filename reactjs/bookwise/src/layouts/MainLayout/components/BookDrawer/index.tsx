@@ -12,11 +12,11 @@ interface BookDrawerProps {
 }
 
 export function BookDrawer(/* { open, setOpen }: BookDrawerProps */) {
-  const { open, setOpen } = useContext(MainLayoutContext)
+  const { drawerOpen, setDrawerOpen } = useContext(MainLayoutContext)
 
   return (
     <div>
-      <Drawer.Root open={open} onOpenChange={setOpen}>
+      <Drawer.Root open={drawerOpen} onOpenChange={setDrawerOpen}>
         <Drawer.Portal>
           <DrawerOverlay>
             <DrawerContent asChild>

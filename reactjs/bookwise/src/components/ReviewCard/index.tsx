@@ -1,4 +1,4 @@
-import { ComponentProps, useRef } from 'react'
+import { useRef } from 'react'
 import { CardBody, CardHeader, S_ReviewCard } from './styles'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
@@ -6,48 +6,35 @@ import { Rating } from 'react-simple-star-rating'
 import { Star } from '@phosphor-icons/react'
 import { config } from '@/styles/stitches.config'
 import { useParagraphTrimmer } from './useParagraphTrimmer'
-import MediaQuery from 'react-responsive'
-import { getBreakpoint } from '@/utils/get-breakpoint'
 import { LinkWrapper } from '../LinkWrapper'
+import { BookCardProps } from '../BookCard'
+import { useMediaQuery } from '@mantine/hooks'
 
 const { theme, media } = config
 
-export interface ReviewCardProps extends ComponentProps<typeof S_ReviewCard> {
-  id?: string
-  createdAt?: string
-  description?: string
-  rate?: number
-  user?: {
-    id?: string
-    name?: string
-    image?: string
+export interface ReviewCardProps {
+  id: string
+  createdAt: Date
+  description: string
+  rate: number
+  user: {
+    id: string
+    name: string | null
+    email: string | null
+    emailVerified: Date | null
+    image: string | null
+    createdAt: Date
   }
-  book?: {
-    id?: string
-    image?: string
-    title?: string
-    author?: string
-  }
+  book: BookCardProps
 }
 
-export function ReviewCard({
-  createdAt = '2023-05-20T18:19:20',
-  description = 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi praesentium optio soluta beatae molestiae ipsa voluptate id eveniet veritatis reprehenderit. Ipsa magnam officia vitae quas sapiente, qui pariatur temporibus incidunt.',
-  rate = 4,
-  user = {
-    name: 'Jaxson DayZ',
-    image: 'https://picsum.photos/200',
-  },
-  book = {
-    image: '/images/books/o-hobbit.png',
-    title: 'O Hobbit',
-    author: 'J.R.R Tolkien',
-  },
-}: ReviewCardProps) {
+export function ReviewCard(props: ReviewCardProps) {
   const paraRef = useRef<HTMLParagraphElement>(null)
-  const trimmedText = useParagraphTrimmer(paraRef, description, 3)
+  const trimmedText = useParagraphTrimmer(paraRef, props.description, 3)
+  const isSmallOrLarger = useMediaQuery(media.sm)
 
   function handleOpenDrawer() {
+    // TODO: open drawer on image OR name click
     console.count('Clicked!')
   }
 
@@ -55,13 +42,14 @@ export function ReviewCard({
     <S_ReviewCard>
       <CardHeader>
         <div className="user-info">
-          <LinkWrapper href={`/profile/${user.id}`} size="round">
-            <Image src={user.image!} width={40} height={40} alt="" />
+          <LinkWrapper href={`/profile/${props.user.id}`} size="round">
+            {/* TODO: User Radix UI's <Avatar/> component */}
+            <Image src={props.user.image!} width={40} height={40} alt="" />
           </LinkWrapper>
           <hgroup>
-            <h4>{user.name}</h4>
+            <h4>{props.user.name}</h4>
             <p>
-              {formatDistanceToNow(new Date(createdAt), {
+              {formatDistanceToNow(new Date(props.createdAt), {
                 addSuffix: true,
                 includeSeconds: true,
               })}
@@ -70,7 +58,7 @@ export function ReviewCard({
         </div>
         <Rating
           readonly
-          initialValue={rate}
+          initialValue={props.book.rating}
           allowFraction
           emptyIcon={<Star />}
           emptyColor={theme.colors.purple100}
@@ -79,25 +67,25 @@ export function ReviewCard({
         ></Rating>
       </CardHeader>
       <CardBody>
-        <MediaQuery minWidth={getBreakpoint(media.sm)}>
+        {isSmallOrLarger && (
           <Image
-            src={book.image!}
+            src={props.book.coverUrl}
             width={108}
             height={152}
-            alt={`${book.title} cover`}
+            alt={`${props.book.name} cover`}
             role="button"
             onClick={handleOpenDrawer}
             tabIndex={0}
           />
-        </MediaQuery>
+        )}
         <hgroup>
-          <h4>{book.title}</h4>
-          <p>{book.author}</p>
+          <h4>{props.book.name}</h4>
+          <p>{props.book.author}</p>
         </hgroup>
         <p ref={paraRef}>
           {trimmedText}
           <span role="button" onClick={handleOpenDrawer} tabIndex={0}>
-            {trimmedText !== description && '\u00A0 ver mais'}
+            {trimmedText !== props.description && '\u00A0 ver mais'}
           </span>
         </p>
       </CardBody>

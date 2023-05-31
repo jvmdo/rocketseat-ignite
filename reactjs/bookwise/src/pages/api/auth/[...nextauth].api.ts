@@ -1,9 +1,17 @@
 /* eslint-disable camelcase */
 import { prisma } from '@/lib/prisma'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth, {
+  DefaultSession,
+  DefaultUser,
+  NextAuthOptions,
+} from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import GithubProvider from 'next-auth/providers/github'
+
+interface CustomSession extends DefaultSession {
+  user: DefaultUser
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -24,6 +32,12 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET_KEY ?? '',
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      session.user = user
+      return session as CustomSession
+    },
+  },
 }
 
 export default NextAuth(authOptions)

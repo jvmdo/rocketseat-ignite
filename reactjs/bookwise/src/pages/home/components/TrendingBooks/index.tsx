@@ -1,23 +1,23 @@
-import { ComponentProps } from 'react'
 import {
   S_TrendingBooks,
   ScrollAreaRoot,
   ScrollAreaScrollbar,
   ScrollAreaViewport,
 } from './styles'
-import { BookCard } from '@/components/BookCard'
+import { BookCard, BookCardProps } from '@/components/BookCard'
 import { PageLink } from '@/components/PageLink'
 import { CaretRight } from '@phosphor-icons/react'
 
-export interface TrendingBooksProps
-  extends ComponentProps<typeof S_TrendingBooks> {}
+export interface TrendingBooksProps {
+  popularBooks: BookCardProps[]
+}
 
-export function TrendingBooks() {
+export function TrendingBooks({ popularBooks }: TrendingBooksProps) {
   return (
     <S_TrendingBooks className="trending-books">
       <header>
         <h3>Livros populares</h3>
-        <PageLink href="/explorar" color="purple">
+        <PageLink href="/explorer" color="purple">
           <span>Ver todos</span>
           <CaretRight />
         </PageLink>
@@ -25,18 +25,11 @@ export function TrendingBooks() {
       <ScrollAreaRoot>
         <ScrollAreaViewport>
           <ol>
-            <li>
-              <BookCard />
-            </li>
-            <li>
-              <BookCard />
-            </li>
-            <li>
-              <BookCard />
-            </li>
-            <li>
-              <BookCard />
-            </li>
+            {popularBooks.map((book) => (
+              <li key={book.id}>
+                <BookCard {...book} />
+              </li>
+            ))}
           </ol>
         </ScrollAreaViewport>
         <ScrollAreaScrollbar orientation="horizontal" />

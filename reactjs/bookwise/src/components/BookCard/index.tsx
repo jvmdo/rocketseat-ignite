@@ -3,30 +3,31 @@ import { ReadTag, S_BookCard } from './styles'
 import { Rating } from 'react-simple-star-rating'
 import { Star } from '@phosphor-icons/react'
 import { config } from '@/styles/stitches.config'
-import { ComponentProps } from 'react'
+import { useContext } from 'react'
+import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 
 const { theme } = config
 
-export interface BookCardProps extends ComponentProps<typeof S_BookCard> {
-  imgSrc?: string
-  title?: string
-  author?: string
-  rate?: number
-  description?: string
-  read?: boolean
+export interface BookCardProps {
+  id: string
+  name: string
+  author: string
+  coverUrl: string
+  rating: number
+  totalReviews: number
+  categories: string[]
+  totalPages: number
+  createdAt: Date
+  summary: string
+  userHasRead: boolean
 }
 
-export function BookCard({
-  imgSrc = '/images/books/o-fim-da-eternidade.png',
-  title = 'O fim da eternidade',
-  author = 'Isaac Asimov',
-  rate = 4,
-  description = 'One of the books in history',
-  read = false,
-  ...props
-}: BookCardProps) {
+export function BookCard(props: BookCardProps) {
+  const { drawerOpen, setDrawerOpen } = useContext(MainLayoutContext)
+
   function handleOpenBookDrawer() {
-    console.count('Clicked!')
+    // TODO: pass book data to drawer
+    setDrawerOpen(!drawerOpen)
   }
 
   return (
@@ -34,17 +35,16 @@ export function BookCard({
       role="button"
       tabIndex={0}
       onClick={handleOpenBookDrawer}
-      title={title}
+      title={props.name}
       className="book-card"
-      {...props}
     >
-      <Image src={imgSrc} width={108} height={152} alt={description} />
+      <Image src={props.coverUrl} width={108} height={152} alt="" />
       <hgroup>
-        <h4>{title}</h4>
-        <p>{author}</p>
+        <h4>{props.name}</h4>
+        <p>{props.author}</p>
       </hgroup>
       <Rating
-        initialValue={rate}
+        initialValue={props.rating}
         readonly
         allowFraction
         emptyIcon={<Star />}
@@ -52,7 +52,7 @@ export function BookCard({
         fillIcon={<Star weight="fill" />}
         fillColor={theme.colors.purple100}
       ></Rating>
-      {read && <ReadTag>Lido</ReadTag>}
+      {props.userHasRead && <ReadTag>Lido</ReadTag>}
     </S_BookCard>
   )
 }

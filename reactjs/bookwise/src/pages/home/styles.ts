@@ -37,17 +37,14 @@ export const S_Home = styled('main', {
       gridArea: 'header',
     },
 
-    [`${LastReadSection}`]: {
-      gridArea: 'last-read',
-    },
-
     [`${TrendingBooks}`]: {
       alignSelf: 'start',
       gridArea: 'trending',
 
       position: 'sticky',
       insetBlockStart: 0,
-      marginBlockStart: 'calc(-1 * ($3 - 1px))', // small alignment fix
+
+      marginBlockStart: 'calc(-1 * $3)', // small alignment fix
     },
 
     [`${RecentBookReviews}`]: {
@@ -78,7 +75,7 @@ export const S_Home = styled('main', {
           },
 
           [`${TrendingBooks}`]: {
-            '@lg': { marginBlockStart: 'unset' },
+            marginBlockStart: 'unset',
           },
         },
       },

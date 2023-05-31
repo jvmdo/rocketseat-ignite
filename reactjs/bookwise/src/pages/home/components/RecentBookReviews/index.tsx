@@ -1,47 +1,23 @@
-import React, { ComponentProps } from 'react'
+import React from 'react'
 import { S_RecentBookReviews } from './styles'
-import { ReviewCard } from '@/components/ReviewCard'
+import { ReviewCard, ReviewCardProps } from '@/components/ReviewCard'
 
-export interface RecentBookReviewsProps
-  extends ComponentProps<typeof S_RecentBookReviews> {}
+export interface RecentBookReviewsProps {
+  recentReviews: ReviewCardProps[]
+}
 
-export function RecentBookReviews() {
+export function RecentBookReviews({ recentReviews }: RecentBookReviewsProps) {
   return (
     <S_RecentBookReviews className="recent-book-reviews">
       <header>
         <h3>Avaliações mais recentes</h3>
       </header>
       <ol>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
-        <li>
-          <ReviewCard />
-        </li>
+        {recentReviews.map((review) => (
+          <li key={review.id}>
+            <ReviewCard {...review} />
+          </li>
+        ))}
       </ol>
     </S_RecentBookReviews>
   )

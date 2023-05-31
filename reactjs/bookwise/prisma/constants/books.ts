@@ -41,7 +41,7 @@ export const books = [
   },
   {
     id: '86596503-369b-4614-bacf-11c9bb73e779',
-    name: 'O guia do mochileiro das galáxias',
+    name: 'O guia do mochileiro das galaxias',
     author: 'Douglas Adams',
     summary:
       'Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectus leo. Sit porta eget nec vitae sit vulputate eget',

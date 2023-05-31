@@ -1,54 +1,35 @@
 import { config } from '@/styles/stitches.config'
-import { ComponentProps } from 'react'
 import { S_LastReadCard } from './styles'
 import { Rating } from 'react-simple-star-rating'
 import { Star } from '@phosphor-icons/react'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
+import { BookCardProps } from '../BookCard'
 
 const { theme } = config
 
-export interface LastReadCardProps
-  extends ComponentProps<typeof S_LastReadCard> {
-  imgSrc?: string
-  title?: string
-  author?: string
-  rate?: number
-  review?: string
-  date?: string
-  description?: string
+export interface LastReadCardProps {
+  updatedAt: string
+  book: BookCardProps
 }
 
-export function LastReadCard({
-  imgSrc = '/images/books/entendendo-algoritmos.png',
-  title = 'Entendendo algoritmos',
-  author = 'Aditya Bhargava',
-  date = '2023-05-21T19:33:12',
-  rate = 4,
-  review = 'Definitely one of the books in history',
-  description = 'A book cover',
-  ...props
-}: LastReadCardProps) {
+export function LastReadCard({ updatedAt, book }: LastReadCardProps) {
   function handleOpenBookDrawer() {
+    // TODO: pass data to drawer
     console.count('Clicked!')
   }
 
   return (
-    <S_LastReadCard
-      role="button"
-      tabIndex={0}
-      onClick={handleOpenBookDrawer}
-      {...props}
-    >
+    <S_LastReadCard role="button" tabIndex={0} onClick={handleOpenBookDrawer}>
       <header>
         <p>
-          {formatDistanceToNow(new Date(date), {
+          {formatDistanceToNow(new Date(updatedAt), {
             addSuffix: true,
             includeSeconds: true,
           })}
         </p>
         <Rating
-          initialValue={rate}
+          initialValue={book.rating}
           readonly
           allowFraction
           emptyIcon={<Star />}
@@ -58,11 +39,11 @@ export function LastReadCard({
         ></Rating>
       </header>
       <hgroup>
-        <h3>{title}</h3>
-        <p>{author}</p>
+        <h3>{book.name}</h3>
+        <p>{book.author}</p>
       </hgroup>
-      <Image src={imgSrc} width={108} height={152} alt={description} />
-      <p>{review}</p>
+      <Image src={book.coverUrl} width={108} height={152} alt="" />
+      <p>{book.summary}</p>
     </S_LastReadCard>
   )
 }
