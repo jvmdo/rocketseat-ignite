@@ -3,6 +3,7 @@ import { MainLayoutContainer, S_MainLayout } from './styles'
 import { AppBar } from './components/AppBar'
 import { BookDrawer } from './components/BookDrawer'
 import { MainLayoutProvider } from '@/contexts/MainLayoutContext'
+import { AuthDialog } from '@/components/AuthDialog'
 
 export interface MainLayoutProps {
   children: ReactNode
@@ -16,6 +17,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         <MainLayoutContainer>{children}</MainLayoutContainer>
       </S_MainLayout>
       <BookDrawer />
+      <AuthDialog />
     </MainLayoutProvider>
   )
 }

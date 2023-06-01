@@ -78,18 +78,18 @@ export const DialogClose = styled(Dialog.Close, {
 
 const fadeIn = keyframes({
   '0%': { backgroundColor: 'transparent' },
-  '100%': { backgroundColor: 'color-mix(in srgb, transparent, $black 50%)' },
+  '100%': { backgroundColor: 'color-mix(in srgb, transparent, $black 60%)' },
 })
 
 const fadeOut = keyframes({
-  '0%': { backgroundColor: 'color-mix(in srgb, transparent, $black 50%)' },
+  '0%': { backgroundColor: 'color-mix(in srgb, transparent, $black 60%)' },
   '100%': { backgroundColor: 'transparent' },
 })
 
 export const DialogOverlay = styled(Dialog.Overlay, {
   position: 'fixed',
   inset: 0,
-  zIndex: -1,
+  zIndex: 91,
 
   '&[data-state="open"]': {
     animation: `${fadeIn} $transitions$overlay forwards`,
