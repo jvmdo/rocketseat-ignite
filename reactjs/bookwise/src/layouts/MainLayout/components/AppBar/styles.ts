@@ -1,4 +1,4 @@
-import { styled } from '@/styles/stitches.config'
+import { keyframes, styled } from '@/styles/stitches.config'
 import { Trigger } from '@radix-ui/react-collapsible'
 
 export const S_AppBar = styled('header', {
@@ -10,7 +10,7 @@ export const S_AppBar = styled('header', {
   // boxShadow: '0 2px 6px -3px $colors$green100',
 
   minHeight: '3.5rem',
-  responsivePaddingBlock: ['$3', '$4', '$6', ['$10', '$6']],
+  responsivePaddingBlock: ['$3', '$4', '$5', ['$10', '$6']],
   responsivePaddingInline: ['$4', '$6', '$6', '$6', '$8'],
 
   display: 'grid',
@@ -34,11 +34,37 @@ export const S_AppBar = styled('header', {
   },
 })
 
+const shrink = keyframes({
+  from: { width: '8rem' },
+  to: { width: '6rem' },
+})
+
+const stretch = keyframes({
+  from: { width: '6rem' },
+  to: { width: '8rem' },
+})
+
 export const StaticContent = styled('div', {
   display: 'flex',
   gap: '$4',
   alignItems: 'center',
   responsiveWidth: ['auto', 'auto', 'auto', '8rem'],
+
+  'img[src*="logo"]': {
+    height: 'auto',
+
+    '[data-state="open"] &': {
+      animation: `${shrink} $transitions$collapse forwards`,
+    },
+
+    '[data-state="closed"] &': {
+      animation: `${stretch} $transitions$collapse`,
+    },
+
+    '@md': {
+      animation: 'unset !important',
+    },
+  },
 })
 
 export const CollapsibleTrigger = styled(Trigger, {

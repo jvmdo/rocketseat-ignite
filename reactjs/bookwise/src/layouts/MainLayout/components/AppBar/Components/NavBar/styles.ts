@@ -3,26 +3,6 @@ import { Content } from '@radix-ui/react-collapsible'
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import { AuthFoot } from '../AuthFoot'
 
-export const NavigationMenuRoot = styled(NavigationMenu.Root, {
-  responsivePaddingInline: ['$10', '$10', '$10', '$0'],
-  responsiveMarginBlock: ['$0', '$0', '$0', ['$16', '$0']],
-
-  '@lg': {
-    // There is an unknown div between Root and List which shouldn't be there
-    // By setting grid here, this div inherits the Root's total height
-    display: 'grid',
-
-    '> div': {
-      width: 'fit-content',
-      justifySelf: 'center',
-    },
-
-    [`${AuthFoot}`]: {
-      alignSelf: 'end',
-    },
-  },
-})
-
 const slideDown = keyframes({
   from: {
     height: 0,
@@ -41,22 +21,19 @@ const slideUp = keyframes({
   },
 })
 
-export const NavigationMenuList = styled(NavigationMenu.List, {
-  display: 'flex',
-  flexDirection: 'column',
-  responsiveGap: ['$2', '$2', '$2', '$6'],
-  responsiveMarginBlock: ['$4', '$4', '$4', '$0'],
-})
-
 export const CollapsibleContent = styled(Content, {
   overflow: 'hidden',
 
   '&[data-state="open"]': {
     animation: `${slideDown} $transitions$collapse`,
+
+    [`${AuthFoot}`]: { opacity: 1 },
   },
 
   '&[data-state="closed"]': {
     animation: `${slideUp} $transitions$collapse`,
+
+    [`${AuthFoot}`]: { opacity: 0 },
   },
 
   '&::before': {
@@ -73,4 +50,16 @@ export const CollapsibleContent = styled(Content, {
   '@lg': {
     overflow: 'unset',
   },
+})
+
+export const NavigationMenuRoot = styled(NavigationMenu.Root, {
+  responsivePaddingInline: ['$10', '$10', '$10', '$0'],
+  responsiveMarginBlock: ['$0', '$0', '$0', ['$16', '$0']],
+})
+
+export const NavigationMenuList = styled(NavigationMenu.List, {
+  display: 'flex',
+  flexDirection: 'column',
+  responsiveGap: ['$2', '$2', '$2', '$6'],
+  responsiveMarginBlock: [['$4', '$0'], ['$4', '$0'], ['$4', '$0'], '$0'],
 })

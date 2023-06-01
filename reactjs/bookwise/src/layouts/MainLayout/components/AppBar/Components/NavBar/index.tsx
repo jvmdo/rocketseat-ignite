@@ -7,35 +7,41 @@ import {
 } from './styles'
 import { Binoculars, ChartLineUp, User } from '@phosphor-icons/react'
 import { AuthFoot } from '../AuthFoot'
+import { useSession } from 'next-auth/react'
 
 export function NavBar() {
-  // TODO: intersection observer
+  const { data: session } = useSession()
+
+  // TODO? intersection observer hook to show box-shadow
+
   return (
-    <CollapsibleContent asChild>
+    <CollapsibleContent>
       <NavigationMenuRoot>
         <NavigationMenuList>
           <NavigationMenu.Item>
-            <NavLink href="/">
+            <NavLink href="/home">
               <ChartLineUp weight="bold" />
               <span>Início</span>
             </NavLink>
           </NavigationMenu.Item>
           <NavigationMenu.Item>
-            <NavLink href="/explore">
+            <NavLink href="/explorer">
               <Binoculars weight="bold" />
               <span>Explorar</span>
             </NavLink>
           </NavigationMenu.Item>
-          <NavigationMenu.Item>
-            <NavLink href="/user/[id]/">
-              <User weight="bold" />
-              <span>Perfil</span>
-            </NavLink>
-          </NavigationMenu.Item>
+          {session && (
+            <NavigationMenu.Item>
+              <NavLink href={`/profile/${session.user.id}`}>
+                <User weight="bold" />
+                <span>Perfil</span>
+              </NavLink>
+            </NavigationMenu.Item>
+          )}
         </NavigationMenuList>
-
-        <AuthFoot />
       </NavigationMenuRoot>
+
+      <AuthFoot />
     </CollapsibleContent>
   )
 }
