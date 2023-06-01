@@ -3,12 +3,12 @@ import { ReadTag, S_BookCard } from './styles'
 import { Rating } from 'react-simple-star-rating'
 import { Star } from '@phosphor-icons/react'
 import { config } from '@/styles/stitches.config'
-import { useContext } from 'react'
+import { ComponentProps, useContext } from 'react'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 
 const { theme } = config
 
-export interface BookCardProps {
+export interface BookCardProps extends ComponentProps<typeof S_BookCard> {
   id: string
   name: string
   author: string
@@ -23,11 +23,11 @@ export interface BookCardProps {
 }
 
 export function BookCard(props: BookCardProps) {
-  const { drawerOpen, setDrawerOpen } = useContext(MainLayoutContext)
+  const { setDrawerOpen } = useContext(MainLayoutContext)
 
   function handleOpenBookDrawer() {
     // TODO: pass book data to drawer
-    setDrawerOpen(!drawerOpen)
+    setDrawerOpen(true)
   }
 
   return (
@@ -35,7 +35,7 @@ export function BookCard(props: BookCardProps) {
       role="button"
       tabIndex={0}
       onClick={handleOpenBookDrawer}
-      title={props.name}
+      title={`${props.name} por ${props.author}`}
       className="book-card"
     >
       <Image src={props.coverUrl} width={108} height={152} alt="" />

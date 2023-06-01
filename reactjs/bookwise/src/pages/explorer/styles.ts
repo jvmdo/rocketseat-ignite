@@ -1,5 +1,4 @@
 import { styled } from '@/styles/stitches.config'
-import { SearchField } from '../../components/SearchField'
 import { BooksGallery } from './components/BooksGallery'
 
 export const S_Explorer = styled('main', {
@@ -33,7 +32,7 @@ export const S_Explorer = styled('main', {
       flex: '1 0 10rem',
     },
 
-    [`${SearchField}`]: {
+    form: {
       flex: '1 0 auto',
       maxWidth: '24rem',
       '@md': { maxWidth: '27.065rem' },

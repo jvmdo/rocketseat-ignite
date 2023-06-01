@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Explorer, ExplorerProps } from '.'
+import Explorer, { ExplorerProps } from './index.page'
 
 export default {
   title: 'Pages / Explorer',

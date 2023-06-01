@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { MainLayout, MainLayoutProps } from '.'
 import { SessionProvider } from 'next-auth/react'
 import Home from '@/pages/home/index.page'
-import { Explorer } from '@/pages/explorer'
+import Explorer from '@/pages/explorer/index.page'
 import { Profile } from '@/pages/profile'
 
 export default {
