@@ -1,13 +1,22 @@
-import { useState } from 'react'
+import useSWR from 'swr'
 import { S_CategoryChips, ToggleChip } from './styles'
+import { api } from '@/lib/axios'
 
-export interface CategoryChipsProps {}
+export interface CategoryChipsProps {
+  chips: string[]
+  onChipsChange: (chips: string[]) => void
+}
 
-const ALL = 'Tudo'
-const categories = [ALL, 'Computação', 'Educação', 'Fantasia', 'HQs']
+export const ALL = 'Tudo'
 
-export function CategoryChips(props: CategoryChipsProps) {
-  const [chips, setChips] = useState([ALL])
+export function CategoryChips({ chips, onChipsChange }: CategoryChipsProps) {
+  const results = useSWR('categories', fetcher, {
+    onSuccess(data) {
+      data.unshift(ALL) // Insert [ALL] in the first [categories] position
+    },
+  })
+
+  const { data: categories, isLoading, error } = results
 
   function handleChipsChange(selectedChips: string[]) {
     const hasSelectedChips = selectedChips.length > 0
@@ -15,10 +24,14 @@ export function CategoryChips(props: CategoryChipsProps) {
 
     if (hasSelectedChips && lastAddedChip !== ALL) {
       const chipsWithoutALL = selectedChips.filter((chip) => chip !== ALL)
-      return setChips(chipsWithoutALL)
+      return onChipsChange(chipsWithoutALL)
     }
 
-    return setChips([ALL])
+    return onChipsChange([ALL])
+  }
+
+  if (error) {
+    return <p>Could retrieve list of tags</p>
   }
 
   return (
@@ -27,12 +40,18 @@ export function CategoryChips(props: CategoryChipsProps) {
       value={chips}
       onValueChange={handleChipsChange}
       orientation="horizontal"
+      withLoadingBar={isLoading}
     >
-      {categories.map((category) => (
+      {categories?.map((category) => (
         <ToggleChip key={category} value={category}>
           {category}
         </ToggleChip>
       ))}
     </S_CategoryChips>
   )
+}
+
+async function fetcher() {
+  await new Promise((resolve) => setTimeout(resolve, 2000))
+  return (await api.get<string[]>('/books/categories')).data
 }

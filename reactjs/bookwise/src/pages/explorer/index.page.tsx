@@ -1,7 +1,7 @@
 import { Binoculars } from '@phosphor-icons/react'
 import { S_Explorer } from './styles'
 import { SearchField } from '../../components/SearchField'
-import { CategoryChips } from './components/CategoryChips'
+import { ALL, CategoryChips } from './components/CategoryChips'
 import { BooksGallery } from './components/BooksGallery'
 import { GetStaticProps } from 'next'
 import { api } from '@/lib/axios'
@@ -24,10 +24,17 @@ export default function Explorer({ fallback }: ExplorerProps) {
     resolver: zodResolver(SearchFormSchema),
   })
   const [search, setSearch] = useState<string>('')
+  const [chips, setChips] = useState([ALL])
 
   function handleSearchInput({ search }: SearchFormData) {
     setSearch(search)
   }
+
+  function handleChipsInput(chips: string[]) {
+    setChips(chips)
+  }
+
+  const tags = chips.filter((chip) => chip !== ALL)
 
   return (
     <SWRConfig value={{ fallback }}>
@@ -41,8 +48,8 @@ export default function Explorer({ fallback }: ExplorerProps) {
             <SearchField register={register('search')} />
           </form>
         </header>
-        <CategoryChips />
-        <BooksGallery search={search} />
+        <CategoryChips chips={chips} onChipsChange={handleChipsInput} />
+        <BooksGallery search={search} tags={tags} />
       </S_Explorer>
     </SWRConfig>
   )

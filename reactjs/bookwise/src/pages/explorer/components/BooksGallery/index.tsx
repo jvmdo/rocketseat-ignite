@@ -5,10 +5,11 @@ import useSWR from 'swr'
 
 export interface BooksGalleryProps {
   search: string
+  tags: string[]
 }
 
-export function BooksGallery({ search }: BooksGalleryProps) {
-  const results = useSWR(`/books?search=${search}`, fetcher, {
+export function BooksGallery({ search, tags }: BooksGalleryProps) {
+  const results = useSWR(formatKey(search, tags), fetcher, {
     keepPreviousData: true,
   })
 
@@ -35,7 +36,24 @@ export function BooksGallery({ search }: BooksGalleryProps) {
 
 BooksGallery.toString = () => '.books-gallery'
 
+function formatKey(search?: string, tags?: string[]) {
+  const params = new URLSearchParams()
+
+  if (search) {
+    params.append('search', search)
+  }
+
+  if (tags) {
+    for (const tag of tags) {
+      params.append('tags', tag)
+    }
+  }
+
+  const queryString = params.toString()
+
+  return '/books' + (queryString ? `?${queryString}` : '')
+}
+
 async function fetcher(url: string) {
-  // await new Promise((resolve) => setTimeout(resolve, 2600))
   return (await api.get<BookCardProps[]>(url)).data
 }
