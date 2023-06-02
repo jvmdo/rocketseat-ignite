@@ -11,8 +11,8 @@ import { authOptions } from '../auth/[...nextauth].api'
 const ReviewBodySchema = z.object({
   bookId: z.string().uuid(),
   userId: z.string().uuid(),
-  rate: z.number().min(1).max(5),
-  description: z.string().min(1),
+  rate: z.number().min(0.5).max(5),
+  description: z.string().min(1).max(450),
 })
 
 type ReviewBody = z.infer<typeof ReviewBodySchema>

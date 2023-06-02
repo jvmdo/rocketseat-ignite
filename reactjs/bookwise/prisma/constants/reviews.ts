@@ -12,14 +12,14 @@ export const reviews = [
   },
   {
     id: uuidv4(),
-    rate: 4,
+    rate: 4.5,
     description: 'Nec tempor nunc in egestas.',
     book_id: '86596503-369b-4614-bacf-11c9bb73e779',
     user_id: 'c296c6c0-5c59-40dd-aa8a-ef2b015b7502',
   },
   {
     id: uuidv4(),
-    rate: 5,
+    rate: 4.5,
     description:
       'Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh',
     book_id: 'e688c24f-d14d-4607-a12e-90e6e367398d',
@@ -50,7 +50,7 @@ export const reviews = [
   },
   {
     id: uuidv4(),
-    rate: 4,
+    rate: 3.5,
     description:
       'Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectus leo. Sit porta eget nec vitae sit vulputate eget',
     book_id: 'c8176d86-896a-4c21-9219-6bb28cccaa5f',
@@ -73,7 +73,7 @@ export const reviews = [
   },
   {
     id: uuidv4(),
-    rate: 4,
+    rate: 3.5,
     description:
       'Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectus leo. Sit porta eget nec vitae sit vulputate eget',
     book_id: 'd2870ad0-3312-4ac2-af9f-76af6565587d',
@@ -88,7 +88,7 @@ export const reviews = [
   },
   {
     id: uuidv4(),
-    rate: 5,
+    rate: 1.5,
     description:
       'Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh',
     book_id: '6de9f6b8-5ff4-4e06-b9f4-843eca462803',
