@@ -6,23 +6,24 @@ import { BookReviews } from './components/BookReviews'
 import { useContext } from 'react'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 
-interface BookDrawerProps {
-  open?: boolean
-  setOpen?: (open: boolean) => void
-}
+export function BookDrawer() {
+  const { drawerBook, setDrawerBook } = useContext(MainLayoutContext)
 
-export function BookDrawer(/* { open, setOpen }: BookDrawerProps */) {
-  const { drawerOpen, setDrawerOpen } = useContext(MainLayoutContext)
+  const open = Boolean(drawerBook)
+
+  function setOpen(open: boolean) {
+    setDrawerBook(open ? drawerBook : undefined)
+  }
 
   return (
     <div>
-      <Drawer.Root open={drawerOpen} onOpenChange={setDrawerOpen}>
+      <Drawer.Root open={open} onOpenChange={setOpen}>
         <Drawer.Portal>
           <DrawerOverlay>
             <DrawerContent asChild>
               <article>
-                <BookDetails />
-                <BookReviews />
+                {drawerBook && <BookDetails {...drawerBook} />}
+                <BookReviews bookId={drawerBook?.id ?? ''} />
                 <DrawerCloseButton>
                   <X />
                 </DrawerCloseButton>

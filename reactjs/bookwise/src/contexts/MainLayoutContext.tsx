@@ -1,8 +1,9 @@
+import { BookCardProps } from '@/components/BookCard'
 import { ReactNode, createContext, useState } from 'react'
 
 interface MainLayoutContextProps {
-  drawerOpen: boolean
-  setDrawerOpen: (open: boolean) => void
+  drawerBook: BookCardProps | undefined
+  setDrawerBook: (drawerBook: BookCardProps | undefined) => void
   dialogOpen: boolean
   setDialogOpen: (open: boolean) => void
 }
@@ -10,12 +11,17 @@ interface MainLayoutContextProps {
 export const MainLayoutContext = createContext({} as MainLayoutContextProps)
 
 export function MainLayoutProvider({ children }: { children: ReactNode }) {
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerBook, setDrawerBook] = useState<BookCardProps | undefined>()
   const [dialogOpen, setDialogOpen] = useState(false)
 
   return (
     <MainLayoutContext.Provider
-      value={{ drawerOpen, setDrawerOpen, dialogOpen, setDialogOpen }}
+      value={{
+        drawerBook,
+        setDrawerBook,
+        dialogOpen,
+        setDialogOpen,
+      }}
     >
       {children}
     </MainLayoutContext.Provider>

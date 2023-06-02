@@ -8,9 +8,35 @@ import {
   ReviewCardsList,
   S_BookReviews,
 } from './styles'
+import { api } from '@/lib/axios'
+import useSWR from 'swr'
 
-export function BookReviews() {
+type BookReview = {
+  id: string
+  createdAt: string
+  description: string
+  rate: number
+  user: {
+    id: string
+    name: string
+    image: string
+    createdAt: string
+  }
+}
+
+export function BookReviews({ bookId }: { bookId: string }) {
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const results = useSWR(`/books/${bookId}/reviews`, fetcher)
+
+  const { data: reviews, isLoading, error } = results
+
+  if (error) {
+    return <p>Could not retrieve this book`s reviews 😔</p>
+  }
+
+  if (isLoading) {
+    return <p>Loading reviews 🤚</p>
+  }
 
   return (
     <S_BookReviews>
@@ -24,34 +50,22 @@ export function BookReviews() {
         </CollapsibleContent>
       </CollapsibleRoot>
       <ReviewCardsList>
-        <li>
-          <ReviewCard
-            imgSrc="https://picsum.photos/200"
-            name="Brandom Botosh"
-            date="2023-05-20T12:58:00"
-            rate={4}
-            review="Nec tempor nunc in egestas."
-          />
-        </li>
-        <li>
-          <ReviewCard
-            imgSrc="https://picsum.photos/200"
-            name="Brandom Botosh"
-            date="2023-05-20T12:58:00"
-            rate={4}
-            review="Nec tempor nunc in egestas."
-          />
-        </li>
-        <li>
-          <ReviewCard
-            imgSrc="https://picsum.photos/200"
-            name="Brandom Botosh"
-            date="2023-05-20T12:58:00"
-            rate={4}
-            review="Nec tempor nunc in egestas."
-          />
-        </li>
+        {reviews?.map((review) => (
+          <li key={review.id}>
+            <ReviewCard
+              imgSrc={review.user.image}
+              name={review.user.name}
+              date={review.createdAt}
+              rate={review.rate}
+              review={review.description}
+            />
+          </li>
+        ))}
       </ReviewCardsList>
     </S_BookReviews>
   )
+}
+
+async function fetcher(url: string) {
+  return (await api.get<BookReview[]>(url)).data
 }

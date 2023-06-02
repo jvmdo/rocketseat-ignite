@@ -8,7 +8,8 @@ import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 
 const { theme } = config
 
-export interface BookCardProps extends ComponentProps<typeof S_BookCard> {
+export interface BookCardProps
+  extends Pick<ComponentProps<typeof S_BookCard>, 'size'> {
   id: string
   name: string
   author: string
@@ -22,12 +23,11 @@ export interface BookCardProps extends ComponentProps<typeof S_BookCard> {
   userHasRead: boolean
 }
 
-export function BookCard(props: BookCardProps) {
-  const { setDrawerOpen } = useContext(MainLayoutContext)
+export function BookCard({ size, ...props }: BookCardProps) {
+  const { setDrawerBook } = useContext(MainLayoutContext)
 
   function handleOpenBookDrawer() {
-    // TODO: pass book data to drawer
-    setDrawerOpen(true)
+    setDrawerBook(props)
   }
 
   return (
@@ -37,6 +37,7 @@ export function BookCard(props: BookCardProps) {
       onClick={handleOpenBookDrawer}
       title={`${props.name} por ${props.author}`}
       className="book-card"
+      size={size}
     >
       <Image src={props.coverUrl} width={108} height={152} alt="" />
       <hgroup>

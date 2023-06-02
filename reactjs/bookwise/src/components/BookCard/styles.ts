@@ -82,7 +82,7 @@ export const S_BookCard = styled('div', {
     size: {
       big: {
         img: {
-          responsiveWidth: ['5.5rem', '6.75rem'],
+          responsiveWidth: ['4.25rem', '5rem', '5.75rem', '6.75rem'],
         },
 
         hgroup: {
