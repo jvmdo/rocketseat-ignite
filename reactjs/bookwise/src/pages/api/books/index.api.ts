@@ -18,6 +18,8 @@ export default async function handler(
 
   const { popular, search, tags } = req.query
 
+  console.log({ tags, type: typeof tags })
+
   let limit
 
   if (typeof popular === 'string') {
@@ -30,15 +32,8 @@ export default async function handler(
     text = String(search)
   }
 
-  // I am quite sure there is a better way to get the user id
   const session = await getServerSession(req, res, authOptions)
-  const userEmail = session?.user?.email ?? ''
-
-  let userId = ''
-
-  if (session) {
-    userId = await findUserIdByEmail(userEmail)
-  }
+  const userId = session?.user.id ?? ''
 
   try {
     const booksData = await findBooksData(limit, text, tags, userId)
@@ -150,21 +145,4 @@ function formatData(booksData: BooksData) {
 function isBookInUserShelf(shelves: Array<Shelf>) {
   // If the user has read a book, Shelves contains at least 1 Shelf
   return shelves.length > 0
-}
-
-async function findUserIdByEmail(email: string) {
-  let user
-
-  try {
-    user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    })
-  } catch (error) {
-    console.error({ BOOKS_FIND_USER: error })
-    throw error
-  }
-
-  return user?.id ?? ''
 }
