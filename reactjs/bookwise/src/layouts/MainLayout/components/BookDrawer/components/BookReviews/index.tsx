@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useContext, useRef, MouseEvent } from 'react'
 import ReviewCard from './Components/ReviewCard'
 import { ReviewForm } from './Components/ReviewForm'
 import { Root as CollapsibleRoot } from '@radix-ui/react-collapsible'
@@ -10,8 +10,10 @@ import {
 } from './styles'
 import { api } from '@/lib/axios'
 import useSWR from 'swr'
+import { useSession } from 'next-auth/react'
+import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 
-type BookReview = {
+export type BookReview = {
   id: string
   createdAt: string
   description: string
@@ -20,15 +22,23 @@ type BookReview = {
     id: string
     name: string
     image: string
-    createdAt: string
   }
 }
 
 export function BookReviews({ bookId }: { bookId: string }) {
   const triggerRef = useRef<HTMLButtonElement>(null)
   const results = useSWR(`/books/${bookId}/reviews`, fetcher)
+  const { status, data: session } = useSession()
+  const { setDialogOpen } = useContext(MainLayoutContext)
 
-  const { data: reviews, isLoading, error } = results
+  function handleCollapsibleClick(event: MouseEvent<HTMLButtonElement>) {
+    if (status !== 'authenticated') {
+      event.preventDefault()
+      return setDialogOpen(true)
+    }
+  }
+
+  const { data: reviews, isLoading, error, mutate } = results
 
   if (error) {
     return <p>Could not retrieve this book`s reviews 😔</p>
@@ -43,10 +53,17 @@ export function BookReviews({ bookId }: { bookId: string }) {
       <CollapsibleRoot>
         <header>
           <h3>Avaliações</h3>
-          <CollapsibleTrigger ref={triggerRef}>Avaliar</CollapsibleTrigger>
+          <CollapsibleTrigger ref={triggerRef} onClick={handleCollapsibleClick}>
+            Avaliar
+          </CollapsibleTrigger>
         </header>
         <CollapsibleContent>
-          <ReviewForm triggerRef={triggerRef} />
+          <ReviewForm
+            triggerRef={triggerRef}
+            bookId={bookId}
+            reviews={reviews}
+            mutate={mutate}
+          />
         </CollapsibleContent>
       </CollapsibleRoot>
       <ReviewCardsList>
@@ -58,6 +75,7 @@ export function BookReviews({ bookId }: { bookId: string }) {
               date={review.createdAt}
               rate={review.rate}
               review={review.description}
+              highlight={review.user.id === session?.user.id}
             />
           </li>
         ))}

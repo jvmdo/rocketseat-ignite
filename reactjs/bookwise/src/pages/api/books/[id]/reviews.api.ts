@@ -35,6 +35,9 @@ async function findBookReviewsData(bookId: string) {
       include: {
         user: true,
       },
+      orderBy: {
+        created_at: 'desc',
+      },
     })
   } catch (error) {
     console.error({ ERROR_GET_BOOK_REVIEWS: error })

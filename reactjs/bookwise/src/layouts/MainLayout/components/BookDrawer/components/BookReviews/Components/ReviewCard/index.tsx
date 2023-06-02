@@ -14,11 +14,12 @@ interface ReviewCardProps {
   date: string
   rate: number
   review: string
+  highlight: boolean
 }
 
-export default function ReviewCard(props: ReviewCardProps) {
+export default function ReviewCard({ highlight, ...props }: ReviewCardProps) {
   return (
-    <S_ReviewCard>
+    <S_ReviewCard color={highlight}>
       <header>
         <div className="user-info">
           <Image src={props.imgSrc} width={40} height={40} alt="" />
