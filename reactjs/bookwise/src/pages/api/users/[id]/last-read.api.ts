@@ -38,8 +38,9 @@ export default async function handler(
 
         const bookId = z.string().uuid().parse(req.body.bookId)
         const userShelf = await createOrUpdateUserShelf(userId, bookId)
+        const userLastRead = formatData(userShelf)
 
-        return res.status(201).json(userShelf)
+        return res.status(201).json(userLastRead)
       }
 
       default: {
@@ -138,7 +139,30 @@ async function createOrUpdateUserShelf(userId: string, bookId: string) {
           },
         },
       },
-      update: {}, // update_at field is auto updated
+      update: {
+        updated_at: new Date(),
+      },
+      select: {
+        updated_at: true,
+        book: {
+          include: {
+            reviews: {
+              select: {
+                rate: true,
+              },
+            },
+            categories: {
+              select: {
+                category: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     })
   } catch (error) {
     console.error({ ERROR_USER_LAST_READ: error })
