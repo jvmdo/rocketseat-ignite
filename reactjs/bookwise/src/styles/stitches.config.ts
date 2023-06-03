@@ -169,24 +169,30 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         },
       }),
 
-      responsiveMarginBlock: (values: Array<LogicalValue>) => ({
-        marginBlock: formatLogicalProp(values[0]),
-        '@sm': {
-          marginBlock: formatLogicalProp(values[1]),
-        },
-        '@md': {
-          marginBlock: formatLogicalProp(values[2]),
-        },
-        '@lg': {
-          marginBlock: formatLogicalProp(values[3]),
-        },
-        '@xl': {
-          marginBlock: formatLogicalProp(values[4]),
-        },
-        '@xxl': {
-          marginBlock: formatLogicalProp(values[5]),
-        },
-      }),
+      responsiveMarginBlock: (values: Array<LogicalValue>) => {
+        const factor = values[0] === '-1'
+
+        if (factor) values.splice(0, 1)
+
+        return {
+          marginBlock: formatLogicalProp(values[0], factor),
+          '@sm': {
+            marginBlock: formatLogicalProp(values[1], factor),
+          },
+          '@md': {
+            marginBlock: formatLogicalProp(values[2], factor),
+          },
+          '@lg': {
+            marginBlock: formatLogicalProp(values[3], factor),
+          },
+          '@xl': {
+            marginBlock: formatLogicalProp(values[4], factor),
+          },
+          '@xxl': {
+            marginBlock: formatLogicalProp(values[5], factor),
+          },
+        }
+      },
 
       responsiveMarginInline: (values: Array<LogicalValue>) => ({
         marginInline: formatLogicalProp(values[0]),

@@ -1,22 +1,11 @@
 import { config } from './stitches.config'
 import type { $$ScaleValue } from '@stitches/react'
 
-type ViewportUnits =
-  | 'vw'
-  | 'vh'
-  | 'vmin'
-  | 'vmax'
-  | 'dvh'
-  | 'cqw'
-  | 'cqh'
-  | 'cqmin'
-  | 'cqmax'
-
 // Unfortunately, I can't define a type as
 // ScaleValue<'space'> | [ScaleValue<'space'>, ScaleValue<'space'>]
 // It's related to https://github.com/stitchesjs/stitches/issues/763
 type SpaceTokens = {
-  $px: $$ScaleValue
+  '-1': $$ScaleValue
   $0: $$ScaleValue
   $1: $$ScaleValue
   $2: $$ScaleValue
@@ -37,9 +26,32 @@ export type LogicalValue =
   | keyof SpaceTokens
   | [keyof SpaceTokens, keyof SpaceTokens]
 
-// Cannot use because of declaration-call order
-// keyof typeof config.theme.fontSizes
-// keyof typeof config.media
+export function formatLogicalProp(scale: LogicalValue, factor?: boolean) {
+  let padding
+
+  if (Array.isArray(scale)) {
+    padding = `${scale[0]} ${scale[1]}`
+  } else {
+    if (factor) {
+      padding = `calc(-1 * ${String(scale)})`
+    } else {
+      padding = String(scale)
+    }
+  }
+
+  return padding
+}
+
+type ViewportUnits =
+  | 'vw'
+  | 'vh'
+  | 'vmin'
+  | 'vmax'
+  | 'dvh'
+  | 'cqw'
+  | 'cqh'
+  | 'cqmin'
+  | 'cqmax'
 
 export type FluidFontSize = {
   min: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
@@ -73,23 +85,4 @@ function parseMedia(breakpoint: string) {
   return Number.parseFloat(
     String(breakpoint).match(/(?<value>\d*\.?\d+)/)?.groups?.value!,
   )
-}
-
-export function formatLogicalProp(scale: LogicalValue) {
-  // const values = String(scale).split(' ')
-  let padding
-
-  if (Array.isArray(scale)) {
-    padding = `${scale[0]} ${scale[1]}`
-  } else {
-    padding = String(scale)
-  }
-
-  // if (values.length === 1) {
-  //   padding = values[0]
-  // } else if (values.length >= 2) {
-  //   padding = `${values[0]} ${values[1]}`
-  // }
-
-  return padding
 }
