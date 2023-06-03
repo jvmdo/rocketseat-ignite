@@ -11,6 +11,8 @@ export const S_LastReadSection = styled('section', {
     justifyContent: 'space-between',
     gap: '$5',
 
+    maxHeight: '1.4rem', // Prevent misalignment in Main grid
+
     h3: {
       color: '$gray100',
       fontWeight: '$regular',

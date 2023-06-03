@@ -32,6 +32,8 @@ export const S_BookCard = styled('div', {
   hgroup: {
     gridArea: 'hgroup',
 
+    wordBreak: 'break-word',
+
     h4: {
       color: '$gray100',
       fontWeight: '$bold',
@@ -86,7 +88,10 @@ export const S_BookCard = styled('div', {
         },
 
         hgroup: {
-          h4: { '-webkit-line-clamp': 4 },
+          h4: {
+            '@md': { '-webkit-line-clamp': 3 },
+            '@lg': { '-webkit-line-clamp': 4 },
+          },
         },
       },
     },

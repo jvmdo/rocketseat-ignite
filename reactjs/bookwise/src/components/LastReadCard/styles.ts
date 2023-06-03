@@ -38,6 +38,7 @@ export const S_LastReadCard = styled('div', {
 
   hgroup: {
     textTransform: 'capitalize',
+    wordBreak: 'break-word',
 
     h3: {
       color: '$gray100',

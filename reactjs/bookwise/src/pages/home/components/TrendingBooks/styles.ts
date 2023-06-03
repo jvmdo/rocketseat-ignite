@@ -13,6 +13,8 @@ export const S_TrendingBooks = styled('aside', {
     justifyContent: 'space-between',
     gap: '$5',
 
+    maxHeight: '1.4rem', // Prevent misalignment in Main grid
+
     h3: {
       color: '$gray100',
       fontWeight: '$regular',

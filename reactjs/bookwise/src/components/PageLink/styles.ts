@@ -10,6 +10,7 @@ export const S_PageLink = styled(Link, {
   padding: '$1 $2',
 
   fontWeight: '$bold',
+  lineHeight: '$shorter',
   responsiveFontSize: ['$xs', '$sm'],
 
   svg: {
