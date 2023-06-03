@@ -29,7 +29,7 @@ export const S_Home = styled('main', {
     gridTemplateColumns: '9fr 5fr',
     gridTemplateAreas: `
       'header     .    '
-      'reviews trending'
+      'last-read trending'
       'reviews trending'
     `,
 
@@ -37,18 +37,30 @@ export const S_Home = styled('main', {
       gridArea: 'header',
     },
 
+    [`${LastReadSection}`]: {
+      gridArea: 'last-read',
+
+      // ? If this component is displayed, the following margins offset the negative margins
+      // ? from [RecentBookReviews], effectively behaving as if they were the grid's `row-gap`.
+      responsiveMarginBlock: ['$5', '$6', '$8', '$8', '$8', '$10'],
+      marginBlockStart: 0,
+    },
+
     [`${TrendingBooks}`]: {
-      alignSelf: 'start',
       gridArea: 'trending',
 
+      alignSelf: 'start',
       position: 'sticky',
       insetBlockStart: 0,
-
-      marginBlockStart: 'calc(-1 * $3)', // small alignment fix
     },
 
     [`${RecentBookReviews}`]: {
       gridArea: 'reviews',
+
+      // ? [LastReadSection] may or may not be displayed, but its gap is consistently present due to
+      // ? the `grid-template-areas`. The following margins overlap and ignore that `row-gap`.
+      responsiveMarginBlock: ['-1', '$5', '$6', '$8', '$8', '$8', '$10'],
+      marginBlockEnd: 0,
     },
   },
 
@@ -58,27 +70,5 @@ export const S_Home = styled('main', {
 
   '@xxl': {
     gridTemplateColumns: 'unset',
-  },
-
-  variants: {
-    withReadSection: {
-      true: {
-        '@lg': {
-          gridTemplateAreas: `
-            'header       .    '
-            'last-read trending'
-            'reviews   trending'
-          `,
-
-          [`${LastReadSection}`]: {
-            gridArea: 'last-read',
-          },
-
-          [`${TrendingBooks}`]: {
-            marginBlockStart: 'unset',
-          },
-        },
-      },
-    },
   },
 })

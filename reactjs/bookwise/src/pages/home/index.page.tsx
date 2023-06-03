@@ -8,31 +8,17 @@ import {
 import { LastReadSection } from './components/LastReadSection'
 import { GetStaticProps } from 'next'
 import { api } from '@/lib/axios'
-import { useSession } from 'next-auth/react'
-import { LastReadCardProps } from '@/components/LastReadCard'
-import useSWR from 'swr'
 
 export interface HomeProps extends TrendingBooksProps, RecentBookReviewsProps {}
 
 export default function Home({ popularBooks, recentReviews }: HomeProps) {
-  // ? I would like to `useSWR` in [LastReadSection] component instead of here.
-  // ? However, how to conditional render it in that case? I tried callback on data but it didn't work.
-  const { data: session } = useSession()
-  // TODO: optimistic? Update last-read on any book/review click
-  const { data } = useSWR('last-read', async () => {
-    const response = await api.get<LastReadCardProps>(
-      `/users/${session?.user.id}/last-read`,
-    )
-    return response.data
-  })
-
   return (
-    <S_Home withReadSection={Boolean(data)}>
+    <S_Home>
       <header>
         <ChartLine />
         <h2>Início</h2>
       </header>
-      {data && <LastReadSection data={data} />}
+      <LastReadSection />
       <TrendingBooks popularBooks={popularBooks} />
       <RecentBookReviews recentReviews={recentReviews} />
     </S_Home>
