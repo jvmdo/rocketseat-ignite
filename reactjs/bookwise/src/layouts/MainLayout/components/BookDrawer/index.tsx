@@ -23,7 +23,7 @@ export function BookDrawer() {
             <DrawerContent asChild>
               <article>
                 {drawerBook && <BookDetails {...drawerBook} />}
-                <BookReviews bookId={drawerBook?.id ?? ''} />
+                <BookReviews bookId={drawerBook?.id ?? 'error'} />
                 <DrawerCloseButton>
                   <X />
                 </DrawerCloseButton>

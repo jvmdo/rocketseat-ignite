@@ -40,6 +40,10 @@ export function BookReviews({ bookId }: { bookId: string }) {
 
   const { data: reviews, isLoading, error, mutate } = results
 
+  const userReviewExists = Boolean(
+    reviews?.find(({ user }) => user.id === session?.user.id),
+  )
+
   if (error) {
     return <p>Could not retrieve this book`s reviews 😔</p>
   }
@@ -53,8 +57,12 @@ export function BookReviews({ bookId }: { bookId: string }) {
       <CollapsibleRoot>
         <header>
           <h3>Avaliações</h3>
-          <CollapsibleTrigger ref={triggerRef} onClick={handleCollapsibleClick}>
-            Avaliar
+          <CollapsibleTrigger
+            ref={triggerRef}
+            onClick={handleCollapsibleClick}
+            blocked={userReviewExists}
+          >
+            {userReviewExists ? 'Avaliado' : 'Avaliar'}
           </CollapsibleTrigger>
         </header>
         <CollapsibleContent>

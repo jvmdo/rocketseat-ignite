@@ -34,6 +34,18 @@ export const CollapsibleTrigger = styled(Trigger, {
   '&[data-state="open"]': {
     display: 'none',
   },
+
+  variants: {
+    // * It's like disabled without actually disabling the button
+    // * Otherwise the form wouldn't be closed after submit
+    blocked: {
+      true: {
+        color: '$gray600',
+        cursor: 'unset',
+        pointerEvents: 'none',
+      },
+    },
+  },
 })
 
 const slideDown = keyframes({
