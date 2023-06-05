@@ -2,13 +2,17 @@ import { styled } from '@/styles/stitches.config'
 
 export const S_UserReviewCard = styled('div', {
   backgroundColor: '$gray700',
+  border: '2px solid transparent',
   borderRadius: '$sm',
+  cursor: 'pointer',
+
+  transition: 'border-color $action-in-out',
 
   display: 'grid',
   responsiveGap: ['$3', '$4', '$5', '$6'],
 
-  responsivePaddingBlock: ['$3', '$4', '$5', '$6'],
-  responsivePaddingInline: ['$3', '$4', '$5', '$6'],
+  responsivePaddingBlock: ['$3', '$3', '$4', '$5', '$6'],
+  responsivePaddingInline: ['$3', '$3', '$4', '$5', '$6'],
 })
 
 export const CardHead = styled('header', {
@@ -36,7 +40,7 @@ export const CardHead = styled('header', {
       color: '$gray100',
       fontWeight: '$bold',
       lineHeight: '$short',
-      responsiveFontSize: ['$sm', '$md', '$md', '$lg'],
+      responsiveFontSize: ['$xs', '$sm', '$md', '$lg'],
 
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -52,7 +56,7 @@ export const CardHead = styled('header', {
 
     p: {
       color: '$gray400',
-      responsiveFontSize: ['$xs', '$xs', '$sm'],
+      responsiveFontSize: ['$xs', '$sm'],
     },
   },
 

@@ -1,6 +1,7 @@
 import { styled } from '@/styles/stitches.config'
 import { UserReviews } from './components/UserReviews'
 import { UserStats } from './components/UserStats'
+import { ProfileHeader } from './components/ProfileHeader'
 
 export const S_Profile = styled('main', {
   display: 'grid',
@@ -13,7 +14,7 @@ export const S_Profile = styled('main', {
       'reviews stats'
     `,
 
-    '> header': {
+    [`${ProfileHeader}`]: {
       gridArea: 'header',
     },
 
@@ -22,12 +23,11 @@ export const S_Profile = styled('main', {
     },
 
     [`${UserStats}`]: {
-      alignSelf: 'start',
       gridArea: 'stats',
 
+      alignSelf: 'start',
       position: 'sticky',
       insetBlockStart: 0,
-      // marginBlockStart: 'calc(-1 * ($3 - 1px))', // small alignment fix
     },
   },
 
@@ -36,6 +36,6 @@ export const S_Profile = styled('main', {
   },
 
   '@xxl': {
-    gridTemplateColumns: 'unset',
+    gridTemplateColumns: '1fr auto',
   },
 })

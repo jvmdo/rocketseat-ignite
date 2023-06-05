@@ -14,7 +14,7 @@ export function ProfileHeader({ isUserOwnProfile }: ProfileHeaderProps) {
   }
 
   return (
-    <S_ProfileHeader>
+    <S_ProfileHeader className="profile-header">
       {isUserOwnProfile ? (
         <h1>
           <User /> Início
@@ -27,3 +27,5 @@ export function ProfileHeader({ isUserOwnProfile }: ProfileHeaderProps) {
     </S_ProfileHeader>
   )
 }
+
+ProfileHeader.toString = () => '.profile-header'

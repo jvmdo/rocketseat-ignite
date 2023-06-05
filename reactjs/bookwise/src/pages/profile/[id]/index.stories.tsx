@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Profile, ProfileProps } from '.'
+import Profile, { ProfileProps } from './index.page'
 
 export default {
   title: 'Pages / Profile',

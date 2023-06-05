@@ -12,7 +12,7 @@ export const S_UserReviews = styled('section', {
     flexDirection: 'column',
     responsiveGap: ['$4', '$5', '$6'],
 
-    time: {
+    p: {
       color: '$gray300',
       responsiveFontSize: ['$xs', '$xs', '$sm'],
     },
@@ -20,7 +20,6 @@ export const S_UserReviews = styled('section', {
     '> li': {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'start',
       gap: '$2',
 
       ul: {

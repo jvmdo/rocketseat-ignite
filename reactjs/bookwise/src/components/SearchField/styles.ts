@@ -23,14 +23,11 @@ export const S_SearchField = styled('div', {
     lineHeight: '$base',
     responsiveFontSize: ['$xs', '$xs', '$sm'],
 
-    '&::placeholder': {
-      color: '$gray400',
-    },
+    '&::placeholder': { color: '$gray400' },
   },
 
   svg: {
     color: '$gray500',
-
     responsiveHeight: ['1rem', '1rem', '1.25rem'],
     responsiveWidth: ['1rem', '1rem', '1.25rem'],
   },
@@ -40,4 +37,6 @@ export const S_SearchField = styled('div', {
     caretColor: '$green200',
     svg: { color: '$green200' },
   },
+
+  '& input:disabled': { color: '$gray400' },
 })

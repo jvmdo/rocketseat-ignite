@@ -10,17 +10,24 @@ export interface SearchFieldProps extends ComponentProps<typeof S_SearchField> {
     onBlur: ChangeHandler
     ref: Ref<any>
   }
+  disabled?: boolean
 }
 
 export function SearchField({
   register,
+  disabled,
   placeholder = 'Buscar livro ou autor',
   ...props
 }: SearchFieldProps) {
   // TODO: is magnifying a submit button? If so, change to X to act as reset
   return (
     <S_SearchField tabIndex={0} {...props}>
-      <input type="search" placeholder={placeholder} {...register} />
+      <input
+        type="search"
+        {...register}
+        disabled={disabled}
+        placeholder={placeholder}
+      />
       <MagnifyingGlass />
     </S_SearchField>
   )
