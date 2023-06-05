@@ -67,7 +67,7 @@ type UserProfileData = Awaited<ReturnType<typeof getUserProfileData>>
 function formatData(userProfileData: UserProfileData) {
   const { reviews, ...user } = userProfileData
   return {
-    ...columnsToCamelCase(user),
+    user: columnsToCamelCase(user),
     favoriteCategory: findFavoriteCategory(userProfileData),
     totalReadAuthors: countReadAuthors(userProfileData),
     totalReadPages: countReadPages(userProfileData),
