@@ -1,19 +1,28 @@
 import { S_BooksGallery } from './styles'
 import { BookCard, BookCardProps } from '@/components/BookCard'
 import { api } from '@/lib/axios'
+import { useEffect } from 'react'
 import useSWR from 'swr'
 
 export interface BooksGalleryProps {
   search: string
   tags: string[]
+  setIsLoading: (isLoading: boolean) => void
 }
 
-export function BooksGallery({ search, tags }: BooksGalleryProps) {
+export function BooksGallery({
+  search,
+  tags,
+  setIsLoading,
+}: BooksGalleryProps) {
+  // TODO: try array key
   const fetchState = useSWR(formatKey(search, tags), fetcher, {
     keepPreviousData: true,
   })
 
   const { data: books, isLoading, error } = fetchState
+
+  useEffect(() => setIsLoading(isLoading), [isLoading, setIsLoading])
 
   if (error) {
     return <p>Something bad occurred 😔</p>

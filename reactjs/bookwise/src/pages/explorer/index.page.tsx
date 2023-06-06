@@ -24,8 +24,9 @@ export default function Explorer({ books, categories }: ExplorerProps) {
   const { register, handleSubmit } = useForm<SearchFormData>({
     resolver: zodResolver(SearchFormSchema),
   })
-  const [search, setSearch] = useState<string>('')
+  const [search, setSearch] = useState('')
   const [chips, setChips] = useState([ALL])
+  const [isLoading, setIsLoading] = useState(false)
 
   function handleSearchInput({ search }: SearchFormData) {
     setSearch(search)
@@ -46,7 +47,11 @@ export default function Explorer({ books, categories }: ExplorerProps) {
           <h1>Explorar</h1>
         </hgroup>
         <form role="search" onSubmit={handleSubmit(handleSearchInput)}>
-          <SearchField register={register('search')} />
+          <SearchField
+            register={register('search')}
+            disabled={isLoading}
+            autoFocus
+          />
         </form>
       </header>
       <CategoryChips
@@ -55,7 +60,7 @@ export default function Explorer({ books, categories }: ExplorerProps) {
         onChipsChange={handleChipsInput}
       />
       <SWRConfig value={{ fallback }}>
-        <BooksGallery search={search} tags={tags} />
+        <BooksGallery search={search} tags={tags} setIsLoading={setIsLoading} />
       </SWRConfig>
     </S_Explorer>
   )
