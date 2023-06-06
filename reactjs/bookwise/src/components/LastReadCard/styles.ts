@@ -6,16 +6,19 @@ export const S_LastReadCard = styled('div', {
   borderRadius: '$sm',
   cursor: 'pointer',
 
+  responsiveFontSize: ['$xs', '$sm'],
+
+  responsivePaddingBlock: ['$3', '$4', '$5'],
+  responsivePaddingInline: ['$4', '$5', '$6'],
+
   transition: 'border-color $action-in-out',
 
   '&:is(:hover, :focus-visible)': {
     borderColor: '$gray500',
   },
 
-  responsiveFontSize: ['$xs', '$sm'],
-
-  responsivePaddingBlock: ['$3', '$4', '$5'],
-  responsivePaddingInline: ['$4', '$5', '$6'],
+  display: 'grid',
+  rowGap: '$2',
 
   header: {
     display: 'flex',
@@ -23,7 +26,7 @@ export const S_LastReadCard = styled('div', {
     justifyContent: 'space-between',
     gap: '$4',
 
-    // Rating
+    // Rating wrapper
     span: {
       svg: {
         height: '1rem',
@@ -52,13 +55,6 @@ export const S_LastReadCard = styled('div', {
     },
   },
 
-  img: {
-    display: 'none',
-  },
-
-  display: 'grid',
-  rowGap: '$2',
-
   '@sm': {
     responsiveGap: ['$4', '$5', '$6'],
     rowGap: '$3',
@@ -79,17 +75,18 @@ export const S_LastReadCard = styled('div', {
     },
 
     img: {
-      alignSelf: 'center',
       gridArea: 'book',
 
-      display: 'block',
+      alignSelf: 'center',
+
       height: 'auto',
       width: '6.75rem',
     },
 
     '> p': {
-      alignSelf: 'end',
       gridArea: 'para',
+
+      alignSelf: 'end',
     },
   },
 

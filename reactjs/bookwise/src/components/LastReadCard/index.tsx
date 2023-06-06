@@ -7,8 +7,9 @@ import { formatDistanceToNow } from 'date-fns'
 import { BookCardProps } from '../BookCard'
 import { useContext } from 'react'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
+import { useMediaQuery } from '@mantine/hooks'
 
-const { theme } = config
+const { theme, media } = config
 
 export interface LastReadCardProps {
   updatedAt: string
@@ -17,6 +18,7 @@ export interface LastReadCardProps {
 
 export function LastReadCard({ updatedAt, book }: LastReadCardProps) {
   const { setDrawerBook } = useContext(MainLayoutContext)
+  const isSmallOrLarger = useMediaQuery(media.sm)
 
   function handleOpenBookDrawer() {
     setDrawerBook(book)
@@ -45,12 +47,14 @@ export function LastReadCard({ updatedAt, book }: LastReadCardProps) {
         <h3>{book.name}</h3>
         <p>{book.author}</p>
       </hgroup>
-      <Image
-        src={book.coverUrl}
-        width={108}
-        height={152}
-        alt={`Capa de ${book.name}`}
-      />
+      {isSmallOrLarger && (
+        <Image
+          src={book.coverUrl}
+          width={108}
+          height={152}
+          alt={`Capa de ${book.name}`}
+        />
+      )}
       <p>{book.summary}</p>
     </S_LastReadCard>
   )

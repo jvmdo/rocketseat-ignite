@@ -96,7 +96,7 @@ export function ReviewCard(props: ReviewCardProps) {
             onMouseDown={handleActiveState}
           />
         )}
-        <hgroup>
+        <hgroup role="button" onClick={handleOpenBookDrawer} tabIndex={0}>
           <h4>{props.book.name}</h4>
           <p>{props.book.author}</p>
         </hgroup>

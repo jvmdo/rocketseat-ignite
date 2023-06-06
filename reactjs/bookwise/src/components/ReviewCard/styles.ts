@@ -63,6 +63,7 @@ export const CardHeader = styled('header', {
 
 export const CardBody = styled('div', {
   hgroup: {
+    cursor: 'pointer',
     textTransform: 'capitalize',
 
     h4: {
