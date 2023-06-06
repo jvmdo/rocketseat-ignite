@@ -78,6 +78,7 @@ export function BookReviews({ bookId }: { bookId: string }) {
         {reviews?.map((review) => (
           <li key={review.id}>
             <ReviewCard
+              userId={review.user.id}
               imgSrc={review.user.image}
               name={review.user.name}
               date={review.createdAt}

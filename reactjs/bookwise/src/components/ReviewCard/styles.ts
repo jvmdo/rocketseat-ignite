@@ -139,9 +139,16 @@ export const CardBody = styled('div', {
 
       cursor: 'pointer',
 
-      transition: 'transform $action-in-out',
+      transition: 'transform $action-in-out, box-shadow $action-in-out',
 
       '&:is(:hover, :focus-visible)': {
+        boxShadow: `
+          2px 2px 1.5rem -0.75rem $colors$green100, 
+          -2px -2px 1.5rem -0.75rem $colors$green100
+        `,
+      },
+
+      '&.active': {
         transform: 'scale(0.96)',
       },
     },

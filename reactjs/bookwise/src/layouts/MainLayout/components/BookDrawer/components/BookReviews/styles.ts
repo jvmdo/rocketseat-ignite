@@ -27,6 +27,8 @@ export const CollapsibleTrigger = styled(Trigger, {
 
   padding: '$1 $2',
 
+  transition: 'background-color $action-in-out',
+
   '&:is(:hover, :focus-visible)': {
     backgroundColor: 'color-mix(in srgb, $purple100 6%, transparent)',
   },

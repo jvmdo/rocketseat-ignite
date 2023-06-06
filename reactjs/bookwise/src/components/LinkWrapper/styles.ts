@@ -2,7 +2,8 @@ import { styled } from '@/styles/stitches.config'
 import Link from 'next/link'
 
 export const S_LinkWrapper = styled(Link, {
-  display: 'inline-block',
+  display: 'block',
+  width: 'fit-content',
 
   borderRadius: '$sm',
   outline: 'none !important',
@@ -17,6 +18,15 @@ export const S_LinkWrapper = styled(Link, {
     size: {
       round: {
         borderRadius: '50%',
+      },
+    },
+    type: {
+      text: {
+        borderRadius: 'unset',
+
+        '&:is(:hover, :focus-visible)': {
+          boxShadow: '0 1px 0 0 $colors$gray500',
+        },
       },
     },
   },

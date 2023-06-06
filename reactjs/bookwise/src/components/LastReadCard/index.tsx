@@ -5,6 +5,8 @@ import { Star } from '@phosphor-icons/react'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { BookCardProps } from '../BookCard'
+import { useContext } from 'react'
+import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 
 const { theme } = config
 
@@ -14,13 +16,14 @@ export interface LastReadCardProps {
 }
 
 export function LastReadCard({ updatedAt, book }: LastReadCardProps) {
+  const { setDrawerBook } = useContext(MainLayoutContext)
+
   function handleOpenBookDrawer() {
-    // TODO: pass data to drawer
-    console.count('Clicked!')
+    setDrawerBook(book)
   }
 
   return (
-    <S_LastReadCard role="button" tabIndex={0} onClick={handleOpenBookDrawer}>
+    <S_LastReadCard role="button" onClick={handleOpenBookDrawer} tabIndex={0}>
       <header>
         <p>
           {formatDistanceToNow(new Date(updatedAt), {
@@ -36,13 +39,18 @@ export function LastReadCard({ updatedAt, book }: LastReadCardProps) {
           emptyColor={theme.colors.purple100}
           fillIcon={<Star weight="fill" />}
           fillColor={theme.colors.purple100}
-        ></Rating>
+        />
       </header>
       <hgroup>
         <h3>{book.name}</h3>
         <p>{book.author}</p>
       </hgroup>
-      <Image src={book.coverUrl} width={108} height={152} alt="" />
+      <Image
+        src={book.coverUrl}
+        width={108}
+        height={152}
+        alt={`Capa de ${book.name}`}
+      />
       <p>{book.summary}</p>
     </S_LastReadCard>
   )

@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useContext, useRef, MouseEvent, FocusEvent } from 'react'
 import { CardBody, CardHeader, S_ReviewCard } from './styles'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
@@ -9,6 +9,8 @@ import { useParagraphTrimmer } from './useParagraphTrimmer'
 import { LinkWrapper } from '../LinkWrapper'
 import { BookCardProps } from '../BookCard'
 import { useMediaQuery } from '@mantine/hooks'
+import { MainLayoutContext } from '@/contexts/MainLayoutContext'
+import { formatInitials } from '@/utils/format-initials'
 
 const { theme, media } = config
 
@@ -32,10 +34,18 @@ export function ReviewCard(props: ReviewCardProps) {
   const paraRef = useRef<HTMLParagraphElement>(null)
   const trimmedText = useParagraphTrimmer(paraRef, props.description, 3)
   const isSmallOrLarger = useMediaQuery(media.sm)
+  const { setDrawerBook } = useContext(MainLayoutContext)
 
-  function handleOpenDrawer() {
-    // TODO: open drawer on image OR name click
-    console.count('Clicked!')
+  function handleOpenBookDrawer() {
+    setDrawerBook(props.book)
+  }
+
+  function handleActiveState(
+    event: MouseEvent<HTMLImageElement> | FocusEvent<HTMLImageElement>,
+  ) {
+    event.type === 'mousedown'
+      ? event.currentTarget.classList.add('active')
+      : event.currentTarget.classList.remove('active')
   }
 
   return (
@@ -43,11 +53,17 @@ export function ReviewCard(props: ReviewCardProps) {
       <CardHeader>
         <div className="user-info">
           <LinkWrapper href={`/profile/${props.user.id}`} size="round">
-            {/* TODO: User Radix UI's <Avatar/> component */}
-            <Image src={props.user.image!} width={40} height={40} alt="" />
+            <Image
+              src={props.user.image ?? ''}
+              width={40}
+              height={40}
+              alt={formatInitials(props.user.name)}
+            />
           </LinkWrapper>
           <hgroup>
-            <h4>{props.user.name}</h4>
+            <LinkWrapper href={`/profile/${props.user.id}`} type="text">
+              <h4>{props.user.name}</h4>
+            </LinkWrapper>
             <p>
               {formatDistanceToNow(new Date(props.createdAt), {
                 addSuffix: true,
@@ -64,7 +80,7 @@ export function ReviewCard(props: ReviewCardProps) {
           emptyColor={theme.colors.purple100}
           fillIcon={<Star weight="fill" />}
           fillColor={theme.colors.purple100}
-        ></Rating>
+        />
       </CardHeader>
       <CardBody>
         {isSmallOrLarger && (
@@ -72,10 +88,12 @@ export function ReviewCard(props: ReviewCardProps) {
             src={props.book.coverUrl}
             width={108}
             height={152}
-            alt={`${props.book.name} cover`}
+            alt={`Capa de ${props.book.name}`}
             role="button"
-            onClick={handleOpenDrawer}
+            onClick={handleOpenBookDrawer}
             tabIndex={0}
+            onBlur={handleActiveState}
+            onMouseDown={handleActiveState}
           />
         )}
         <hgroup>
@@ -84,7 +102,7 @@ export function ReviewCard(props: ReviewCardProps) {
         </hgroup>
         <p ref={paraRef}>
           {trimmedText}
-          <span role="button" onClick={handleOpenDrawer} tabIndex={0}>
+          <span role="button" onClick={handleOpenBookDrawer} tabIndex={0}>
             {trimmedText !== props.description && '\u00A0 ver mais'}
           </span>
         </p>
