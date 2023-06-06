@@ -5,13 +5,16 @@ import { signOut, useSession } from 'next-auth/react'
 import { useContext } from 'react'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 import { formatInitials } from '@/utils/format-initials'
+import { useSWRConfig } from 'swr'
 
 export function AuthFoot() {
   const { data: session } = useSession()
   const { setDialogOpen } = useContext(MainLayoutContext)
+  const { mutate } = useSWRConfig()
 
   function handleSignOutClick() {
     signOut({ callbackUrl: '/' })
+    mutate(() => true, undefined, { revalidate: false }) // Clear all cache
   }
 
   function handleSignInClick() {
