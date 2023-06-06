@@ -26,7 +26,7 @@ export const S_AppBar = styled('header', {
     backgroundPosition: 'left top',
     borderRadius: '$md',
 
-    blockSize: 'calc(100dvh - 2 * $$layoutPaddingBlock)',
+    blockSize: '100cqh',
     insetInlineStart: 0,
     inlineSize: 'clamp(11.5rem, 4.206rem + 11.76vw, 14.5rem)', // from 992px to 1400px
 

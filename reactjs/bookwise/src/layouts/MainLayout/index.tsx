@@ -1,4 +1,4 @@
-import { ReactNode, MouseEvent, useContext } from 'react'
+import { MouseEvent, useContext, ReactElement } from 'react'
 import { MainLayoutContainer, S_MainLayout } from './styles'
 import { AppBar } from './components/AppBar'
 import { BookDrawer } from './components/BookDrawer'
@@ -6,10 +6,10 @@ import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 import { AuthDialog } from '@/components/AuthDialog'
 
 export interface MainLayoutProps {
-  children: ReactNode
+  children: ReactElement
 }
 
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout({ children: page }: MainLayoutProps) {
   const { appBarTriggerRef } = useContext(MainLayoutContext)
 
   function handleAppBarClose(event: MouseEvent<HTMLDivElement>) {
@@ -28,7 +28,7 @@ export function MainLayout({ children }: MainLayoutProps) {
     <>
       <S_MainLayout onClick={handleAppBarClose}>
         <AppBar />
-        <MainLayoutContainer>{children}</MainLayoutContainer>
+        <MainLayoutContainer>{page}</MainLayoutContainer>
       </S_MainLayout>
       <BookDrawer />
       <AuthDialog />
