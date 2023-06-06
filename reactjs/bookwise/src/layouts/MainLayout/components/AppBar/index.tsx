@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import { CollapsibleTrigger, S_AppBar, StaticContent } from './styles'
-import { ComponentProps, useState } from 'react'
+import { ComponentProps, useContext, useState } from 'react'
 import { SpriteIcon } from '@/components/SpriteIcon'
 import { Root as CollapsibleRoot } from '@radix-ui/react-collapsible'
 import { NavBar } from './Components/NavBar'
 import { useMediaQuery } from '@mantine/hooks'
 import { config } from '@/styles/stitches.config'
+import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 
 const { media } = config
 
@@ -14,6 +15,7 @@ export interface AppBarProps extends ComponentProps<typeof S_AppBar> {}
 export function AppBar() {
   const [open, setOpen] = useState(false)
   const isLargeScreen = useMediaQuery(media.lg)
+  const { appBarTriggerRef: triggerRef } = useContext(MainLayoutContext)
 
   const collapsibleProps = isLargeScreen
     ? {
@@ -29,9 +31,9 @@ export function AppBar() {
 
   return (
     <CollapsibleRoot asChild {...collapsibleProps}>
-      <S_AppBar>
+      <S_AppBar id="app-bar">
         <StaticContent>
-          <CollapsibleTrigger css={shouldDisplayTrigger}>
+          <CollapsibleTrigger css={shouldDisplayTrigger} ref={triggerRef}>
             <SpriteIcon name="hamburger" />
           </CollapsibleTrigger>
           <Image src="/logo.svg" width={128} height={32} alt="BookWise" />

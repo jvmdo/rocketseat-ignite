@@ -9,6 +9,7 @@ import { ptBR } from 'date-fns/locale'
 import { MainLayout } from '@/layouts/MainLayout'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
+import { MainLayoutProvider } from '@/contexts/MainLayoutContext'
 
 const nunito = Nunito_Sans({ subsets: ['latin'] })
 
@@ -41,9 +42,11 @@ export default function App({
         }
       `}</style>
 
-      <SessionProvider session={session}>
-        {getLayout(<Component {...pageProps} />)}
-      </SessionProvider>
+      <MainLayoutProvider>
+        <SessionProvider session={session}>
+          {getLayout(<Component {...pageProps} />)}
+        </SessionProvider>
+      </MainLayoutProvider>
     </>
   )
 }
