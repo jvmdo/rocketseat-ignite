@@ -16,10 +16,11 @@ const SearchFormSchema = z.object({ search: z.string() })
 type SearchFormData = z.infer<typeof SearchFormSchema>
 
 export interface ExplorerProps {
-  fallback: { '/books': BookCardProps[] }
+  books: BookCardProps[]
+  categories: string[]
 }
 
-export default function Explorer({ fallback }: ExplorerProps) {
+export default function Explorer({ books, categories }: ExplorerProps) {
   const { register, handleSubmit } = useForm<SearchFormData>({
     resolver: zodResolver(SearchFormSchema),
   })
@@ -34,45 +35,47 @@ export default function Explorer({ fallback }: ExplorerProps) {
     setChips(chips)
   }
 
+  const fallback = { '/books': books }
   const tags = chips.filter((chip) => chip !== ALL)
 
   return (
-    <SWRConfig value={{ fallback }}>
-      <S_Explorer>
-        <header>
-          <hgroup>
-            <Binoculars />
-            <h1>Explorar</h1>
-          </hgroup>
-          <form role="search" onSubmit={handleSubmit(handleSearchInput)}>
-            <SearchField register={register('search')} />
-          </form>
-        </header>
-        <CategoryChips chips={chips} onChipsChange={handleChipsInput} />
+    <S_Explorer>
+      <header>
+        <hgroup>
+          <Binoculars />
+          <h1>Explorar</h1>
+        </hgroup>
+        <form role="search" onSubmit={handleSubmit(handleSearchInput)}>
+          <SearchField register={register('search')} />
+        </form>
+      </header>
+      <CategoryChips
+        categories={categories}
+        chips={chips}
+        onChipsChange={handleChipsInput}
+      />
+      <SWRConfig value={{ fallback }}>
         <BooksGallery search={search} tags={tags} />
-      </S_Explorer>
-    </SWRConfig>
+      </SWRConfig>
+    </S_Explorer>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const booksResponse = await api.get('/books')
+    // TODO: do not use API Route
+    const books = (await api.get('/books')).data
+    const categories = (await api.get<string[]>('/books/categories')).data
 
     return {
-      props: {
-        fallback: {
-          '/books': booksResponse.data,
-        },
-      },
+      props: { books, categories },
       revalidate: 600, // 10 minutes
     }
   } catch (err) {
     return {
       props: {
-        fallback: {
-          '/books': [],
-        },
+        books: [],
+        categories: [],
       },
       revalidate: 5,
     }
