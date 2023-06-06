@@ -1,24 +1,34 @@
 import { styled } from '@/styles/stitches.config'
 
 export const S_SignIn = styled('div', {
-  container: 'sign-in / size',
+  container: 'sign / size',
+
+  height: 'min(100dvh, 90rem)',
+  maxWidth: '120rem',
 
   display: 'grid',
-  gridAutoRows: 'min-content 1fr',
+  gridAutoRows: 'auto 1fr',
   rowGap: '$10',
 
-  minHeight: '100dvh',
   responsivePaddingBlock: ['$2', '$3', '$4', '$5'],
   responsivePaddingInline: ['$2', '$3', '$4', '$5'],
 
   '@l': {
     rowGap: 'unset',
     gridTemplateColumns: 'max-content 1fr',
+    overflow: 'auto',
   },
+
+  // Center on very big screens
+  position: 'absolute',
+  inset: 0,
+  margin: 'auto',
 })
 
 export const SignInOptions = styled('main', {
   container: 'options / size',
+
+  height: '100cqh',
 
   display: 'grid',
   gridAutoRows: 'min-content auto',
