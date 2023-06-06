@@ -17,6 +17,7 @@ import { ErrorMessage } from '@hookform/error-message'
 import { BookReview } from '../..'
 import { KeyedMutator } from 'swr'
 import { api } from '@/lib/axios'
+import { formatInitials } from '@/utils/format-initials'
 
 const { theme } = config
 
@@ -98,12 +99,11 @@ export function ReviewForm({
     <S_ReviewForm onSubmit={handleSubmit(handlePostReview)}>
       <ReviewFormHeader>
         <div className="user-info">
-          {/* TODO: use Radix UI's <Avatar/> */}
           <Image
             src={session?.user.image ?? ''}
             width={40}
             height={40}
-            alt=""
+            alt={formatInitials(session?.user.name)}
           />
           <h4>{session?.user.name}</h4>
         </div>

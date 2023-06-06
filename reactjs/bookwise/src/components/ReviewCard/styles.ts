@@ -90,7 +90,7 @@ export const CardBody = styled('div', {
   },
 
   '> p': {
-    responsiveFontSize: ['$xs', '$xs', '$sm'],
+    fontSize: '$sm',
 
     span: {
       cursor: 'pointer',
@@ -135,7 +135,7 @@ export const CardBody = styled('div', {
       gridArea: 'book',
 
       height: 'auto',
-      width: '6.75rem',
+      responsiveWidth: ['4.25rem', '5rem', '5.75rem', '6.75rem'],
 
       cursor: 'pointer',
 

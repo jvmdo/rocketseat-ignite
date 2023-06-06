@@ -32,14 +32,19 @@ export function BookCard({ size, ...props }: BookCardProps) {
 
   return (
     <S_BookCard
-      role="button"
-      tabIndex={0}
-      onClick={handleOpenBookDrawer}
-      title={`${props.name} por ${props.author}`}
       className="book-card"
       size={size}
+      title={`${props.name} por ${props.author}`}
+      role="button"
+      onClick={handleOpenBookDrawer}
+      tabIndex={0}
     >
-      <Image src={props.coverUrl} width={108} height={152} alt="" />
+      <Image
+        src={props.coverUrl}
+        width={108}
+        height={152}
+        alt={`Capa de ${props.name}`}
+      />
       <hgroup>
         <h4>{props.name}</h4>
         <p>{props.author}</p>
@@ -52,7 +57,7 @@ export function BookCard({ size, ...props }: BookCardProps) {
         emptyColor={theme.colors.purple100}
         fillIcon={<Star weight="fill" />}
         fillColor={theme.colors.purple100}
-      ></Rating>
+      />
       {props.userHasRead && <ReadTag>Lido</ReadTag>}
     </S_BookCard>
   )

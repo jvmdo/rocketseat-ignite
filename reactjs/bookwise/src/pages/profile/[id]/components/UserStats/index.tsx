@@ -7,6 +7,7 @@ import {
   Books,
   UserList,
 } from '@phosphor-icons/react'
+import { formatInitials } from '@/utils/format-initials'
 
 // TODO: remove emails
 export type UserData = {
@@ -35,12 +36,11 @@ export function UserStats({ user, stats }: UserStatsProps) {
   return (
     <S_UserStats className="user-stats">
       <StatsHead>
-        {/* TODO: Radix UI's <Avatar /> */}
         <Image
-          src={user.image ?? 'https://picsum.photos/72'}
+          src={user.image ?? ''}
           width={72}
           height={72}
-          alt=""
+          alt={formatInitials(user.name)}
         />
         <hgroup>
           <h2>{user.name}</h2>

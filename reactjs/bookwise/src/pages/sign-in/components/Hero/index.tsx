@@ -13,7 +13,7 @@ export function Hero(props: HeroProps) {
         width={820}
         height={410}
         quality={100}
-        alt=""
+        alt="BookWise"
       />
       <Image
         className="image--desktop"
@@ -21,7 +21,7 @@ export function Hero(props: HeroProps) {
         width={598}
         height={912}
         quality={100}
-        alt=""
+        alt="BookWise"
       />
     </S_Hero>
   )

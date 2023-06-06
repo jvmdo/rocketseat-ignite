@@ -44,7 +44,7 @@ export function UserReviewCard({
           src={book.coverUrl}
           width={98}
           height={134}
-          alt={`${book.name} cover`}
+          alt={`Capa de ${book.name}`}
         />
         <hgroup>
           <h3>{book.name}</h3>
@@ -58,7 +58,7 @@ export function UserReviewCard({
           emptyColor={theme.colors.purple100}
           fillIcon={<Star weight="fill" />}
           fillColor={theme.colors.purple100}
-        ></Rating>
+        />
       </CardHead>
       <CardBody>{review.description}</CardBody>
     </S_UserReviewCard>

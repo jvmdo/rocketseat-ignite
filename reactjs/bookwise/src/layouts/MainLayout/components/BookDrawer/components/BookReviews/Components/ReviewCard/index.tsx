@@ -5,6 +5,7 @@ import { Star } from '@phosphor-icons/react'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { S_ReviewCard } from './styles'
+import { formatInitials } from '@/utils/format-initials'
 
 const { theme } = config
 
@@ -22,7 +23,12 @@ export default function ReviewCard({ highlight, ...props }: ReviewCardProps) {
     <S_ReviewCard color={highlight}>
       <header>
         <div className="user-info">
-          <Image src={props.imgSrc} width={40} height={40} alt="" />
+          <Image
+            src={props.imgSrc}
+            width={40}
+            height={40}
+            alt={formatInitials(props.name)}
+          />
           <hgroup>
             <h4>{props.name}</h4>
             <p>
@@ -41,7 +47,7 @@ export default function ReviewCard({ highlight, ...props }: ReviewCardProps) {
           emptyColor={theme.colors.purple100}
           fillIcon={<Star weight="fill" />}
           fillColor={theme.colors.purple100}
-        ></Rating>
+        />
       </header>
       <p>{props.review}</p>
     </S_ReviewCard>

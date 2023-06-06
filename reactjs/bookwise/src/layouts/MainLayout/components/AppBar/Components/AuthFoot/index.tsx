@@ -4,6 +4,7 @@ import { SignIn, SignOut } from '@phosphor-icons/react'
 import { signOut, useSession } from 'next-auth/react'
 import { useContext } from 'react'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
+import { formatInitials } from '@/utils/format-initials'
 
 export function AuthFoot() {
   const { data: session } = useSession()
@@ -20,12 +21,11 @@ export function AuthFoot() {
   if (session) {
     return (
       <UserFoot className="auth-foot">
-        {/* TODO: use Radix UI's <Avatar/> */}
         <Image
-          src={session.user.image ?? 'https://picsum.photos/40'}
+          src={session.user.image ?? ''}
           width={32}
           height={32}
-          alt=""
+          alt={formatInitials(session.user.name)}
         />
         <span>{session.user.name?.split(' ')[0]}</span>
         <SignOutFoot type="button" onClick={handleSignOutClick}>

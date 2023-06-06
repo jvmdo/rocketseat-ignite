@@ -20,7 +20,7 @@ export function BookDetails(props: BookCardProps) {
           src={props.coverUrl}
           width={171.65}
           height={242}
-          alt={`${props.name} cover`}
+          alt={`Capa de ${props.name}`}
         />
         <div className="stars">
           <Rating
@@ -31,7 +31,7 @@ export function BookDetails(props: BookCardProps) {
             emptyColor={theme.colors.purple100}
             fillIcon={<Star weight="fill" />}
             fillColor={theme.colors.purple100}
-          ></Rating>
+          />
           <span>{props.totalReviews} avaliações</span>
         </div>
       </Book>
