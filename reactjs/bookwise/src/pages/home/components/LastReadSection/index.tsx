@@ -8,9 +8,9 @@ import { api } from '@/lib/axios'
 
 export function LastReadSection() {
   const { data: session } = useSession()
-  const userId = session?.user.id ?? 'error'
+  const userId = session?.user.id
 
-  const { data: book } = useSWR(`/users/${userId}/last-read`, fetcher)
+  const { data: book } = useSWR(() => shouldFetch(userId), fetcher)
 
   if (!book) {
     return null
@@ -31,6 +31,15 @@ export function LastReadSection() {
 }
 
 LastReadSection.toString = () => '.last-read-section'
+
+function shouldFetch(userId: string | undefined) {
+  if (!userId) {
+    console.warn('[LastReadSection] fetch failed, [userId] is undefined')
+    return null
+  }
+
+  return `/users/${userId}/last-read`
+}
 
 async function fetcher(url: string) {
   return (await api.get<LastReadCardProps>(url)).data

@@ -11,7 +11,7 @@ import { Check, Star, X } from '@phosphor-icons/react'
 import { RefObject } from 'react'
 import { useSession } from 'next-auth/react'
 import { z } from 'zod'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, FieldErrors, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ErrorMessage } from '@hookform/error-message'
 import { BookReview } from '../..'
@@ -32,7 +32,7 @@ type ReviewFormData = z.infer<typeof ReviewFormSchema>
 
 interface ReviewFormProps {
   triggerRef: RefObject<HTMLButtonElement>
-  bookId: string
+  bookId: string | undefined
   reviews: BookReview[] | undefined
   mutate: KeyedMutator<BookReview[]>
 }
@@ -44,21 +44,16 @@ export function ReviewForm({
   mutate,
 }: ReviewFormProps) {
   const { data: session } = useSession()
-  const {
-    handleSubmit,
-    register,
-    control,
-    watch,
-    formState: { isSubmitting, errors },
-  } = useForm<ReviewFormData>({
-    resolver: zodResolver(ReviewFormSchema),
-    defaultValues: {
-      bookId,
-      userId: session?.user.id,
-      rate: 0,
-      description: '',
-    },
-  })
+  const { handleSubmit, register, control, watch, formState } =
+    useForm<ReviewFormData>({
+      resolver: zodResolver(ReviewFormSchema),
+      defaultValues: {
+        bookId,
+        userId: session?.user.id,
+        rate: 0,
+        description: '',
+      },
+    })
   const watchTextarea = watch('description')
 
   async function handlePostReview(newReview: ReviewFormData) {
@@ -83,20 +78,27 @@ export function ReviewForm({
         })
       }
     } catch (error) {
+      alert('Erro ao publicar avaliação')
       console.error(error)
     }
 
     handleCollapseClose()
   }
 
+  function handleErrorSubmit(errors: FieldErrors) {
+    alert('Erro ao publicar avaliação')
+    console.error(errors)
+  }
+
   function handleCollapseClose() {
     triggerRef.current?.click()
   }
 
+  const { isSubmitting, errors } = formState
   const charsCount = { $$charsCount: `${watchTextarea.length}` }
 
   return (
-    <S_ReviewForm onSubmit={handleSubmit(handlePostReview)}>
+    <S_ReviewForm onSubmit={handleSubmit(handlePostReview, handleErrorSubmit)}>
       <ReviewFormHeader>
         <div className="user-info">
           <Image
@@ -168,6 +170,6 @@ export function ReviewForm({
   )
 }
 
-async function updater(bookId: string) {
+async function updater(bookId: string | undefined) {
   return (await api.get(`/books/${bookId}/reviews`)).data
 }

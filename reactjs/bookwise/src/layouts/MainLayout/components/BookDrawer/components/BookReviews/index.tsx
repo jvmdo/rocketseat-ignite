@@ -25,9 +25,13 @@ export type BookReview = {
   }
 }
 
-export function BookReviews({ bookId }: { bookId: string }) {
+interface BookReviewsProps {
+  bookId: string | undefined
+}
+
+export function BookReviews({ bookId }: BookReviewsProps) {
   const triggerRef = useRef<HTMLButtonElement>(null)
-  const results = useSWR(`/books/${bookId}/reviews`, fetcher)
+  const fetchState = useSWR(() => shouldFetch(bookId), fetcher)
   const { status, data: session } = useSession()
   const { setDialogOpen } = useContext(MainLayoutContext)
 
@@ -38,7 +42,7 @@ export function BookReviews({ bookId }: { bookId: string }) {
     }
   }
 
-  const { data: reviews, isLoading, error, mutate } = results
+  const { data: reviews, isLoading, error, mutate } = fetchState
 
   const userReviewExists = Boolean(
     reviews?.find(({ user }) => user.id === session?.user.id),
@@ -91,6 +95,15 @@ export function BookReviews({ bookId }: { bookId: string }) {
       </ReviewCardsList>
     </S_BookReviews>
   )
+}
+
+function shouldFetch(bookId: string | undefined) {
+  if (!bookId) {
+    console.warn('[BookReviews] fetch failed, [bookId] is undefined')
+    return null
+  }
+
+  return `/books/${bookId}/reviews`
 }
 
 async function fetcher(url: string) {

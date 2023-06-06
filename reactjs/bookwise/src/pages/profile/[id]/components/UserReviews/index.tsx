@@ -22,11 +22,7 @@ interface UserReviewsProps {
 
 export function UserReviews({ userId, userName }: UserReviewsProps) {
   const [search, setSearch] = useState('')
-  const {
-    data: groupedReviews,
-    isLoading,
-    error,
-  } = useSWR(formatKey(userId, search), fetcher, {
+  const fetchState = useSWR(formatKey(userId, search), fetcher, {
     keepPreviousData: true,
   })
   const { register, handleSubmit } = useForm<SearchFormData>({
@@ -36,6 +32,8 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
   function handleSearchReview(data: SearchFormData) {
     setSearch(data.search)
   }
+
+  const { data: groupedReviews, isLoading, error } = fetchState
 
   if (error) {
     return <p>Something bad occurred 📛</p>

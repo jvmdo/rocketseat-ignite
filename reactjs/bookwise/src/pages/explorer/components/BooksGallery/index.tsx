@@ -9,11 +9,11 @@ export interface BooksGalleryProps {
 }
 
 export function BooksGallery({ search, tags }: BooksGalleryProps) {
-  const results = useSWR(formatKey(search, tags), fetcher, {
+  const fetchState = useSWR(formatKey(search, tags), fetcher, {
     keepPreviousData: true,
   })
 
-  const { data: books, isLoading, error } = results
+  const { data: books, isLoading, error } = fetchState
 
   if (error) {
     return <p>Something bad occurred 😔</p>
