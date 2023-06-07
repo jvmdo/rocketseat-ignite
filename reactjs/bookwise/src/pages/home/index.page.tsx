@@ -8,10 +8,13 @@ import {
 import { LastReadSection } from './components/LastReadSection'
 import { GetStaticProps } from 'next'
 import { api } from '@/lib/axios'
+import { SWRConfig } from 'swr'
 
 export interface HomeProps extends TrendingBooksProps, RecentBookReviewsProps {}
 
 export default function Home({ popularBooks, recentReviews }: HomeProps) {
+  const fallback = { '/reviews': recentReviews }
+
   return (
     <S_Home>
       <header>
@@ -20,23 +23,21 @@ export default function Home({ popularBooks, recentReviews }: HomeProps) {
       </header>
       <LastReadSection />
       <TrendingBooks popularBooks={popularBooks} />
-      <RecentBookReviews recentReviews={recentReviews} />
+      <SWRConfig value={{ fallback }}>
+        <RecentBookReviews />
+      </SWRConfig>
     </S_Home>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const [popularBooksResponse, recentReviewsResponse] = await Promise.all([
-      api.get('/books?popular=4'),
-      api.get('/reviews'),
-    ])
+    // TODO: do not call API Routes
+    const popularBooks = (await api.get('/books?popular=4')).data
+    const recentReviews = (await api.get('/reviews')).data
 
     return {
-      props: {
-        popularBooks: popularBooksResponse.data,
-        recentReviews: recentReviewsResponse.data,
-      },
+      props: { popularBooks, recentReviews },
       revalidate: 600, // 10 minutes
     }
   } catch (error) {
