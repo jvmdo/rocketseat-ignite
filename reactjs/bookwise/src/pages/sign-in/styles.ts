@@ -3,8 +3,9 @@ import { styled } from '@/styles/stitches.config'
 export const S_SignIn = styled('div', {
   container: 'sign / size',
 
-  height: 'min(100dvh, 90rem)',
+  height: 'min(100vh, 90rem)',
   maxWidth: '120rem',
+  overflow: 'auto',
 
   display: 'grid',
   gridAutoRows: 'auto 1fr',
@@ -16,19 +17,18 @@ export const S_SignIn = styled('div', {
   '@l': {
     rowGap: 'unset',
     gridTemplateColumns: 'max-content 1fr',
-    overflow: 'auto',
   },
 
-  // Center on very big screens
-  position: 'absolute',
-  inset: 0,
-  margin: 'auto',
+  // Centering technique
+  '@xxl': {
+    position: 'absolute',
+    inset: 0,
+    margin: 'auto',
+  },
 })
 
 export const SignInOptions = styled('main', {
-  container: 'options / size',
-
-  height: '100cqh',
+  container: 'options / inline-size',
 
   display: 'grid',
   gridAutoRows: 'min-content auto',
@@ -37,6 +37,8 @@ export const SignInOptions = styled('main', {
 
   '@l': {
     alignContent: 'center',
+
+    height: '100cqh',
     responsivePaddingInline: ['$6', '$7', '$8', '$10'],
   },
 })

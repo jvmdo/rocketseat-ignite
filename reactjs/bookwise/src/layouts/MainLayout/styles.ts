@@ -17,9 +17,11 @@ export const S_MainLayout = styled('div', {
 
   // Page content stretches up to 1920x1440
   // It definitely won't please 4k screens users 😅
-  position: 'absolute',
-  inset: 0,
-  margin: 'auto',
+  '@xxl': {
+    position: 'absolute',
+    inset: 0,
+    margin: 'auto',
+  },
 
   // Target the Next.js wrapper
   '#__next:has(> &)': {
