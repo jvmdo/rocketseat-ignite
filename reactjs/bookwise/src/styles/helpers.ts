@@ -27,19 +27,19 @@ export type LogicalValue =
   | [keyof SpaceTokens, keyof SpaceTokens]
 
 export function formatLogicalProp(scale: LogicalValue, factor?: boolean) {
-  let padding
+  let value
 
   if (Array.isArray(scale)) {
-    padding = `${scale[0]} ${scale[1]}`
+    value = `${scale[0]} ${scale[1]}`
   } else {
     if (factor) {
-      padding = `calc(-1 * ${String(scale)})`
+      value = `calc(-1 * ${String(scale)})`
     } else {
-      padding = String(scale)
+      value = String(scale)
     }
   }
 
-  return padding
+  return value
 }
 
 type ViewportUnits =

@@ -194,24 +194,30 @@ export const { styled, theme, css, globalCss, keyframes, config, getCssText } =
         }
       },
 
-      responsiveMarginInline: (values: Array<LogicalValue>) => ({
-        marginInline: formatLogicalProp(values[0]),
-        '@sm': {
-          marginInline: formatLogicalProp(values[1]),
-        },
-        '@md': {
-          marginInline: formatLogicalProp(values[2]),
-        },
-        '@lg': {
-          marginInline: formatLogicalProp(values[3]),
-        },
-        '@xl': {
-          marginInline: formatLogicalProp(values[4]),
-        },
-        '@xxl': {
-          marginInline: formatLogicalProp(values[5]),
-        },
-      }),
+      responsiveMarginInline: (values: Array<LogicalValue>) => {
+        const factor = values[0] === '-1'
+
+        if (factor) values.splice(0, 1)
+
+        return {
+          marginInline: formatLogicalProp(values[0], factor),
+          '@sm': {
+            marginInline: formatLogicalProp(values[1], factor),
+          },
+          '@md': {
+            marginInline: formatLogicalProp(values[2], factor),
+          },
+          '@lg': {
+            marginInline: formatLogicalProp(values[3], factor),
+          },
+          '@xl': {
+            marginInline: formatLogicalProp(values[4], factor),
+          },
+          '@xxl': {
+            marginInline: formatLogicalProp(values[5], factor),
+          },
+        }
+      },
 
       responsiveGap: (values: Array<ScaleValue<'space'>>) => ({
         gap: values[0],

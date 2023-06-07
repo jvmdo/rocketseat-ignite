@@ -24,6 +24,7 @@ export const S_AppBar = styled('header', {
   '@lg': {
     backgroundImage: 'url("/appbar-bg-desktop.svg")',
     backgroundPosition: 'left top',
+    backgroundSize: 'cover',
     borderRadius: '$md',
 
     blockSize: '100cqh',
