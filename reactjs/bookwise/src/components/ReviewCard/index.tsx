@@ -1,16 +1,16 @@
-import { useContext, useRef, MouseEvent, FocusEvent } from 'react'
-import { CardBody, CardHeader, S_ReviewCard } from './styles'
+import { useContext, MouseEvent, FocusEvent } from 'react'
+import { CardBody, CardHeader, S_ReviewCard, SeeMore } from './styles'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { Rating } from 'react-simple-star-rating'
 import { Star } from '@phosphor-icons/react'
 import { config } from '@/styles/stitches.config'
-import { useParagraphTrimmer } from './useParagraphTrimmer'
 import { LinkWrapper } from '../LinkWrapper'
 import { BookCardProps } from '../BookCard'
 import { useMediaQuery } from '@mantine/hooks'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 import { formatInitials } from '@/utils/format-initials'
+import { useTextTrimmer } from './useTextTrimmer'
 
 const { theme, media } = config
 
@@ -30,14 +30,13 @@ export interface ReviewCardProps {
   book: BookCardProps
 }
 
-export function ReviewCard(props: ReviewCardProps) {
-  const paraRef = useRef<HTMLParagraphElement>(null)
-  const trimmedText = useParagraphTrimmer(paraRef, props.description, 3)
+export function ReviewCard(review: ReviewCardProps) {
+  const { ref: paraRef, trimmedText } = useTextTrimmer(review.description, 2)
   const isSmallOrLarger = useMediaQuery(media.sm)
   const { setDrawerBook } = useContext(MainLayoutContext)
 
   function handleOpenBookDrawer() {
-    setDrawerBook(props.book)
+    setDrawerBook(review.book)
   }
 
   function handleActiveState(
@@ -48,24 +47,26 @@ export function ReviewCard(props: ReviewCardProps) {
       : event.currentTarget.classList.remove('active')
   }
 
+  const shouldDisplaySeeMore = trimmedText !== review.description
+
   return (
     <S_ReviewCard>
       <CardHeader>
         <div className="user-info">
-          <LinkWrapper href={`/profile/${props.user.id}`} size="round">
+          <LinkWrapper href={`/profile/${review.user.id}`} size="round">
             <Image
-              src={props.user.image ?? ''}
+              src={review.user.image ?? ''}
               width={40}
               height={40}
-              alt={formatInitials(props.user.name)}
+              alt={formatInitials(review.user.name)}
             />
           </LinkWrapper>
           <hgroup>
-            <LinkWrapper href={`/profile/${props.user.id}`} type="text">
-              <h4>{props.user.name}</h4>
+            <LinkWrapper href={`/profile/${review.user.id}`} type="text">
+              <h4>{review.user.name}</h4>
             </LinkWrapper>
             <p>
-              {formatDistanceToNow(new Date(props.createdAt), {
+              {formatDistanceToNow(new Date(review.createdAt), {
                 addSuffix: true,
                 includeSeconds: true,
               })}
@@ -74,7 +75,7 @@ export function ReviewCard(props: ReviewCardProps) {
         </div>
         <Rating
           readonly
-          initialValue={props.book.rating}
+          initialValue={review.book.rating}
           allowFraction
           emptyIcon={<Star />}
           emptyColor={theme.colors.purple100}
@@ -85,10 +86,10 @@ export function ReviewCard(props: ReviewCardProps) {
       <CardBody>
         {isSmallOrLarger && (
           <Image
-            src={props.book.coverUrl}
+            src={review.book.coverUrl}
             width={108}
             height={152}
-            alt={`Capa de ${props.book.name}`}
+            alt={`Capa de ${review.book.name}`}
             role="button"
             onClick={handleOpenBookDrawer}
             tabIndex={0}
@@ -97,14 +98,16 @@ export function ReviewCard(props: ReviewCardProps) {
           />
         )}
         <hgroup role="button" onClick={handleOpenBookDrawer} tabIndex={0}>
-          <h4>{props.book.name}</h4>
-          <p>{props.book.author}</p>
+          <h4>{review.book.name}</h4>
+          <p>{review.book.author}</p>
         </hgroup>
         <p ref={paraRef}>
           {trimmedText}
-          <span role="button" onClick={handleOpenBookDrawer} tabIndex={0}>
-            {trimmedText !== props.description && '\u00A0 ver mais'}
-          </span>
+          {shouldDisplaySeeMore && (
+            <SeeMore onClick={handleOpenBookDrawer}>
+              {'\u00A0 ver mais'}
+            </SeeMore>
+          )}
         </p>
       </CardBody>
     </S_ReviewCard>

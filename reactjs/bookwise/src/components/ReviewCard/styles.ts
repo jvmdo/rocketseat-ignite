@@ -62,6 +62,8 @@ export const CardHeader = styled('header', {
 })
 
 export const CardBody = styled('div', {
+  fontSize: '$sm',
+
   hgroup: {
     cursor: 'pointer',
     textTransform: 'capitalize',
@@ -87,30 +89,6 @@ export const CardBody = styled('div', {
     p: {
       color: '$gray400',
       responsiveFontSize: ['$xs', '$xs', '$sm'],
-    },
-  },
-
-  '> p': {
-    fontSize: '$sm',
-
-    span: {
-      cursor: 'pointer',
-
-      color: '$purple100',
-      fontWeight: '$bold',
-
-      position: 'relative',
-      insetBlockEnd: '0.0625em',
-
-      transition: '$action-in-out',
-
-      '&:is(:hover, :focus-visible)': {
-        color: '$green100',
-      },
-
-      '&:active': {
-        color: '$green200',
-      },
     },
   },
 
@@ -158,5 +136,28 @@ export const CardBody = styled('div', {
       alignSelf: 'end',
       gridArea: 'para',
     },
+  },
+})
+
+export const SeeMore = styled('button', {
+  unset: 'all',
+
+  cursor: 'pointer',
+
+  color: '$purple100',
+  fontSize: '$sm',
+  fontWeight: '$bold',
+
+  position: 'relative',
+  insetBlockEnd: '0.125ex',
+
+  transition: 'color $action-in-out',
+
+  '&:is(:hover, :focus-visible)': {
+    color: 'color-mix(in srgb, $purple100, $purple200 50%)',
+  },
+
+  '&:active': {
+    color: '$purple200',
   },
 })
