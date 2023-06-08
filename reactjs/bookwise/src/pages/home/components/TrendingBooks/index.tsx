@@ -1,15 +1,16 @@
+import { EBook } from '@/@types/entities'
 import {
   S_TrendingBooks,
   ScrollAreaRoot,
   ScrollAreaScrollbar,
   ScrollAreaViewport,
 } from './styles'
-import { BookCard, BookCardProps } from '@/components/BookCard'
+import { BookCard } from '@/components/BookCard'
 import { PageLink } from '@/components/PageLink'
 import { CaretRight } from '@phosphor-icons/react'
 
 export interface TrendingBooksProps {
-  popularBooks: BookCardProps[]
+  popularBooks: EBook[]
 }
 
 export function TrendingBooks({ popularBooks }: TrendingBooksProps) {
@@ -27,7 +28,7 @@ export function TrendingBooks({ popularBooks }: TrendingBooksProps) {
           <ol>
             {popularBooks.map((book) => (
               <li key={book.id}>
-                <BookCard {...book} />
+                <BookCard book={book} />
               </li>
             ))}
           </ol>

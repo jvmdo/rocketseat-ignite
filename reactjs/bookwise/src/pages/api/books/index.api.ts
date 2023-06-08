@@ -7,6 +7,7 @@ import { Shelf } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth].api'
+import { EBook } from '@/@types/entities'
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,8 +18,6 @@ export default async function handler(
   }
 
   const { popular, search, tags } = req.query
-
-  console.log({ tags, type: typeof tags })
 
   let limit
 
@@ -38,7 +37,7 @@ export default async function handler(
   try {
     const booksData = await findBooksData(limit, text, tags, userId)
 
-    const books = formatData(booksData)
+    const books: EBook[] = formatData(booksData)
 
     return res.status(200).json(books)
   } catch (error) {
@@ -131,15 +130,13 @@ async function findBooksData(
 type BooksData = Awaited<ReturnType<typeof findBooksData>>
 
 function formatData(booksData: BooksData) {
-  return booksData.map(
-    ({ categories, reviews, shelves, summary, ...book }) => ({
-      ...columnsToCamelCase(book), // book without summary
-      categories: formatCategories(categories),
-      rating: calculateBookRating(reviews),
-      totalReviews: reviews.length,
-      userHasRead: isBookInUserShelf(shelves),
-    }),
-  )
+  return booksData.map(({ categories, reviews, shelves, ...book }) => ({
+    ...columnsToCamelCase(book),
+    categories: formatCategories(categories),
+    userHasRead: isBookInUserShelf(shelves),
+    rating: calculateBookRating(reviews),
+    totalReviews: reviews.length,
+  }))
 }
 
 function isBookInUserShelf(shelves: Array<Shelf>) {

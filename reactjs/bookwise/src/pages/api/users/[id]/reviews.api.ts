@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable camelcase */
+import { EReviewGroup, EUserReview } from '@/@types/entities'
 import { prisma } from '@/lib/prisma'
 import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
@@ -27,8 +28,8 @@ export default async function handler(
   try {
     const userReviewsData = await findUserReviewsData(userId, text)
 
-    const userReviews = formatData(userReviewsData)
-    const userReviewsGrouped = groupReviewsByDate(userReviews)
+    const userReviews: EUserReview[] = formatData(userReviewsData)
+    const userReviewsGrouped = groupReviewsByInterval(userReviews)
 
     return res.status(200).json(userReviewsGrouped)
   } catch (error) {
@@ -94,6 +95,9 @@ async function findUserReviewsData(userId: string, text: string | undefined) {
           },
         },
       },
+      orderBy: {
+        created_at: 'desc'
+      }
     })
   } catch (error) {
     console.error({ ERROR_USER_REVIEWS: error })
@@ -119,45 +123,34 @@ function formatData(userReviewsData: UserReviewsData) {
   )
 }
 
-type UserReviews = ReturnType<typeof formatData>
+function groupReviewsByInterval(userReviews: EUserReview[]) {
+    const groups = Array.from(
+      { length: 4 }, // Groups: Today, This Week, This Month, Older
+      (): EReviewGroup => ({}),
+    )
 
-type ReviewGroup = {
-  name: string | undefined
-  reviews: UserReviews | undefined
-}
+    const makeGroup = (interval: string, review: EUserReview, index: number): EReviewGroup => ({
+      interval,
+      reviews: [...(groups[index]?.reviews ?? []), review],
+    });
 
-function groupReviewsByDate(userReviews: UserReviews) {
-  const groups = Array.from(
-    { length: 4 }, // Groups: Today, This Week, This Month, Older
-    (): ReviewGroup => ({ name: undefined, reviews: undefined }),
-  )
+    const now = dayjs()
 
-  const group = (
-    name: string,
-    review: UserReviews[0],
-    index: number,
-  ): ReviewGroup => ({
-    name,
-    reviews: [...(groups[index]?.reviews ?? []), review],
-  })
+    for (const review of userReviews) {
+      const diff = now.diff(new Date(review.createdAt), 'days')
 
-  const now = dayjs()
+      const index = diff === 0 ? 0 :
+                    diff <=  7 ? 1 :
+                    diff <= 30 ? 2 :
+                                 3;
 
-  for (const review of userReviews) {
-    const diff = now.diff(new Date(review.createdAt), 'days')
+      const interval = diff === 0 ? 'Hoje' : 
+                       diff <=  7 ? 'Nesta semana' : 
+                       diff <= 30 ? 'Neste mês' : 
+                                    'Há mais de um mês'
 
-    const index = diff === 0 ? 0 :
-                  diff <=  7 ? 1 :
-                  diff <= 30 ? 2 :
-                               3;
+      groups[index] = makeGroup(interval, review, index)
+    }
 
-    const name = diff === 0 ? 'Hoje' : 
-                 diff <=  7 ? 'Nesta semana' : 
-                 diff <= 30 ? 'Neste mês' : 
-                              'Há mais de um mês'
-
-    groups[index] = group(name, review, index)
-  }
-
-  return groups
+    return groups
 }

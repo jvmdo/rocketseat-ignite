@@ -8,31 +8,13 @@ import {
   UserList,
 } from '@phosphor-icons/react'
 import { formatInitials } from '@/utils/format-initials'
-
-// TODO: remove emails
-export type UserData = {
-  id: string
-  name: string | null
-  email: string | null
-  emailVerified: Date | null
-  image: string | null
-  createdAt: Date
-}
-
-export type UserWithStatsData = {
-  favoriteCategory: string | null
-  totalReadAuthors: number
-  totalReadPages: number
-  totalReviews: number
-  user: UserData
-}
+import { EUser } from '@/@types/entities'
 
 interface UserStatsProps {
-  user: UserWithStatsData['user']
-  stats: Omit<UserWithStatsData, 'user'>
+  user: EUser
 }
 
-export function UserStats({ user, stats }: UserStatsProps) {
+export function UserStats({ user }: UserStatsProps) {
   return (
     <S_UserStats className="user-stats">
       <StatsHead>
@@ -44,7 +26,9 @@ export function UserStats({ user, stats }: UserStatsProps) {
         />
         <hgroup>
           <h2>{user.name}</h2>
-          <p>membro desde {format(new Date(user.createdAt), 'yyyy')}</p>
+          {user.createdAt && (
+            <p>membro desde {format(new Date(user.createdAt), 'yyyy')}</p>
+          )}
         </hgroup>
       </StatsHead>
       <StatsSeparator decorative asChild>
@@ -53,22 +37,22 @@ export function UserStats({ user, stats }: UserStatsProps) {
       <StatsBody>
         <li>
           <BookOpen />
-          <strong>{stats.totalReadPages}</strong>
+          <strong>{user.totalReadPages}</strong>
           <p>Páginas lidas</p>
         </li>
         <li>
           <Books />
-          <strong>{stats.totalReviews}</strong>
+          <strong>{user.totalReviews}</strong>
           <p>Livros avaliados</p>
         </li>
         <li>
           <UserList />
-          <strong>{stats.totalReadAuthors}</strong>
+          <strong>{user.totalReadAuthors}</strong>
           <p>Autores lidos</p>
         </li>
         <li>
           <BookmarkSimple />
-          <strong>{stats.favoriteCategory}</strong>
+          <strong>{user.favoriteCategory}</strong>
           <p>Categoria mais lida</p>
         </li>
       </StatsBody>

@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { S_UserReviews } from './styles'
 import { SearchField } from '@/components/SearchField'
 import { UserReviewCard } from './components/UserReviewCard'
-import { ReviewGroupData } from '../../index.page'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import useSWR from 'swr'
 import { api } from '@/lib/axios'
+import { EReviewGroup } from '@/@types/entities'
 
 const SearchFormSchema = z.object({
   search: z.string(),
@@ -17,7 +17,7 @@ type SearchFormData = z.infer<typeof SearchFormSchema>
 
 interface UserReviewsProps {
   userId: string
-  userName: string
+  userName: string | null
 }
 
 export function UserReviews({ userId, userName }: UserReviewsProps) {
@@ -33,7 +33,9 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
     setSearch(data.search)
   }
 
-  const { data: groupedReviews, isLoading, error } = fetchState
+  const { data: reviewGroups, isLoading, error } = fetchState
+
+  console.log(reviewGroups)
 
   if (error) {
     return <p>Something bad occurred 📛</p>
@@ -49,22 +51,26 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
         />
       </form>
       <ol>
-        {groupedReviews?.map(({ name, reviews }) => {
-          if (!reviews?.length) return null
+        {isEmpty(reviewGroups) ? (
+          <p>Nenhuma avaliação encontrada para o termo buscado</p>
+        ) : (
+          reviewGroups?.map(({ interval, reviews }) => {
+            if (!reviews?.length) return null
 
-          return (
-            <li key={name}>
-              <p>{name}</p>
-              <ul>
-                {reviews?.map((review) => (
-                  <li key={review.id}>
-                    <UserReviewCard review={review} userName={userName} />
-                  </li>
-                ))}
-              </ul>
-            </li>
-          )
-        })}
+            return (
+              <li key={interval}>
+                <p>{interval}</p>
+                <ul>
+                  {reviews?.map((review) => (
+                    <li key={review.id}>
+                      <UserReviewCard userName={userName} review={review} />
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            )
+          })
+        )}
       </ol>
     </S_UserReviews>
   )
@@ -85,5 +91,11 @@ function formatKey(userId: string, search?: string) {
 }
 
 async function fetcher(url: string) {
-  return (await api.get<ReviewGroupData[]>(url)).data
+  return (await api.get<EReviewGroup[]>(url)).data
+}
+
+function isEmpty(reviewGroups: EReviewGroup[] | undefined) {
+  return (
+    reviewGroups?.every((group) => Object.values(group).length === 0) ?? true
+  )
 }

@@ -6,12 +6,7 @@ import { AuthButton } from '../AuthButton'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 import { signIn } from 'next-auth/react'
 
-/* interface AuthDialogProps {
-  open: boolean
-  setOpen: (open: boolean) => void
-} */
-
-export function AuthDialog(/* { open, setOpen }: AuthDialogProps */) {
+export function AuthDialog() {
   const { dialogOpen, setDialogOpen } = useContext(MainLayoutContext)
 
   function handleSignInClick(provider: string) {

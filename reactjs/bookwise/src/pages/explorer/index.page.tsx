@@ -6,17 +6,17 @@ import { BooksGallery } from './components/BooksGallery'
 import { GetStaticProps } from 'next'
 import { api } from '@/lib/axios'
 import { SWRConfig } from 'swr'
-import { BookCardProps } from '@/components/BookCard'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { EBook } from '@/@types/entities'
 
 const SearchFormSchema = z.object({ search: z.string() })
 type SearchFormData = z.infer<typeof SearchFormSchema>
 
 export interface ExplorerProps {
-  books: BookCardProps[]
+  books: EBook[]
   categories: string[]
 }
 
@@ -66,10 +66,10 @@ export default function Explorer({ books, categories }: ExplorerProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<ExplorerProps> = async () => {
   try {
     // TODO: do not use API Route
-    const books = (await api.get('/books')).data
+    const books = (await api.get<EBook[]>('/books')).data
     const categories = (await api.get<string[]>('/books/categories')).data
 
     return {

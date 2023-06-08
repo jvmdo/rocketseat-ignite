@@ -7,6 +7,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { ZodError, z } from 'zod'
 import { authOptions } from '../../auth/[...nextauth].api'
+import { ELastRead } from '@/@types/entities'
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,15 +19,15 @@ export default async function handler(
   try {
     switch (method) {
       case 'GET': {
-        const userLastReadData = await findUserLastReadData(userId)
+        const lastReadData = await findLastReadData(userId)
 
-        if (!userLastReadData) {
+        if (!lastReadData) {
           return res.status(204).end()
         }
 
-        const userLastRead = formatData(userLastReadData)
+        const lastRead: ELastRead = formatData(lastReadData)
 
-        return res.status(200).json(userLastRead)
+        return res.status(200).json(lastRead)
       }
 
       case 'PUT': {
@@ -38,9 +39,9 @@ export default async function handler(
 
         const bookId = z.string().uuid().parse(req.body.bookId)
         const userShelf = await createOrUpdateUserShelf(userId, bookId)
-        const userLastRead = formatData(userShelf)
+        const lastRead: ELastRead = formatData(userShelf)
 
-        return res.status(201).json(userLastRead)
+        return res.status(201).json(lastRead)
       }
 
       default: {
@@ -56,11 +57,11 @@ export default async function handler(
   }
 }
 
-async function findUserLastReadData(userId: string) {
-  let userLastReadData
+async function findLastReadData(userId: string) {
+  let lastReadData
 
   try {
-    userLastReadData = await prisma.shelf.findFirst({
+    lastReadData = await prisma.shelf.findFirst({
       where: {
         user_id: userId,
       },
@@ -94,18 +95,16 @@ async function findUserLastReadData(userId: string) {
     throw error
   }
 
-  return userLastReadData
+  return lastReadData
 }
 
-type UserLastReadData = NonNullable<
-  Awaited<ReturnType<typeof findUserLastReadData>>
->
+type LastReadData = NonNullable<Awaited<ReturnType<typeof findLastReadData>>>
 
-function formatData(userLastReadData: UserLastReadData) {
+function formatData(lastReadData: LastReadData) {
   const {
     updated_at, // last time the shelf changed
     book: { categories, reviews, ...book },
-  } = userLastReadData
+  } = lastReadData
 
   return {
     updatedAt: updated_at,
@@ -119,6 +118,7 @@ function formatData(userLastReadData: UserLastReadData) {
 }
 
 async function createOrUpdateUserShelf(userId: string, bookId: string) {
+  // TODO: pattern is let/return variable
   try {
     return await prisma.shelf.upsert({
       where: {

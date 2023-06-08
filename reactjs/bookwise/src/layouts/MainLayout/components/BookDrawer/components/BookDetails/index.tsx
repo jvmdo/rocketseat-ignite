@@ -4,27 +4,31 @@ import { About, Book, S_BookDetails } from './styles'
 import { BookOpen, BookmarkSimple, Star } from '@phosphor-icons/react'
 import { Rating } from 'react-simple-star-rating'
 import { config } from '@/styles/stitches.config'
-import { BookCardProps } from '@/components/BookCard'
+import { EBook } from '@/@types/entities'
 
 const { theme } = config
 
-export function BookDetails(props: BookCardProps) {
+interface BookDetailsProps {
+  book: EBook
+}
+
+export function BookDetails({ book }: BookDetailsProps) {
   return (
     <S_BookDetails>
       <Book>
         <hgroup>
-          <DialogTitle>{props.name}</DialogTitle>
-          <p>{props.author}</p>
+          <DialogTitle>{book.name}</DialogTitle>
+          <p>{book.author}</p>
         </hgroup>
         <Image
-          src={props.coverUrl}
+          src={book.coverUrl}
           width={171.65}
           height={242}
-          alt={`Capa de ${props.name}`}
+          alt={`Capa de ${book.name}`}
         />
         <div className="stars">
           <Rating
-            initialValue={props.rating}
+            initialValue={book.rating}
             readonly
             allowFraction
             emptyIcon={<Star />}
@@ -32,19 +36,19 @@ export function BookDetails(props: BookCardProps) {
             fillIcon={<Star weight="fill" />}
             fillColor={theme.colors.purple100}
           />
-          <span>{props.totalReviews} avaliações</span>
+          <span>{book.totalReviews} avaliações</span>
         </div>
       </Book>
       <About>
         <div>
           <BookmarkSimple />
           <span>Categoria</span>
-          <strong>{props.categories.join(', ')}</strong>
+          <strong>{book.categories.join(', ')}</strong>
         </div>
         <div>
           <BookOpen />
           <span>Páginas</span>
-          <strong>{props.totalPages}</strong>
+          <strong>{book.totalPages}</strong>
         </div>
       </About>
     </S_BookDetails>

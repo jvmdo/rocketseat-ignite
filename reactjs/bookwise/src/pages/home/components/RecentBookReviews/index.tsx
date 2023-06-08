@@ -1,11 +1,12 @@
 import React from 'react'
 import { S_RecentBookReviews } from './styles'
-import { ReviewCard, ReviewCardProps } from '@/components/ReviewCard'
+import { ReviewCard } from '@/components/ReviewCard'
 import useSWR from 'swr'
 import { api } from '@/lib/axios'
+import { EReview } from '@/@types/entities'
 
 export interface RecentBookReviewsProps {
-  recentReviews: ReviewCardProps[]
+  recentReviews: EReview[]
 }
 
 export function RecentBookReviews() {
@@ -27,7 +28,7 @@ export function RecentBookReviews() {
       <ol>
         {recentReviews?.map((review) => (
           <li key={review.id}>
-            <ReviewCard {...review} />
+            <ReviewCard review={review} />
           </li>
         ))}
       </ol>
@@ -38,5 +39,5 @@ export function RecentBookReviews() {
 RecentBookReviews.toString = () => '.recent-book-reviews'
 
 async function fetcher(url: string) {
-  return (await api.get<ReviewCardProps[]>(url)).data
+  return (await api.get<EReview[]>(url)).data
 }

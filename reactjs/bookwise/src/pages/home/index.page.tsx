@@ -1,16 +1,17 @@
 import { ChartLine } from '@phosphor-icons/react'
 import { S_Home } from './styles'
-import { TrendingBooks, TrendingBooksProps } from './components/TrendingBooks'
-import {
-  RecentBookReviews,
-  RecentBookReviewsProps,
-} from './components/RecentBookReviews'
+import { TrendingBooks } from './components/TrendingBooks'
+import { RecentBookReviews } from './components/RecentBookReviews'
 import { LastReadSection } from './components/LastReadSection'
 import { GetStaticProps } from 'next'
 import { api } from '@/lib/axios'
 import { SWRConfig } from 'swr'
+import { EBook, EReview } from '@/@types/entities'
 
-export interface HomeProps extends TrendingBooksProps, RecentBookReviewsProps {}
+export interface HomeProps {
+  popularBooks: EBook[]
+  recentReviews: EReview[]
+}
 
 export default function Home({ popularBooks, recentReviews }: HomeProps) {
   const fallback = { '/reviews': recentReviews }
@@ -30,11 +31,11 @@ export default function Home({ popularBooks, recentReviews }: HomeProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   try {
     // TODO: do not call API Routes
-    const popularBooks = (await api.get('/books?popular=4')).data
-    const recentReviews = (await api.get('/reviews')).data
+    const popularBooks = (await api.get<EBook[]>('/books?popular=4')).data
+    const recentReviews = (await api.get<EReview[]>('/reviews')).data
 
     return {
       props: { popularBooks, recentReviews },

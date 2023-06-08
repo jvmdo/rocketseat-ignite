@@ -1,18 +1,19 @@
 import { S_LastReadSection } from './styles'
 import { PageLink } from '@/components/PageLink'
 import { CaretRight } from '@phosphor-icons/react'
-import { LastReadCard, LastReadCardProps } from '@/components/LastReadCard'
+import { LastReadCard } from '@/components/LastReadCard'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
 import { api } from '@/lib/axios'
+import { ELastRead } from '@/@types/entities'
 
 export function LastReadSection() {
   const { data: session } = useSession()
   const userId = session?.user.id
 
-  const { data: book } = useSWR(() => shouldFetch(userId), fetcher)
+  const { data: lastRead } = useSWR(() => shouldFetch(userId), fetcher)
 
-  if (!book) {
+  if (!lastRead) {
     return null
   }
 
@@ -25,7 +26,7 @@ export function LastReadSection() {
           <CaretRight />
         </PageLink>
       </header>
-      <LastReadCard {...book} />
+      <LastReadCard lastRead={lastRead} />
     </S_LastReadSection>
   )
 }
@@ -42,5 +43,5 @@ function shouldFetch(userId: string | undefined) {
 }
 
 async function fetcher(url: string) {
-  return (await api.get<LastReadCardProps>(url)).data
+  return (await api.get<ELastRead>(url)).data
 }

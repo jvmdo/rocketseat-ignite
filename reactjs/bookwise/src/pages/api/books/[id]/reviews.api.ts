@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { EBookReview } from '@/@types/entities'
 import { prisma } from '@/lib/prisma'
 import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -16,7 +17,7 @@ export default async function handler(
   try {
     const bookReviewsData = await findBookReviewsData(bookId)
 
-    const bookReviews = formatData(bookReviewsData)
+    const bookReviews: EBookReview[] = formatData(bookReviewsData)
 
     return res.status(200).json(bookReviews)
   } catch (error) {
@@ -55,6 +56,6 @@ function formatData(bookReviewsData: BookReviewsData) {
     createdAt: created_at,
     description,
     rate,
-    user: { ...columnsToCamelCase(user) },
+    user: columnsToCamelCase(user),
   }))
 }

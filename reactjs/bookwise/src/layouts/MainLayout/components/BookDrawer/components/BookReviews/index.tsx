@@ -12,18 +12,7 @@ import { api } from '@/lib/axios'
 import useSWR from 'swr'
 import { useSession } from 'next-auth/react'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
-
-export type BookReview = {
-  id: string
-  createdAt: string
-  description: string
-  rate: number
-  user: {
-    id: string
-    name: string
-    image: string
-  }
-}
+import { EBookReview } from '@/@types/entities'
 
 interface BookReviewsProps {
   bookId: string | undefined
@@ -82,12 +71,7 @@ export function BookReviews({ bookId }: BookReviewsProps) {
         {reviews?.map((review) => (
           <li key={review.id}>
             <ReviewCard
-              userId={review.user.id}
-              imgSrc={review.user.image}
-              name={review.user.name}
-              date={review.createdAt}
-              rate={review.rate}
-              review={review.description}
+              review={review}
               highlight={review.user.id === session?.user.id}
             />
           </li>
@@ -107,5 +91,5 @@ function shouldFetch(bookId: string | undefined) {
 }
 
 async function fetcher(url: string) {
-  return (await api.get<BookReview[]>(url)).data
+  return (await api.get<EBookReview[]>(url)).data
 }

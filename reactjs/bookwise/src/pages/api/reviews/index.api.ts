@@ -7,6 +7,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { ZodError, z } from 'zod'
 import { authOptions } from '../auth/[...nextauth].api'
+import { EReview } from '@/@types/entities'
 
 const ReviewBodySchema = z.object({
   bookId: z.string().uuid(),
@@ -25,7 +26,7 @@ export default async function handler(
     if (req.method === 'GET') {
       const reviewsData = await findReviewsData()
 
-      const reviews = formatReviewsData(reviewsData)
+      const reviews: EReview[] = formatData(reviewsData)
 
       return res.status(200).json(reviews)
     } else if (req.method === 'POST') {
@@ -38,7 +39,7 @@ export default async function handler(
       const body = ReviewBodySchema.parse(req.body)
       const newReview = await createReview(body)
 
-      return res.status(201).json({ newReview })
+      return res.status(201).json(newReview)
     } else {
       return res.status(405).json({ message: 'Method not allowed' })
     }
@@ -118,7 +119,7 @@ async function createReview(body: ReviewBody) {
 
 type ReviewsData = Awaited<ReturnType<typeof findReviewsData>>
 
-function formatReviewsData(reviewsData: ReviewsData) {
+function formatData(reviewsData: ReviewsData) {
   return reviewsData.map(
     ({
       id,
@@ -132,7 +133,7 @@ function formatReviewsData(reviewsData: ReviewsData) {
       createdAt: created_at,
       description,
       rate,
-      user: { ...columnsToCamelCase(user) },
+      user: columnsToCamelCase(user),
       book: {
         ...columnsToCamelCase(book),
         categories: formatCategories(categories),

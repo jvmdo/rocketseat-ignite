@@ -14,10 +14,10 @@ import { z } from 'zod'
 import { Controller, FieldErrors, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ErrorMessage } from '@hookform/error-message'
-import { BookReview } from '../..'
 import { KeyedMutator } from 'swr'
 import { api } from '@/lib/axios'
 import { formatInitials } from '@/utils/format-initials'
+import { EBookReview } from '@/@types/entities'
 
 const { theme } = config
 
@@ -33,8 +33,8 @@ type ReviewFormData = z.infer<typeof ReviewFormSchema>
 interface ReviewFormProps {
   triggerRef: RefObject<HTMLButtonElement>
   bookId: string | undefined
-  reviews: BookReview[] | undefined
-  mutate: KeyedMutator<BookReview[]>
+  reviews: EBookReview[] | undefined
+  mutate: KeyedMutator<EBookReview[]>
 }
 
 export function ReviewForm({
@@ -57,20 +57,20 @@ export function ReviewForm({
   const watchTextarea = watch('description')
 
   async function handlePostReview(newReview: ReviewFormData) {
-    const optimisticReview: BookReview = {
+    const optimisticReview: EBookReview = {
       id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-      description: newReview.description,
       rate: newReview.rate,
+      description: newReview.description,
       user: {
         id: newReview.userId,
         name: session?.user.name ?? '',
         image: session?.user.image ?? '',
       },
+      createdAt: new Date(),
     }
 
     try {
-      await api.post('/reviews', { ...newReview })
+      await api.post('/reviews', newReview)
 
       if (reviews) {
         await mutate(updater(bookId), {

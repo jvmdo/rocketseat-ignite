@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { EUser } from '@/@types/entities'
 import { prisma } from '@/lib/prisma'
 import { columnsToCamelCase } from '@/utils/record-case'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -14,17 +15,17 @@ export default async function handler(
   const userId = String(req.query.id)
 
   try {
-    const userProfileData = await getUserProfileData(userId)
+    const userData = await getUserData(userId)
 
-    const userProfile = formatData(userProfileData)
+    const user: EUser = formatData(userData)
 
-    return res.status(200).json(userProfile)
+    return res.status(200).json(user)
   } catch (error) {
     return res.status(404).json({ message: 'User does not exist' })
   }
 }
 
-async function getUserProfileData(userId: string) {
+async function getUserData(userId: string) {
   let userProfileData
 
   try {
@@ -62,41 +63,41 @@ async function getUserProfileData(userId: string) {
   return userProfileData
 }
 
-type UserProfileData = Awaited<ReturnType<typeof getUserProfileData>>
+type UserData = Awaited<ReturnType<typeof getUserData>>
 
-function formatData(userProfileData: UserProfileData) {
-  const { reviews, ...user } = userProfileData
+function formatData(userData: UserData) {
+  const { reviews, emailVerified, ...user } = userData
   return {
-    user: columnsToCamelCase(user),
-    favoriteCategory: findFavoriteCategory(userProfileData),
-    totalReadAuthors: countReadAuthors(userProfileData),
-    totalReadPages: countReadPages(userProfileData),
-    totalReviews: userProfileData.reviews.length,
+    ...columnsToCamelCase(user), // Without [emailVerified]
+    favoriteCategory: findFavoriteCategory(userData),
+    totalReadAuthors: countReadAuthors(userData),
+    totalReadPages: countReadPages(userData),
+    totalReviews: userData.reviews.length,
   }
 }
 
-function countReadPages(userProfileData: UserProfileData) {
-  return userProfileData.reviews.reduce((acc, review) => {
+function countReadPages(userData: UserData) {
+  return userData.reviews.reduce((acc, review) => {
     return acc + review.book.total_pages
   }, 0)
 }
 
-function countReadAuthors(userProfileData: UserProfileData) {
+function countReadAuthors(userData: UserData) {
   return Array.from(
     new Set(
-      userProfileData.reviews.map((review) => {
+      userData.reviews.map((review) => {
         return review.book.author
       }),
     ),
   ).length
 }
 
-function findFavoriteCategory(userProfileData: UserProfileData) {
-  if (userProfileData.reviews.length === 0) {
+function findFavoriteCategory(userData: UserData) {
+  if (userData.reviews.length === 0) {
     return null
   }
 
-  const categories = userProfileData.reviews
+  const categories = userData.reviews
     .map((review) =>
       review.book.categories.map(({ category }) => category.name),
     )

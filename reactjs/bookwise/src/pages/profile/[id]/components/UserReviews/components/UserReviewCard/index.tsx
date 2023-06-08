@@ -4,51 +4,40 @@ import Image from 'next/image'
 import { Rating } from 'react-simple-star-rating'
 import { config } from '@/styles/stitches.config'
 import { Star } from '@phosphor-icons/react'
-import { BookCardProps } from '@/components/BookCard'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
+import { EUserReview } from '@/@types/entities'
 
 const { theme } = config
 
-export type ReviewData = {
-  id: string
-  createdAt: Date
-  description: string
-  rate: number
-  book: BookCardProps
+interface UserReviewCardProps {
+  review: EUserReview
+  userName: string | null
 }
 
-export interface UserReviewCardProps {
-  review: ReviewData
-  userName: string
-}
-
-export function UserReviewCard({
-  review: { book, ...review },
-  userName,
-}: UserReviewCardProps) {
+export function UserReviewCard({ userName, review }: UserReviewCardProps) {
   const { setDrawerBook } = useContext(MainLayoutContext)
 
   function handleOpenBookDrawer() {
-    setDrawerBook(book)
+    setDrawerBook(review.book)
   }
 
   return (
     <S_UserReviewCard
-      title={`Avaliação de ${book.name} por ${userName}`}
+      title={`Avaliação de ${review.book.name} por ${userName}`}
       tabIndex={0}
       role="button"
       onClick={handleOpenBookDrawer}
     >
       <CardHead>
         <Image
-          src={book.coverUrl}
+          src={review.book.coverUrl}
           width={98}
           height={134}
-          alt={`Capa de ${book.name}`}
+          alt={`Capa de ${review.book.name}`}
         />
         <hgroup>
-          <h3>{book.name}</h3>
-          <p>{book.author}</p>
+          <h3>{review.book.name}</h3>
+          <p>{review.book.author}</p>
         </hgroup>
         <Rating
           initialValue={review.rate}

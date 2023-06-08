@@ -6,31 +6,19 @@ import { Rating } from 'react-simple-star-rating'
 import { Star } from '@phosphor-icons/react'
 import { config } from '@/styles/stitches.config'
 import { LinkWrapper } from '../LinkWrapper'
-import { BookCardProps } from '../BookCard'
 import { useMediaQuery } from '@mantine/hooks'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 import { formatInitials } from '@/utils/format-initials'
 import { useTextTrimmer } from './useTextTrimmer'
+import { EReview } from '@/@types/entities'
 
 const { theme, media } = config
 
 export interface ReviewCardProps {
-  id: string
-  createdAt: Date
-  description: string
-  rate: number
-  user: {
-    id: string
-    name: string | null
-    email: string | null
-    emailVerified: Date | null
-    image: string | null
-    createdAt: Date
-  }
-  book: BookCardProps
+  review: EReview
 }
 
-export function ReviewCard(review: ReviewCardProps) {
+export function ReviewCard({ review }: ReviewCardProps) {
   const { ref: paraRef, trimmedText } = useTextTrimmer(review.description, 2)
   const isSmallOrLarger = useMediaQuery(media.sm)
   const { setDrawerBook } = useContext(MainLayoutContext)

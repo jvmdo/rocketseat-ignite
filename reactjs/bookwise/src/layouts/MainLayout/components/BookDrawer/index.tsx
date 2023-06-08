@@ -45,7 +45,7 @@ export function BookDrawer() {
           <DrawerOverlay>
             <DrawerContent asChild>
               <article>
-                {drawerBook && <BookDetails {...drawerBook} />}
+                {drawerBook && <BookDetails book={drawerBook} />}
                 <BookReviews bookId={drawerBook?.id ?? 'error'} />
                 <DrawerCloseButton>
                   <X />

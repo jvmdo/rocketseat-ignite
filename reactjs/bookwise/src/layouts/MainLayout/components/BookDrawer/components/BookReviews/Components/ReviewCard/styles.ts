@@ -59,7 +59,7 @@ export const S_ReviewCard = styled('div', {
   },
 
   variants: {
-    color: {
+    highlight: {
       true: {
         backgroundColor: '$gray600',
       },

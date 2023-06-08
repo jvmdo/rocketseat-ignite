@@ -5,52 +5,44 @@ import { Star } from '@phosphor-icons/react'
 import { config } from '@/styles/stitches.config'
 import { ComponentProps, useContext } from 'react'
 import { MainLayoutContext } from '@/contexts/MainLayoutContext'
+import { EBook } from '@/@types/entities'
 
 const { theme } = config
 
-export interface BookCardProps
-  extends Pick<ComponentProps<typeof S_BookCard>, 'size'> {
-  id: string
-  name: string
-  author: string
-  coverUrl: string
-  rating: number
-  totalReviews: number
-  categories: string[]
-  totalPages: number
-  createdAt: Date
-  summary: string
-  userHasRead: boolean
+type Variants = Pick<ComponentProps<typeof S_BookCard>, 'size'>
+
+export interface BookCardProps extends Variants {
+  book: EBook
 }
 
-export function BookCard({ size, ...props }: BookCardProps) {
+export function BookCard({ book, size }: BookCardProps) {
   const { setDrawerBook } = useContext(MainLayoutContext)
 
   function handleOpenBookDrawer() {
-    setDrawerBook(props)
+    setDrawerBook(book)
   }
 
   return (
     <S_BookCard
       className="book-card"
       size={size}
-      title={`${props.name} por ${props.author}`}
+      title={`${book.name} por ${book.author}`}
       role="button"
       onClick={handleOpenBookDrawer}
       tabIndex={0}
     >
       <Image
-        src={props.coverUrl}
+        src={book.coverUrl}
         width={108}
         height={152}
-        alt={`Capa de ${props.name}`}
+        alt={`Capa de ${book.name}`}
       />
       <hgroup>
-        <h4>{props.name}</h4>
-        <p>{props.author}</p>
+        <h4>{book.name}</h4>
+        <p>{book.author}</p>
       </hgroup>
       <Rating
-        initialValue={props.rating}
+        initialValue={book.rating}
         readonly
         allowFraction
         emptyIcon={<Star />}
@@ -58,7 +50,7 @@ export function BookCard({ size, ...props }: BookCardProps) {
         fillIcon={<Star weight="fill" />}
         fillColor={theme.colors.purple100}
       />
-      {props.userHasRead && <ReadTag>Lido</ReadTag>}
+      {book.userHasRead && <ReadTag>Lido</ReadTag>}
     </S_BookCard>
   )
 }

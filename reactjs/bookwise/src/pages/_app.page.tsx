@@ -1,8 +1,7 @@
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable camelcase */
+// eslint-disable-next-line camelcase
+import { Nunito_Sans } from 'next/font/google'
 import { globalStyles } from '@/styles/globals'
 import type { AppProps } from 'next/app'
-import { Nunito_Sans } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 import { setDefaultOptions } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -11,14 +10,6 @@ import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
 import { MainLayoutProvider } from '@/contexts/MainLayoutContext'
 
-const nunito = Nunito_Sans({ subsets: ['latin'] })
-
-globalStyles()
-
-setDefaultOptions({
-  locale: ptBR,
-})
-
 type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -26,6 +17,11 @@ type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
+
+const nunito = Nunito_Sans({ subsets: ['latin'] })
+
+globalStyles()
+setDefaultOptions({ locale: ptBR })
 
 export default function App({
   Component,
@@ -36,6 +32,7 @@ export default function App({
 
   return (
     <>
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx global>{`
         html {
           font-family: ${nunito.style.fontFamily};

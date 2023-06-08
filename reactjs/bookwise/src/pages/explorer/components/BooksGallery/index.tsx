@@ -1,5 +1,6 @@
+import { EBook } from '@/@types/entities'
 import { S_BooksGallery } from './styles'
-import { BookCard, BookCardProps } from '@/components/BookCard'
+import { BookCard } from '@/components/BookCard'
 import { api } from '@/lib/axios'
 import { useEffect } from 'react'
 import useSWR from 'swr'
@@ -35,7 +36,7 @@ export function BooksGallery({
       ) : (
         books?.map((book) => (
           <li key={book.id}>
-            <BookCard size="big" {...book} />
+            <BookCard size="big" book={book} />
           </li>
         ))
       )}
@@ -64,5 +65,5 @@ function formatKey(search?: string, tags?: string[]) {
 }
 
 async function fetcher(url: string) {
-  return (await api.get<BookCardProps[]>(url)).data
+  return (await api.get<EBook[]>(url)).data
 }

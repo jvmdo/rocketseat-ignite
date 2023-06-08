@@ -5,7 +5,6 @@ import { authOptions } from './api/auth/[...nextauth].api'
 // Render function is placed here instead of in './sign-in'
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
-  console.log({ session })
 
   if (session) {
     return {
@@ -21,6 +20,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-// By exporting from home directory, we tell Next.js
-// that home/index.jsx is the home page
+// By exporting from `./sign-in` directory, we tell Next.js
+// that its index.jsx file is the home page
 export { default } from './sign-in'
