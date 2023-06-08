@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable camelcase */
 import { EReviewGroup, EUserReview } from '@/@types/entities'
 import { prisma } from '@/lib/prisma'
@@ -96,8 +95,8 @@ async function findUserReviewsData(userId: string, text: string | undefined) {
         },
       },
       orderBy: {
-        created_at: 'desc'
-      }
+        created_at: 'desc',
+      },
     })
   } catch (error) {
     console.error({ ERROR_USER_REVIEWS: error })
@@ -124,33 +123,26 @@ function formatData(userReviewsData: UserReviewsData) {
 }
 
 function groupReviewsByInterval(userReviews: EUserReview[]) {
-    const groups = Array.from(
-      { length: 4 }, // Groups: Today, This Week, This Month, Older
-      (): EReviewGroup => ({}),
-    )
+  const intervals = ['Hoje', 'Nesta semana', 'Neste mês', 'Há mais de um mês']
 
-    const makeGroup = (interval: string, review: EUserReview, index: number): EReviewGroup => ({
-      interval,
-      reviews: [...(groups[index]?.reviews ?? []), review],
-    });
+  const groups: EReviewGroup[] = intervals.map((interval) => ({
+    interval,
+    reviews: [],
+  }))
 
-    const now = dayjs()
+  const now = dayjs()
 
-    for (const review of userReviews) {
-      const diff = now.diff(new Date(review.createdAt), 'days')
+  for (const review of userReviews) {
+    const diff = now.diff(new Date(review.createdAt), 'days')
 
-      const index = diff === 0 ? 0 :
-                    diff <=  7 ? 1 :
-                    diff <= 30 ? 2 :
-                                 3;
+    // eslint-disable-next-line prettier/prettier
+    const index = diff === 0 ? 0 :
+                  diff <=  7 ? 1 :
+                  diff <= 30 ? 2 :
+                               3;
 
-      const interval = diff === 0 ? 'Hoje' : 
-                       diff <=  7 ? 'Nesta semana' : 
-                       diff <= 30 ? 'Neste mês' : 
-                                    'Há mais de um mês'
+    groups[index].reviews.push(review)
+  }
 
-      groups[index] = makeGroup(interval, review, index)
-    }
-
-    return groups
+  return groups
 }

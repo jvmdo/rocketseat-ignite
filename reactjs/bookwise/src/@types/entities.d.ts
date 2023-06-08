@@ -38,8 +38,8 @@ export type EBookReview = Omit<EReview, 'book'>
 export type EUserReview = Omit<EReview, 'user'>
 
 export type EReviewGroup = {
-  interval?: string
-  reviews?: EUserReview[]
+  interval: string
+  reviews: EUserReview[]
 }
 
 export type ELastRead = {

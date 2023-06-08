@@ -35,8 +35,6 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
 
   const { data: reviewGroups, isLoading, error } = fetchState
 
-  console.log(reviewGroups)
-
   if (error) {
     return <p>Something bad occurred 📛</p>
   }
@@ -48,6 +46,7 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
           register={register('search')}
           disabled={isLoading}
           placeholder="Buscar livro avaliado"
+          autoFocus={true}
         />
       </form>
       <ol>
@@ -95,7 +94,5 @@ async function fetcher(url: string) {
 }
 
 function isEmpty(reviewGroups: EReviewGroup[] | undefined) {
-  return (
-    reviewGroups?.every((group) => Object.values(group).length === 0) ?? true
-  )
+  return reviewGroups?.every(({ reviews }) => reviews.length === 0) ?? true
 }
