@@ -70,7 +70,7 @@ export function ReviewForm({
     }
 
     try {
-      await api.post('/reviews', newReview)
+      await api.post(`/books/${bookId}/reviews`, newReview)
 
       if (reviews) {
         await mutate(updater(bookId), {

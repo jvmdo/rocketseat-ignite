@@ -63,7 +63,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
         </div>
         <Rating
           readonly
-          initialValue={review.book.rating}
+          initialValue={review.rate}
           allowFraction
           emptyIcon={<Star />}
           emptyColor={theme.colors.purple100}
