@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { EReviewGroup, EUserReview } from '@/@types/entities'
-import { prisma } from '@/lib/prisma'
+import { prisma, reviewsAndCategories } from '@/lib/prisma'
 import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
@@ -76,22 +76,7 @@ async function findUserReviewsData(userId: string, text: string | undefined) {
         description: true,
         rate: true,
         book: {
-          include: {
-            reviews: {
-              select: {
-                rate: true,
-              },
-            },
-            categories: {
-              select: {
-                category: {
-                  select: {
-                    name: true,
-                  },
-                },
-              },
-            },
-          },
+          include: reviewsAndCategories,
         },
       },
       orderBy: {

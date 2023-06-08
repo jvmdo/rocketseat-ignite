@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { prisma } from '@/lib/prisma'
+import { prisma, reviewsAndCategories } from '@/lib/prisma'
 import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
@@ -85,20 +85,7 @@ async function findBooksData(
         ],
       },
       include: {
-        reviews: {
-          select: {
-            rate: true,
-          },
-        },
-        categories: {
-          select: {
-            category: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
+        ...reviewsAndCategories,
         shelves: {
           where: {
             user_id: userId,

@@ -26,10 +26,10 @@ export default async function handler(
 }
 
 async function getUserData(userId: string) {
-  let userProfileData
+  let userData
 
   try {
-    userProfileData = await prisma.user.findUniqueOrThrow({
+    userData = await prisma.user.findUniqueOrThrow({
       where: {
         id: userId,
       },
@@ -60,7 +60,7 @@ async function getUserData(userId: string) {
     throw error
   }
 
-  return userProfileData
+  return userData
 }
 
 type UserData = Awaited<ReturnType<typeof getUserData>>

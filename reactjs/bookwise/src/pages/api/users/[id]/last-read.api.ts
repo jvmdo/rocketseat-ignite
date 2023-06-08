@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { prisma } from '@/lib/prisma'
+import { prisma, reviewsAndCategories } from '@/lib/prisma'
 import { calculateBookRating } from '@/utils/calculate-rating'
 import { formatCategories } from '@/utils/format-categories'
 import { columnsToCamelCase } from '@/utils/record-case'
@@ -68,22 +68,7 @@ async function findLastReadData(userId: string) {
       select: {
         updated_at: true,
         book: {
-          include: {
-            reviews: {
-              select: {
-                rate: true,
-              },
-            },
-            categories: {
-              select: {
-                category: {
-                  select: {
-                    name: true,
-                  },
-                },
-              },
-            },
-          },
+          include: reviewsAndCategories,
         },
       },
       orderBy: {
