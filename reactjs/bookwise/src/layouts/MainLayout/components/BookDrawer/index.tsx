@@ -1,5 +1,13 @@
 import * as Drawer from '@radix-ui/react-dialog'
-import { DrawerCloseButton, DrawerContent, DrawerOverlay } from './styles'
+import {
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  ScrollAreaRoot,
+  ScrollAreaScrollbar,
+  ScrollAreaThumb,
+  ScrollAreaViewport,
+} from './styles'
 import { X } from '@phosphor-icons/react'
 import { BookDetails } from './components/BookDetails'
 import { BookReviews } from './components/BookReviews'
@@ -39,23 +47,28 @@ export function BookDrawer() {
   }
 
   return (
-    <div>
-      <Drawer.Root open={open} onOpenChange={setOpen}>
-        <Drawer.Portal>
-          <DrawerOverlay>
-            <DrawerContent asChild>
-              <article>
-                {drawerBook && <BookDetails book={drawerBook} />}
-                <BookReviews bookId={drawerBook?.id ?? 'error'} />
+    <Drawer.Root open={open} onOpenChange={setOpen}>
+      <Drawer.Portal>
+        <DrawerOverlay>
+          <DrawerContent>
+            <ScrollAreaRoot>
+              <ScrollAreaViewport>
+                <article>
+                  {drawerBook && <BookDetails book={drawerBook} />}
+                  <BookReviews bookId={drawerBook?.id ?? 'error'} />
+                </article>
                 <DrawerCloseButton>
                   <X />
                 </DrawerCloseButton>
-              </article>
-            </DrawerContent>
-          </DrawerOverlay>
-        </Drawer.Portal>
-      </Drawer.Root>
-    </div>
+              </ScrollAreaViewport>
+              <ScrollAreaScrollbar orientation="vertical">
+                <ScrollAreaThumb />
+              </ScrollAreaScrollbar>
+            </ScrollAreaRoot>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer.Portal>
+    </Drawer.Root>
   )
 }
 
