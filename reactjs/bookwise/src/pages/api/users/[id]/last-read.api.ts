@@ -104,7 +104,6 @@ function formatData(lastReadData: LastReadData) {
 }
 
 async function createOrUpdateUserShelf(userId: string, bookId: string) {
-  // TODO: pattern is let/return variable
   try {
     return await prisma.shelf.upsert({
       where: {

@@ -29,9 +29,7 @@ export function BookDrawer() {
           revalidate: false,
         })
 
-        // Match keys that starts with `/books` not followed by `/{uuid}`
-        const explorerKeyPattern = /^\/books(?!\/[a-f0-9-]{36})/gi
-        mutate((key) => typeof key === 'string' && explorerKeyPattern.test(key))
+        mutate((key) => Array.isArray(key) && key[0] === '/books')
       } catch (error) {
         console.error(error)
       }
@@ -62,6 +60,3 @@ export function BookDrawer() {
 async function updater(path: string, bookId?: string) {
   return (await api.put(path, { bookId })).data
 }
-
-// Complexer regex to match keys used on Explorer page
-// ^\/books(?:\?(?:search=[^&\s]+(?:&tags=[^&\s]+)*|tags=[^&\s]+(?:&tags=[^&\s]+)*))?$

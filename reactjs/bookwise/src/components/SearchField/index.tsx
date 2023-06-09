@@ -19,7 +19,6 @@ export function SearchField({
   placeholder = 'Buscar livro ou autor',
   ...props
 }: SearchFieldProps) {
-  // TODO: is magnifying a submit button? If so, change to X to act as reset
   return (
     <S_SearchField tabIndex={0} {...props}>
       <input

@@ -22,7 +22,7 @@ interface UserReviewsProps {
 
 export function UserReviews({ userId, userName }: UserReviewsProps) {
   const [search, setSearch] = useState('')
-  const fetchState = useSWR(formatKey(userId, search), fetcher, {
+  const { data: reviewGroups, isLoading } = useSWR([userId, search], fetcher, {
     keepPreviousData: true,
   })
   const { register, handleSubmit } = useForm<SearchFormData>({
@@ -32,8 +32,6 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
   function handleSearchReview(data: SearchFormData) {
     setSearch(data.search)
   }
-
-  const { data: reviewGroups, isLoading } = fetchState
 
   return (
     <S_UserReviews className="user-reviews">
@@ -74,7 +72,15 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
 
 UserReviews.toString = () => '.user-reviews'
 
-function formatKey(userId: string, search?: string) {
+type SwrKey = [userId: string, search?: string]
+
+async function fetcher(key: SwrKey) {
+  const url = formatUrl(key)
+
+  return (await api.get<EReviewGroup[]>(url)).data
+}
+
+function formatUrl([userId, search]: SwrKey) {
   const params = new URLSearchParams()
 
   if (search) {
@@ -84,10 +90,6 @@ function formatKey(userId: string, search?: string) {
   const queryString = params.toString()
 
   return `/users/${userId}/reviews` + (queryString ? `?${queryString}` : '')
-}
-
-async function fetcher(url: string) {
-  return (await api.get<EReviewGroup[]>(url)).data
 }
 
 function isEmpty(reviewGroups: EReviewGroup[] | undefined) {

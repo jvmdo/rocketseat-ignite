@@ -16,8 +16,7 @@ export function BooksGallery({
   tags,
   setIsLoading,
 }: BooksGalleryProps) {
-  // TODO: try array key
-  const { data: books, isLoading } = useSWR(formatKey(search, tags), fetcher, {
+  const { data: books, isLoading } = useSWR(['/books', search, tags], fetcher, {
     keepPreviousData: true,
   })
 
@@ -40,7 +39,15 @@ export function BooksGallery({
 
 BooksGallery.toString = () => '.books-gallery'
 
-function formatKey(search?: string, tags?: string[]) {
+type SwrKey = [path: string, search: string, tags: string[]]
+
+async function fetcher(key: SwrKey) {
+  const url = formatUrl(key)
+
+  return (await api.get<EBook[]>(url)).data
+}
+
+function formatUrl([path, search, tags]: SwrKey) {
   const params = new URLSearchParams()
 
   if (search) {
@@ -55,9 +62,5 @@ function formatKey(search?: string, tags?: string[]) {
 
   const queryString = params.toString()
 
-  return '/books' + (queryString ? `?${queryString}` : '')
-}
-
-async function fetcher(url: string) {
-  return (await api.get<EBook[]>(url)).data
+  return path + (queryString ? `?${queryString}` : '')
 }
