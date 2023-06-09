@@ -4,13 +4,14 @@ import { SearchField } from '../../components/SearchField'
 import { ALL, CategoryChips } from './components/CategoryChips'
 import { BooksGallery } from './components/BooksGallery'
 import { GetStaticProps } from 'next'
-import { api } from '@/lib/axios'
 import { SWRConfig } from 'swr'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { EBook } from '@/@types/entities'
+import { fetchBooks } from '@/services/fetch-books'
+import { fetchCategories } from '@/services/fetch-categories'
 
 const SearchFormSchema = z.object({ search: z.string() })
 type SearchFormData = z.infer<typeof SearchFormSchema>
@@ -68,9 +69,8 @@ export default function Explorer({ books, categories }: ExplorerProps) {
 
 export const getStaticProps: GetStaticProps<ExplorerProps> = async () => {
   try {
-    // TODO: do not use API Route
-    const books = (await api.get<EBook[]>('/books')).data
-    const categories = (await api.get<string[]>('/books/categories')).data
+    const books = await fetchBooks()
+    const categories = await fetchCategories()
 
     return {
       props: { books, categories },

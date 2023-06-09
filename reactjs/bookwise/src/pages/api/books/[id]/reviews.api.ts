@@ -80,13 +80,24 @@ async function findBookReviewsData(bookId: string) {
 type BookReviewsData = Awaited<ReturnType<typeof findBookReviewsData>>
 
 function formatData(bookReviewsData: BookReviewsData) {
-  return bookReviewsData.map(({ id, created_at, description, rate, user }) => ({
-    id,
-    createdAt: created_at,
-    description,
-    rate,
-    user: columnsToCamelCase(user),
-  }))
+  return bookReviewsData.map(
+    ({
+      id,
+      created_at,
+      description,
+      rate,
+      user: { created_at: userCreatedAt, ...user },
+    }) => ({
+      id,
+      createdAt: String(created_at),
+      description,
+      rate,
+      user: {
+        ...columnsToCamelCase(user),
+        createdAt: String(userCreatedAt),
+      },
+    }),
+  )
 }
 
 async function createReview(body: ReviewBody) {

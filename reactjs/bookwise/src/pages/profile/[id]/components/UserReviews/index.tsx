@@ -54,7 +54,8 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
           <p>Nenhuma avaliação encontrada para o termo buscado</p>
         ) : (
           reviewGroups?.map(({ interval, reviews }) => {
-            if (!reviews?.length) return null
+            // No reviews for that interval
+            if (reviews?.length === 0) return null
 
             return (
               <li key={interval}>

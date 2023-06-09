@@ -4,9 +4,10 @@ import { TrendingBooks } from './components/TrendingBooks'
 import { RecentBookReviews } from './components/RecentBookReviews'
 import { LastReadSection } from './components/LastReadSection'
 import { GetStaticProps } from 'next'
-import { api } from '@/lib/axios'
 import { SWRConfig } from 'swr'
 import { EBook, EReview } from '@/@types/entities'
+import { fetchBooks } from '@/services/fetch-books'
+import { fetchReviews } from '@/services/fetch-reviews'
 
 export interface HomeProps {
   popularBooks: EBook[]
@@ -33,9 +34,8 @@ export default function Home({ popularBooks, recentReviews }: HomeProps) {
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   try {
-    // TODO: do not call API Routes
-    const popularBooks = (await api.get<EBook[]>('/books?popular=4')).data
-    const recentReviews = (await api.get<EReview[]>('/reviews')).data
+    const popularBooks = await fetchBooks({ limit: 4 })
+    const recentReviews = await fetchReviews()
 
     return {
       props: { popularBooks, recentReviews },

@@ -9,7 +9,7 @@ export type EBook = {
   totalReviews: number
   rating: number
   userHasRead?: boolean
-  createdAt: Date
+  createdAt: String
 }
 
 export type EUser = {
@@ -21,7 +21,7 @@ export type EUser = {
   totalReadAuthors?: number
   totalReadPages?: number
   totalReviews?: number
-  createdAt?: Date
+  createdAt?: string
 }
 
 export type EReview = {
@@ -30,7 +30,7 @@ export type EReview = {
   description: string
   user: EUser
   book: EBook
-  createdAt: Date
+  createdAt: string
 }
 
 export type EBookReview = Omit<EReview, 'book'>

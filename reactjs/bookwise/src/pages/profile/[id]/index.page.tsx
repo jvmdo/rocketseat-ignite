@@ -2,23 +2,24 @@ import { UserStats } from './components/UserStats'
 import { S_Profile } from './styles'
 import { UserReviews } from './components/UserReviews'
 import type { GetServerSideProps } from 'next'
-import { api } from '@/lib/axios'
 import { ProfileHeader } from './components/ProfileHeader'
 import { useSession } from 'next-auth/react'
 import { SWRConfig } from 'swr'
 import { EReviewGroup, EUser } from '@/@types/entities'
+import { fetchUser } from '@/services/fetch-user'
+import { fetchUserReviews } from '@/services/fetch-user-reviews'
 
 export interface ProfileProps {
   user: EUser
-  groupedReviews: EReviewGroup[]
+  userReviews: EReviewGroup[]
 }
 
-export default function Profile({ user, groupedReviews }: ProfileProps) {
+export default function Profile({ user, userReviews }: ProfileProps) {
   const { data: session } = useSession()
 
   const isUserOwnProfile = user.id === session?.user.id
   const fallback = {
-    [`/users/${user.id}/reviews`]: groupedReviews,
+    [`/users/${user.id}/reviews`]: userReviews,
   }
 
   return (
@@ -36,19 +37,16 @@ export const getServerSideProps: GetServerSideProps<ProfileProps> = async ({
   params,
 }) => {
   try {
-    const id = params?.id as string
+    const profileId = params?.id as string
 
-    // TODO: Avoid additional API Route call
-    const user = (await api.get<EUser>(`/users/${id}`)).data
-    const groupedReviews = (
-      await api.get<EReviewGroup[]>(`/users/${id}/reviews`)
-    ).data
+    const user = await fetchUser({ id: profileId })
+    const userReviews = await fetchUserReviews({ id: profileId })
 
     return {
       props: {
-        profileId: id,
+        profileId,
         user,
-        groupedReviews,
+        userReviews,
       },
     }
   } catch (error) {

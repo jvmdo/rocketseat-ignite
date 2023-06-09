@@ -88,13 +88,14 @@ type LastReadData = NonNullable<Awaited<ReturnType<typeof findLastReadData>>>
 function formatData(lastReadData: LastReadData) {
   const {
     updated_at, // last time the shelf changed
-    book: { categories, reviews, ...book },
+    book: { categories, reviews, created_at, ...book },
   } = lastReadData
 
   return {
     updatedAt: updated_at,
     book: {
       ...columnsToCamelCase(book),
+      createdAt: String(created_at),
       categories: formatCategories(categories),
       rating: calculateBookRating(reviews),
       totalReviews: reviews.length,
