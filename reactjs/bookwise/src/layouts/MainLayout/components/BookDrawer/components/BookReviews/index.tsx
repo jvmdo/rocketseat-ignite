@@ -31,18 +31,14 @@ export function BookReviews({ bookId }: BookReviewsProps) {
     }
   }
 
-  const { data: reviews, isLoading, error, mutate } = fetchState
+  const { data: reviews, isLoading, mutate } = fetchState
 
   const userReviewExists = Boolean(
     reviews?.find(({ user }) => user.id === session?.user.id),
   )
 
-  if (error) {
-    return <p>Could not retrieve this book`s reviews 😔</p>
-  }
-
   if (isLoading) {
-    return <p>Loading reviews 🤚</p>
+    return <p>Loading reviews 🔃</p>
   }
 
   return (

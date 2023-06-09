@@ -17,17 +17,11 @@ export function BooksGallery({
   setIsLoading,
 }: BooksGalleryProps) {
   // TODO: try array key
-  const fetchState = useSWR(formatKey(search, tags), fetcher, {
+  const { data: books, isLoading } = useSWR(formatKey(search, tags), fetcher, {
     keepPreviousData: true,
   })
 
-  const { data: books, isLoading, error } = fetchState
-
   useEffect(() => setIsLoading(isLoading), [isLoading, setIsLoading])
-
-  if (error) {
-    return <p>Something bad occurred 😔</p>
-  }
 
   return (
     <S_BooksGallery className="books-gallery" withSpinner={isLoading}>

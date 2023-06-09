@@ -10,15 +10,9 @@ export interface RecentBookReviewsProps {
 }
 
 export function RecentBookReviews() {
-  const fetchState = useSWR('/reviews', fetcher, {
+  const { data: recentReviews } = useSWR('/reviews', fetcher, {
     refreshInterval: 1000 * 60 * 2, // 2 minutes
   })
-
-  const { data: recentReviews, error } = fetchState
-
-  if (error) {
-    return <p>Error while fetching reviews data 🤯</p>
-  }
 
   return (
     <S_RecentBookReviews className="recent-book-reviews">

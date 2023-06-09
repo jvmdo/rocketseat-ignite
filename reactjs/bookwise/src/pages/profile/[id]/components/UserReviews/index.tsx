@@ -33,11 +33,7 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
     setSearch(data.search)
   }
 
-  const { data: reviewGroups, isLoading, error } = fetchState
-
-  if (error) {
-    return <p>Something bad occurred 📛</p>
-  }
+  const { data: reviewGroups, isLoading } = fetchState
 
   return (
     <S_UserReviews className="user-reviews">
