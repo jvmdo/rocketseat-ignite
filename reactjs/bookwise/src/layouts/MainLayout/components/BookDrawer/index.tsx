@@ -8,6 +8,7 @@ import { MainLayoutContext } from '@/contexts/MainLayoutContext'
 import { api } from '@/lib/axios'
 import { useSession } from 'next-auth/react'
 import { useSWRConfig } from 'swr'
+import useSWRMutation from 'swr/mutation'
 
 export function BookDrawer() {
   const { drawerBook, setDrawerBook } = useContext(MainLayoutContext)
@@ -18,17 +19,18 @@ export function BookDrawer() {
   const userId = session?.user.id
   const bookId = drawerBook?.id
 
+  const lastReadKey = `/users/${userId}/last-read`
+  const { trigger } = useSWRMutation(lastReadKey, updater)
+
   function setOpen(open: boolean) {
     setDrawerBook(open ? drawerBook : undefined)
 
-    // On drawer close, update last read book and "Lido" tag on Explorer page
+    // On drawer close
     if (!open && status === 'authenticated') {
       try {
-        const lastReadKey = `/users/${userId}/last-read`
-        mutate(lastReadKey, () => updater(lastReadKey, bookId), {
-          revalidate: false,
-        })
-
+        // Update last read book
+        trigger(bookId)
+        // Add read tag for books in Explorer page
         mutate((key) => Array.isArray(key) && key[0] === '/books')
       } catch (error) {
         console.error(error)
@@ -57,6 +59,6 @@ export function BookDrawer() {
   )
 }
 
-async function updater(path: string, bookId?: string) {
-  return (await api.put(path, { bookId })).data
+async function updater(url: string, { arg: bookId }: { arg?: string }) {
+  return (await api.put(url, { bookId })).data
 }
