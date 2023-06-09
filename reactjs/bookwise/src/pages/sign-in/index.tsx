@@ -4,6 +4,7 @@ import { ButtonGroup, HeadingGroup, S_SignIn, SignInOptions } from './styles'
 import { AuthButton } from '@/components/AuthButton'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 SignIn.getLayout = function getLayout(page: ReactElement) {
   // This page has no layout
@@ -22,31 +23,38 @@ export default function SignIn() {
   }
 
   return (
-    <S_SignIn>
-      <Hero />
-      <SignInOptions>
-        <HeadingGroup>
-          <h1>Boas vindas!</h1>
-          <p>Faça seu login ou acesse como visitante.</p>
-        </HeadingGroup>
-        <ButtonGroup>
-          <AuthButton
-            icon={{ name: 'google' }}
-            text="Entra com Google"
-            onClick={() => handleSignInClick('google')}
-          />
-          <AuthButton
-            icon={{ name: 'github' }}
-            text="Entra com Github"
-            onClick={() => handleSignInClick('github')}
-          />
-          <AuthButton
-            icon={{ name: 'rocket' }}
-            text="Acessar como visitante"
-            onClick={() => handleSignInClick()}
-          />
-        </ButtonGroup>
-      </SignInOptions>
-    </S_SignIn>
+    <>
+      <NextSeo
+        title="Acesso"
+        description="Escolha como deseja acessar o BookWise. Crie uma conta ou entre como visitante"
+      />
+
+      <S_SignIn>
+        <Hero />
+        <SignInOptions>
+          <HeadingGroup>
+            <h1>Boas vindas!</h1>
+            <p>Faça seu login ou acesse como visitante.</p>
+          </HeadingGroup>
+          <ButtonGroup>
+            <AuthButton
+              icon={{ name: 'google' }}
+              text="Entra com Google"
+              onClick={() => handleSignInClick('google')}
+            />
+            <AuthButton
+              icon={{ name: 'github' }}
+              text="Entra com Github"
+              onClick={() => handleSignInClick('github')}
+            />
+            <AuthButton
+              icon={{ name: 'rocket' }}
+              text="Acessar como visitante"
+              onClick={() => handleSignInClick()}
+            />
+          </ButtonGroup>
+        </SignInOptions>
+      </S_SignIn>
+    </>
   )
 }

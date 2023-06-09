@@ -12,8 +12,6 @@ import { useSession } from 'next-auth/react'
 export function NavBar() {
   const { data: session } = useSession()
 
-  // TODO? intersection observer hook to show box-shadow
-
   return (
     <CollapsibleContent>
       <NavigationMenuRoot>

@@ -8,6 +8,7 @@ import { SWRConfig } from 'swr'
 import { EBook, EReview } from '@/@types/entities'
 import { fetchBooks } from '@/services/fetch-books'
 import { fetchReviews } from '@/services/fetch-reviews'
+import { NextSeo } from 'next-seo'
 
 export interface HomeProps {
   popularBooks: EBook[]
@@ -18,17 +19,24 @@ export default function Home({ popularBooks, recentReviews }: HomeProps) {
   const fallback = { '/reviews': recentReviews }
 
   return (
-    <S_Home>
-      <header>
-        <ChartLine />
-        <h2>Início</h2>
-      </header>
-      <LastReadSection />
-      <TrendingBooks popularBooks={popularBooks} />
-      <SWRConfig value={{ fallback }}>
-        <RecentBookReviews />
-      </SWRConfig>
-    </S_Home>
+    <>
+      <NextSeo
+        title="Home"
+        description="Leia as avaliações mais recentes e consulte os livros mais populares"
+      />
+
+      <S_Home>
+        <header>
+          <ChartLine />
+          <h2>Início</h2>
+        </header>
+        <LastReadSection />
+        <TrendingBooks popularBooks={popularBooks} />
+        <SWRConfig value={{ fallback }}>
+          <RecentBookReviews />
+        </SWRConfig>
+      </S_Home>
+    </>
   )
 }
 

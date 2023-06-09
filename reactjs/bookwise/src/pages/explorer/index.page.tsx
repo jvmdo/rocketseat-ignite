@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { EBook } from '@/@types/entities'
 import { fetchBooks } from '@/services/fetch-books'
 import { fetchCategories } from '@/services/fetch-categories'
+import { NextSeo } from 'next-seo'
 
 const SearchFormSchema = z.object({ search: z.string() })
 type SearchFormData = z.infer<typeof SearchFormSchema>
@@ -41,29 +42,40 @@ export default function Explorer({ books, categories }: ExplorerProps) {
   const tags = chips.filter((chip) => chip !== ALL)
 
   return (
-    <S_Explorer>
-      <header>
-        <hgroup>
-          <Binoculars />
-          <h1>Explorar</h1>
-        </hgroup>
-        <form role="search" onSubmit={handleSubmit(handleSearchInput)}>
-          <SearchField
-            register={register('search')}
-            disabled={isLoading}
-            autoFocus
-          />
-        </form>
-      </header>
-      <CategoryChips
-        categories={categories}
-        chips={chips}
-        onChipsChange={handleChipsInput}
+    <>
+      <NextSeo
+        title="Explorer"
+        description="Explore o acervo de avaliações filtradas por livro, autor e/ou categorias"
       />
-      <SWRConfig value={{ fallback }}>
-        <BooksGallery search={search} tags={tags} setIsLoading={setIsLoading} />
-      </SWRConfig>
-    </S_Explorer>
+
+      <S_Explorer>
+        <header>
+          <hgroup>
+            <Binoculars />
+            <h1>Explorar</h1>
+          </hgroup>
+          <form role="search" onSubmit={handleSubmit(handleSearchInput)}>
+            <SearchField
+              register={register('search')}
+              disabled={isLoading}
+              autoFocus
+            />
+          </form>
+        </header>
+        <CategoryChips
+          categories={categories}
+          chips={chips}
+          onChipsChange={handleChipsInput}
+        />
+        <SWRConfig value={{ fallback }}>
+          <BooksGallery
+            search={search}
+            tags={tags}
+            setIsLoading={setIsLoading}
+          />
+        </SWRConfig>
+      </S_Explorer>
+    </>
   )
 }
 

@@ -11,6 +11,7 @@ import { NextPage } from 'next'
 import { MainLayoutProvider } from '@/contexts/MainLayoutContext'
 import { SWRConfig } from 'swr'
 import { AxiosError } from 'axios'
+import { DefaultSeo } from 'next-seo'
 
 type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -50,6 +51,17 @@ export default function App({
           font-family: ${nunito.style.fontFamily};
         }
       `}</style>
+
+      <DefaultSeo
+        defaultTitle="BookWise"
+        titleTemplate="BookWise | %s"
+        openGraph={{
+          type: 'website',
+          locale: 'pt_BR',
+          url: 'https://bookwise-jvmdo.vercel.app/',
+          siteName: 'BookWise',
+        }}
+      />
 
       <MainLayoutProvider>
         <SessionProvider session={session}>

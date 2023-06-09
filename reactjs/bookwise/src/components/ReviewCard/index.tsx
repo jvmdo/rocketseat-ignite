@@ -30,9 +30,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
   function handleActiveState(
     event: MouseEvent<HTMLImageElement> | FocusEvent<HTMLImageElement>,
   ) {
-    event.type === 'mousedown'
-      ? event.currentTarget.classList.add('active')
-      : event.currentTarget.classList.remove('active')
+    event.currentTarget.classList.toggle('active', event.type === 'mousedown')
   }
 
   const shouldDisplaySeeMore = trimmedText !== review.description

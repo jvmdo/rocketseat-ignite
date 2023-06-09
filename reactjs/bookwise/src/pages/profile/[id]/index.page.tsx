@@ -8,6 +8,7 @@ import { SWRConfig } from 'swr'
 import { EReviewGroup, EUser } from '@/@types/entities'
 import { fetchUser } from '@/services/fetch-user'
 import { fetchUserReviews } from '@/services/fetch-user-reviews'
+import { NextSeo } from 'next-seo'
 
 export interface ProfileProps {
   user: EUser
@@ -23,13 +24,20 @@ export default function Profile({ user, userReviews }: ProfileProps) {
   }
 
   return (
-    <S_Profile>
-      <ProfileHeader isUserOwnProfile={isUserOwnProfile} />
-      <UserStats user={user} />
-      <SWRConfig value={{ fallback }}>
-        <UserReviews userId={user.id} userName={user.name} />
-      </SWRConfig>
-    </S_Profile>
+    <>
+      <NextSeo
+        title="Perfil"
+        description="Veja avaliações e estatísticas de um usuário"
+      />
+
+      <S_Profile>
+        <ProfileHeader isUserOwnProfile={isUserOwnProfile} />
+        <UserStats user={user} />
+        <SWRConfig value={{ fallback }}>
+          <UserReviews userId={user.id} userName={user.name} />
+        </SWRConfig>
+      </S_Profile>
+    </>
   )
 }
 
