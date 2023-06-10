@@ -52,7 +52,7 @@ export const globalStyles = globalCss({
 
     scrollbarColor: '$colors$gray600 $colors$gray700',
 
-    '::-webkit-scrollbar-track': {
+    '::-webkit-scrollbar': {
       backgroundColor: '$colors$gray700',
       borderRadius: '$full',
     },
@@ -70,6 +70,12 @@ export const globalStyles = globalCss({
   body: {
     minHeight: '100vh',
     minWidth: '20rem',
+  },
+
+  // Target the Next.js wrapper
+  '#__next': {
+    minHeight: '100dvh',
+    position: 'relative',
   },
 
   // I should've set `line-height`s globally
