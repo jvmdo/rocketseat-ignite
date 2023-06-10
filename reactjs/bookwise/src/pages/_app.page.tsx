@@ -12,6 +12,7 @@ import { MainLayoutProvider } from '@/contexts/MainLayoutContext'
 import { SWRConfig } from 'swr'
 import { AxiosError } from 'axios'
 import { DefaultSeo } from 'next-seo'
+import { usePreserveScroll } from '@/hooks/usePreserveScroll'
 
 type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -42,6 +43,8 @@ export default function App({
     )
     console.error({ [key]: error })
   }
+
+  usePreserveScroll()
 
   return (
     <>

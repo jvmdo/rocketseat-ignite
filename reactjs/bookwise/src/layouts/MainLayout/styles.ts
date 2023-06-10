@@ -1,33 +1,26 @@
 import { styled } from '@/styles/stitches.config'
 
 export const S_MainLayout = styled('div', {
-  container: 'layout / size',
-
-  height: 'min(100dvh, 90rem)',
-  maxWidth: '120rem',
-  overflow: 'auto', // ? Why do I need to apply it?
-
-  responsivePaddingBlock: ['$2', '$3', '$3', '$4', '$5'],
-  responsivePaddingInline: ['$2', '$3', '$3', ['$4', '$0'], ['$5', '$0']],
+  // Used to make some math in [AppBar] component
+  $$layoutPaddingBlock: '$space$2',
+  '@sm': { $$layoutPaddingBlock: '$space$3' },
 
   '@lg': {
+    $$layoutPaddingBlock: '$space$4',
+
     display: 'grid',
     gridTemplateColumns: 'auto 1fr',
   },
 
-  // Page content stretches up to 1920x1440
-  // It definitely won't please 4k screens users 😅
   '@xxl': {
-    position: 'absolute',
-    inset: 0,
+    $$layoutPaddingBlock: '$space$5',
+
     margin: 'auto',
+    maxWidth: '120rem', // Page width stretches up 1440px
   },
 
-  // Target the Next.js wrapper
-  '#__next:has(> &)': {
-    position: 'relative',
-    minHeight: '100dvh',
-  },
+  paddingBlock: '$$layoutPaddingBlock',
+  responsivePaddingInline: ['$2', '$3', '$3', ['$4', '$0'], ['$5', '$0']],
 })
 
 export const MainLayoutContainer = styled('div', {

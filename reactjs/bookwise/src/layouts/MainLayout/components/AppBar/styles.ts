@@ -17,7 +17,7 @@ export const S_AppBar = styled('header', {
   gridTemplateRows: '2rem auto',
 
   position: 'sticky',
-  insetBlockStart: 0,
+  insetBlockStart: '$$layoutPaddingBlock',
   inlineSize: '100%',
   zIndex: 90,
 
@@ -27,9 +27,10 @@ export const S_AppBar = styled('header', {
     backgroundSize: 'cover',
     borderRadius: '$md',
 
-    blockSize: '100cqh',
     insetInlineStart: 0,
-    inlineSize: 'clamp(11.5rem, 4.206rem + 11.76vw, 14.5rem)', // from 992px to 1400px
+
+    height: 'calc(100dvh - 2 * $$layoutPaddingBlock)',
+    width: 'clamp(11.5rem, 4.206rem + 11.76vw, 14.5rem)', // from 992px to 1400px
 
     justifyItems: 'center',
   },

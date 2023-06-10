@@ -27,7 +27,7 @@ export const S_Profile = styled('main', {
 
       alignSelf: 'start',
       position: 'sticky',
-      insetBlockStart: 0,
+      insetBlockStart: '$$layoutPaddingBlock',
     },
   },
 
