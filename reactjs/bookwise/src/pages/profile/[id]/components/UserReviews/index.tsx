@@ -33,6 +33,14 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
     setSearch(data.search)
   }
 
+  if (isLoading) {
+    return <p>Carregando avaliações 🔃</p>
+  }
+
+  if (isEmpty(reviewGroups) && search === '') {
+    return <p>Nenhuma avaliação escrita 😿</p>
+  }
+
   return (
     <S_UserReviews className="user-reviews">
       <form role="search" onSubmit={handleSubmit(handleSearchReview)}>
@@ -43,11 +51,11 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
           autoFocus={true}
         />
       </form>
-      <ol>
-        {isEmpty(reviewGroups) ? (
-          <p>Nenhuma avaliação encontrada para o termo buscado</p>
-        ) : (
-          reviewGroups?.map(({ interval, reviews }) => {
+      {isEmpty(reviewGroups) ? (
+        <p>Nenhuma avaliação encontrada para o termo buscado</p>
+      ) : (
+        <ol>
+          {reviewGroups?.map(({ interval, reviews }) => {
             // No reviews for that interval
             if (reviews?.length === 0) return null
 
@@ -63,9 +71,9 @@ export function UserReviews({ userId, userName }: UserReviewsProps) {
                 </ul>
               </li>
             )
-          })
-        )}
-      </ol>
+          })}
+        </ol>
+      )}
     </S_UserReviews>
   )
 }

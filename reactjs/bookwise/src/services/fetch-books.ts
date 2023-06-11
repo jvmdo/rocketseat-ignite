@@ -59,7 +59,7 @@ async function findBooksData(params: FetchBooksProps = {}) {
         ...reviewsAndCategories,
         shelves: {
           where: {
-            user_id: userId,
+            user_id: userId ?? 'nobody',
           },
         },
       },

@@ -52,7 +52,7 @@ export function UserStats({ user }: UserStatsProps) {
         </li>
         <li>
           <BookmarkSimple />
-          <strong>{user.favoriteCategory}</strong>
+          <strong>{user.favoriteCategory ?? '-'}</strong>
           <p>Categoria mais lida</p>
         </li>
       </StatsBody>
