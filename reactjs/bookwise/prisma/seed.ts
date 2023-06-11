@@ -9,12 +9,12 @@ import { shelves } from './constants/shelves'
 const prisma = new PrismaClient()
 
 async function main() {
+  await prisma.shelf.deleteMany()
   await prisma.review.deleteMany()
   await prisma.user.deleteMany()
   await prisma.categoriesOnBooks.deleteMany()
   await prisma.category.deleteMany()
   await prisma.book.deleteMany()
-  await prisma.shelf.deleteMany()
 
   const usersSeed = users.map((user) => {
     return prisma.user.create({
@@ -67,6 +67,7 @@ async function main() {
         id: review.id,
         rate: review.rate,
         description: review.description,
+        created_at: review.created_at,
         user: {
           connect: { id: review.user_id },
         },
