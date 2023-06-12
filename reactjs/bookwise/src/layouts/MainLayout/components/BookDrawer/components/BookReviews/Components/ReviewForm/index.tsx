@@ -117,8 +117,6 @@ export function ReviewForm({
               initialValue={0}
               transition
               allowFraction
-              disableFillHover
-              allowHover={false}
               emptyIcon={<Star />}
               emptyColor={theme.colors.purple100}
               fillIcon={<Star weight="fill" />}
