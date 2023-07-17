@@ -1,6 +1,6 @@
 import { Readable } from "node:stream";
 
-class FirstOfTheYear extends Readable {
+class MyReadableStream extends Readable {
   index = 0;
 
   _read() {
@@ -17,12 +17,10 @@ class FirstOfTheYear extends Readable {
   }
 }
 
-const topLevel = await fetch("http://localhost:3334", {
+const response = await fetch("http://localhost:3334", {
   method: "POST",
-  body: new FirstOfTheYear(),
+  body: new MyReadableStream(),
   duplex: "half",
 });
 
-const data = await topLevel.text();
-
-console.log({ data });
+const data = await response.text();

@@ -1,7 +1,7 @@
 import http from "node:http";
 import { Transform } from "node:stream";
 
-class WillThisEverEnd extends Transform {
+class MyTransformStream extends Transform {
   _transform(chunk, encoding, callback) {
     const transformed = Number(chunk.toString()) * -1;
     console.info(transformed);
@@ -9,7 +9,7 @@ class WillThisEverEnd extends Transform {
   }
 }
 
-const app = http.createServer(async (req, res) => {
+const server = http.createServer(async (req, res) => {
   const buffers = [];
 
   for await (const chunk of req) {
@@ -18,8 +18,7 @@ const app = http.createServer(async (req, res) => {
 
   const theWholeThing = Buffer.concat(buffers).toString();
 
-  console.log(theWholeThing);
   return res.end(theWholeThing);
 });
 
-app.listen(3334);
+server.listen(3334);

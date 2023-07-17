@@ -1,13 +1,13 @@
 import { Database } from "./database.js";
 import { randomUUID } from "node:crypto";
-import { buildRoutePath } from "./utils/buildRoutePath.js";
+import { buildPathRegex } from "./utils/build-path-regex.js";
 
 const db = new Database();
 
 export const routes = [
   {
     method: "GET",
-    path: buildRoutePath("/users"),
+    path: buildPathRegex("/users"),
     handler: (req, res) => {
       const { search } = req.query;
 
@@ -18,7 +18,7 @@ export const routes = [
   },
   {
     method: "POST",
-    path: buildRoutePath("/users"),
+    path: buildPathRegex("/users"),
     handler: (req, res) => {
       const { name, email } = req.body;
       const newUser = { id: randomUUID(), name, email };
@@ -30,7 +30,7 @@ export const routes = [
   },
   {
     method: "PUT",
-    path: buildRoutePath("/users/:userId"),
+    path: buildPathRegex("/users/:userId"),
     handler: (req, res) => {
       const { userId } = req.params;
       const { name, email } = req.body;
@@ -42,7 +42,7 @@ export const routes = [
   },
   {
     method: "DELETE",
-    path: buildRoutePath("/users/:userId"),
+    path: buildPathRegex("/users/:userId"),
     handler: (req, res) => {
       const { userId } = req.params;
 

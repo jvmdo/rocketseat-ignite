@@ -1,6 +1,6 @@
 import { Readable, Transform, Writable } from "node:stream";
 
-class FirstOfTheYear extends Readable {
+class MyReadableStream extends Readable {
   index = 0;
 
   _read() {
@@ -17,18 +17,20 @@ class FirstOfTheYear extends Readable {
   }
 }
 
-class WillThisEverEnd extends Transform {
+class MyTransformStream extends Transform {
   _transform(chunk, encoding, callback) {
     const transformed = Number(chunk.toString()) * -1;
     callback(null, Buffer.from(String(transformed)));
   }
 }
 
-class SadnessAndSorrow extends Writable {
+class MyWritableStream extends Writable {
   _write(chunk, encoding, callback) {
     console.log(Number(chunk.toString()) * 10);
     callback();
   }
 }
 
-new FirstOfTheYear().pipe(new WillThisEverEnd()).pipe(new SadnessAndSorrow());
+new MyReadableStream()
+  .pipe(new MyTransformStream())
+  .pipe(new MyWritableStream());
