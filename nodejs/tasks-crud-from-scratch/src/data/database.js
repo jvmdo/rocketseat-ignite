@@ -41,15 +41,22 @@ export class Database {
   }
 
   create(task) {
-    // TODO: check [task] format and values type
+    if (!task || typeof task !== "object" || Array.isArray(task)) {
+      throw new TypeError("Expected [task] to be an actual object");
+    }
+
+    const { title, description } = task;
+
+    if (title === undefined || description === undefined) {
+      throw new TypeError("Missing either [title] or [description] properties");
+    }
 
     const newTask = {
       id: randomUUID(),
-      title: task.title,
-      description: task.description,
+      title,
+      description,
       completedAt: null,
       createdAt: Date.now(),
-
       updatedAt: Date.now(),
     };
 
