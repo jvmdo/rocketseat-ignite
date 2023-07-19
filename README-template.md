@@ -1,7 +1,6 @@
 # Frontend Mentor - README Template
 
-This is the readme file template provided by
-[Frontend Mentor](https://www.frontendmentor.io/) slightly modified by me.
+This README file is based on [Frontend Mentor](https://www.frontendmentor.io/)'s template.
 
 FEM is a great site that helps you improve your web dev coding skills by building realistic projects.
 
@@ -9,12 +8,14 @@ FEM is a great site that helps you improve your web dev coding skills by buildin
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
+  - [Screenshots](#screenshots)
   - [Links](#links)
+  - [Getting started](#getting-started)
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
   - [Questions](#questions)
+  - [Known bugs](#known-bugs)
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Author](#author)
@@ -24,25 +25,25 @@ FEM is a great site that helps you improve your web dev coding skills by buildin
 
 ### The challenge
 
-### Screenshot
+#### Design
 
-#### Mobile
+- ✓ Mussum Lipsum¹
 
-| Mobile      | Mobile (with active states) | Mobile (something)     |
-| :----:        |    :----:   |    :---:   |
-| <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices" width=200>      | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices (with active states)" width=200>       | <img src="screenshots/mobile.jpeg" alt="Screenshot of my solution for mobile devices (with something more)" width=200>   |
+  ¹ A better Lorem Ipsum
 
-#### Desktop
+#### Features
 
-| Desktop      | Desktop (with active states) | Desktop (something)     |
-| :----:        |    :----:   |     :---:    |
-| <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices" width=200>      | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices (with active states)" width=200>       | <img src="screenshots/desktop.jpeg" alt="Screenshot of my solution for desktop devices (with something more)" width=200>   |
+- ✓ Item 1
+
+### Screenshots
 
 ### Links
 
-- [Remote repository]()
+- [Remote repository](README.md)
 
-- [Live preview]()
+- [Live preview](README.md)
+
+### Getting started
 
 ## My process
 
@@ -62,6 +63,8 @@ FEM is a great site that helps you improve your web dev coding skills by buildin
 
 ### Questions
 
+### Known bugs
+
 ### Continued development
 
 Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
@@ -75,11 +78,11 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 - GitHub - [jvmdo](https://github.com/jvmdo)
 
+- LinkedIn - [João Oliveira](https://www.linkedin.com/in/de-oliveira-joao/)
+
 - Frontend Mentor - [@jvmdo](https://www.frontendmentor.io/profile/jvmdo)
 
 - CodeWars - [jvmdo](https://www.codewars.com/users/jvmdo)
-
-- LinkedIn - [João Oliveira](https://www.linkedin.com/in/de-oliveira-joao/)
 
 ## Acknowledgments
 
