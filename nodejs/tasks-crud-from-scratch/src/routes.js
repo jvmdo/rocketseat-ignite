@@ -37,23 +37,30 @@ export const routes = [
   },
   {
     method: "PUT",
-    path: buildPathRegex("/tasks/:userId"),
-    handler: (req, res) => {
-      const { userId } = req.params;
-      const { name, email } = req.body;
+    path: buildPathRegex("/tasks/:taskId"),
+    handler: async (req, res) => {
+      const { taskId } = req.params;
+      let updatedTask;
 
-      db.update("users", userId, { name, email });
+      try {
+        updatedTask = await db.update(taskId, req.body);
+      } catch (error) {
+        if (error instanceof TypeError) {
+          return res.writeHead(400).end(error.message);
+        }
+        return res.writeHead(404).end(error.message);
+      }
 
-      return res.writeHead(204).end();
+      return res.end(JSON.stringify(updatedTask));
     },
   },
   {
     method: "DELETE",
-    path: buildPathRegex("/tasks/:userId"),
+    path: buildPathRegex("/tasks/:taskId"),
     handler: (req, res) => {
-      const { userId } = req.params;
+      const { taskId } = req.params;
 
-      db.delete("users", userId);
+      db.delete("users", taskId);
 
       return res.writeHead(204).end();
     },

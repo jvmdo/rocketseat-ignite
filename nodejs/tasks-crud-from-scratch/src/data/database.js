@@ -84,4 +84,39 @@ export class Database {
 
     return this.#tasks;
   }
+
+  async update(taskId, taskBody) {
+    if (!taskBody || typeof taskBody !== "object" || Array.isArray(taskBody)) {
+      throw new TypeError("Expected [newTask] to be an actual object");
+    }
+
+    const { title, description } = taskBody;
+
+    if (title === undefined && description === undefined) {
+      throw new TypeError(
+        "You must provide either [title] or [description] properties"
+      );
+    }
+
+    const taskIndex = this.#tasks.findIndex((task) => task.id === taskId);
+
+    if (!~taskIndex) {
+      throw new Error(`No task found in the database for the ID ${taskId}.`);
+    }
+
+    let task = this.#tasks[taskIndex];
+
+    if (title) task = { ...task, title, updatedAt: Date.now() };
+    if (description) task = { ...task, description, updatedAt: Date.now() };
+
+    this.#tasks.splice(taskIndex, 1, task);
+
+    try {
+      await this.#persist();
+    } catch (err) {
+      console.error(err);
+    }
+
+    return task;
+  }
 }
