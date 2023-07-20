@@ -5,4 +5,4 @@
 /.pnp
 .pnp.js
 
-/data/db.json
+/src/data/db.json

@@ -37,16 +37,8 @@ export class Database {
     console.log(`Database populated with ${tasksPath} data`);
   }
 
-  async #persist() {
-    await writeFile(this.#dbPath, JSON.stringify(this.#tasks));
-  }
-
   async create(task) {
-    if (!task || typeof task !== "object" || Array.isArray(task)) {
-      throw new TypeError("Expected [task] to be an actual object");
-    }
-
-    const { title, description } = task;
+    const { title, description } = this.#getPropsOrThrow(task);
 
     if (title === undefined || description === undefined) {
       throw new TypeError("Missing either [title] or [description] properties");
@@ -62,12 +54,7 @@ export class Database {
     };
 
     this.#tasks.push(newTask);
-
-    try {
-      await this.#persist();
-    } catch (err) {
-      console.error(err);
-    }
+    await this.#persist();
 
     return newTask;
   }
@@ -86,76 +73,72 @@ export class Database {
   }
 
   async update(taskId, taskBody) {
-    if (!taskBody || typeof taskBody !== "object" || Array.isArray(taskBody)) {
-      throw new TypeError("Expected [newTask] to be an actual object");
-    }
-
-    const { title, description } = taskBody;
+    const { title, description } = this.#getPropsOrThrow(taskBody);
 
     if (title === undefined && description === undefined) {
-      throw new TypeError(
-        "You must provide either [title] or [description] properties"
-      );
+      throw new TypeError("You must provide either a [title] or [description]");
     }
 
-    const taskIndex = this.#tasks.findIndex((task) => task.id === taskId);
+    const { task, taskIndex } = this.#findTaskById(taskId);
 
-    if (!~taskIndex) {
-      throw new Error(`No task found in the database for the ID ${taskId}.`);
-    }
+    const updatedTask = {
+      ...task,
+      title: title ?? task.title,
+      description: description ?? task.description,
+      updatedAt: Date.now(),
+    };
 
-    let task = this.#tasks[taskIndex];
+    this.#tasks.splice(taskIndex, 1, updatedTask);
+    await this.#persist();
 
-    if (title) task = { ...task, title, updatedAt: Date.now() };
-    if (description) task = { ...task, description, updatedAt: Date.now() };
-
-    this.#tasks.splice(taskIndex, 1, task);
-
-    try {
-      await this.#persist();
-    } catch (err) {
-      console.error(err);
-    }
-
-    return task;
+    return updatedTask;
   }
 
   async delete(taskId) {
-    const taskIndex = this.#tasks.findIndex((task) => task.id === taskId);
-
-    if (!~taskIndex) {
-      throw new Error(`No task found in the database for the ID ${taskId}.`);
-    }
+    const { taskIndex } = this.#findTaskById(taskId);
 
     const deletedTask = this.#tasks.splice(taskIndex, 1);
-
-    try {
-      await this.#persist();
-    } catch (err) {
-      console.error(err);
-    }
+    await this.#persist();
 
     return deletedTask[0];
   }
 
   async patch(taskId) {
+    const { task, taskIndex } = this.#findTaskById(taskId);
+    const status = task.completedAt;
+
+    const updatedTask = {
+      ...task,
+      completedAt: Boolean(status) ? null : Date.now(),
+    };
+
+    this.#tasks.splice(taskIndex, 1, updatedTask);
+    await this.#persist();
+
+    return updatedTask;
+  }
+
+  async #persist() {
+    try {
+      await writeFile(this.#dbPath, JSON.stringify(this.#tasks));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  #findTaskById(taskId) {
     const taskIndex = this.#tasks.findIndex((task) => task.id === taskId);
 
     if (!~taskIndex) {
       throw new Error(`No task found in the database for the ID ${taskId}.`);
     }
 
-    let task = this.#tasks[taskIndex];
-    const status = task.completedAt;
+    return { task: this.#tasks[taskIndex], taskIndex };
+  }
 
-    task = { ...task, completedAt: Boolean(status) ? null : Date.now() };
-
-    this.#tasks.splice(taskIndex, 1, task);
-
-    try {
-      await this.#persist();
-    } catch (err) {
-      console.error(err);
+  #getPropsOrThrow(task) {
+    if (!task || typeof task !== "object" || Array.isArray(task)) {
+      throw new TypeError("Expected [task] to be an actual object");
     }
 
     return task;

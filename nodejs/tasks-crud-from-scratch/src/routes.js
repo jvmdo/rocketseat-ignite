@@ -17,7 +17,7 @@ export const routes = [
         return res.writeHead(400).end(error.message);
       }
 
-      return res.end(JSON.stringify(newTask));
+      return res.writeHead(201).end(JSON.stringify(newTask));
     },
   },
   {
@@ -51,7 +51,7 @@ export const routes = [
         return res.writeHead(404).end(error.message);
       }
 
-      return res.end(JSON.stringify(updatedTask));
+      return res.writeHead(201).end(JSON.stringify(updatedTask));
     },
   },
   {
@@ -83,7 +83,7 @@ export const routes = [
         return res.writeHead(404).end(error.message);
       }
 
-      return res.end(JSON.stringify(updatedTask));
+      return res.writeHead(201).end(JSON.stringify(updatedTask));
     },
   },
 ];
