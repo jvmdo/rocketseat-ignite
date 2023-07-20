@@ -1,32 +1,20 @@
 import http from "node:http";
 import { bodyParser } from "./middlewares/body-parser.js";
-import { createDatabase } from "./lib/create-database.js";
-
-const db = await createDatabase();
+import { routes } from "./routes.js";
 
 const server = http.createServer(async (req, res) => {
   await bodyParser(req, res);
 
-  //* POST
-  const task = req.body;
-  let newTask;
+  const { method, url } = req;
+  const route = routes.find(
+    (route) => route.method === method && route.path.test(url)
+  );
 
-  try {
-    newTask = await db.create(task);
-  } catch (error) {
-    return res.writeHead(404).end(error.message);
+  if (route) {
+    return route.handler(req, res);
   }
 
-  return res.end(JSON.stringify(newTask));
-
-  //* GET
-  /* try {
-    const tasks = db.read();
-
-    return res.end(JSON.stringify(tasks));
-  } catch (error) {
-    return res.writeHead(500).end(error.message);
-  } */
+  return res.writeHead(404).end("No matching route for your request");
 });
 
 server.listen(3333);
