@@ -20,4 +20,42 @@ export const routes = [
       return res.end(JSON.stringify(newTask));
     },
   },
+  {
+    method: "GET",
+    path: buildPathRegex("/tasks"),
+    handler: (req, res) => {
+      const { title, description } = req.query;
+      let decodedTitle, decodedDescription;
+
+      if (title) decodedTitle = decodeURIComponent(title);
+      if (description) decodedDescription = decodeURIComponent(description);
+
+      const tasks = db.read(decodedTitle, decodedDescription);
+
+      return res.end(JSON.stringify(tasks));
+    },
+  },
+  {
+    method: "PUT",
+    path: buildPathRegex("/tasks/:userId"),
+    handler: (req, res) => {
+      const { userId } = req.params;
+      const { name, email } = req.body;
+
+      db.update("users", userId, { name, email });
+
+      return res.writeHead(204).end();
+    },
+  },
+  {
+    method: "DELETE",
+    path: buildPathRegex("/tasks/:userId"),
+    handler: (req, res) => {
+      const { userId } = req.params;
+
+      db.delete("users", userId);
+
+      return res.writeHead(204).end();
+    },
+  },
 ];

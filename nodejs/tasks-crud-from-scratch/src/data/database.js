@@ -72,7 +72,16 @@ export class Database {
     return newTask;
   }
 
-  read() {
+  read(title, description) {
+    if (title || description) {
+      return this.#tasks.filter((task) => {
+        return (
+          task.title.toLowerCase().includes(title?.toLowerCase()) ||
+          task.description.toLowerCase().includes(description?.toLowerCase())
+        );
+      });
+    }
+
     return this.#tasks;
   }
 }
