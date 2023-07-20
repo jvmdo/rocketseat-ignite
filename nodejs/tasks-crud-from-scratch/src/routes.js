@@ -57,12 +57,33 @@ export const routes = [
   {
     method: "DELETE",
     path: buildPathRegex("/tasks/:taskId"),
-    handler: (req, res) => {
+    handler: async (req, res) => {
       const { taskId } = req.params;
+      let deletedTask;
 
-      db.delete("users", taskId);
+      try {
+        deletedTask = await db.delete(taskId);
+      } catch (error) {
+        return res.writeHead(404).end(error.message);
+      }
 
-      return res.writeHead(204).end();
+      return res.end(JSON.stringify(deletedTask));
+    },
+  },
+  {
+    method: "PATCH",
+    path: buildPathRegex("/tasks/:taskId"),
+    handler: async (req, res) => {
+      const { taskId } = req.params;
+      let updatedTask;
+
+      try {
+        updatedTask = await db.patch(taskId);
+      } catch (error) {
+        return res.writeHead(404).end(error.message);
+      }
+
+      return res.end(JSON.stringify(updatedTask));
     },
   },
 ];

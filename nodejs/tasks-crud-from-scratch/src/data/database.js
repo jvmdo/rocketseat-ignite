@@ -119,4 +119,45 @@ export class Database {
 
     return task;
   }
+
+  async delete(taskId) {
+    const taskIndex = this.#tasks.findIndex((task) => task.id === taskId);
+
+    if (!~taskIndex) {
+      throw new Error(`No task found in the database for the ID ${taskId}.`);
+    }
+
+    const deletedTask = this.#tasks.splice(taskIndex, 1);
+
+    try {
+      await this.#persist();
+    } catch (err) {
+      console.error(err);
+    }
+
+    return deletedTask[0];
+  }
+
+  async patch(taskId) {
+    const taskIndex = this.#tasks.findIndex((task) => task.id === taskId);
+
+    if (!~taskIndex) {
+      throw new Error(`No task found in the database for the ID ${taskId}.`);
+    }
+
+    let task = this.#tasks[taskIndex];
+    const status = task.completedAt;
+
+    task = { ...task, completedAt: Boolean(status) ? null : Date.now() };
+
+    this.#tasks.splice(taskIndex, 1, task);
+
+    try {
+      await this.#persist();
+    } catch (err) {
+      console.error(err);
+    }
+
+    return task;
+  }
 }
