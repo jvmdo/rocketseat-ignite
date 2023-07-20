@@ -1,7 +1,7 @@
 import { Database } from "../data/database.js";
 import { stat } from "fs/promises";
 
-const dbPath = new URL("../data/db.ndjson", import.meta.url);
+const dbPath = new URL("../data/db.json", import.meta.url);
 const tasksPath = new URL("../data/filler-tasks.csv", import.meta.url);
 
 export async function createDatabase() {
@@ -23,5 +23,5 @@ async function isDatabaseEmpty() {
     throw err;
   }
 
-  return stats.size === 0;
+  return stats.size < 100;
 }

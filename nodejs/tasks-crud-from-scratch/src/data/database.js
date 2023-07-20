@@ -1,27 +1,24 @@
 import fs from "node:fs";
+import { writeFile } from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import { parse } from "csv-parse";
 
 export class Database {
-  #readFile;
-  #writeFile;
+  #dbPath;
+  #tasks;
 
   constructor(dbPath) {
+    this.#dbPath = dbPath;
+    this.#tasks = [];
+
     if (!fs.existsSync(dbPath)) {
-      fs.writeFileSync(dbPath, "", "utf8");
+      fs.writeFileSync(dbPath, JSON.stringify(this.#tasks), "utf8");
       console.log(`Database created at ${dbPath}`);
+    } else {
+      const data = fs.readFileSync(dbPath, { encoding: "utf8" });
+      this.#tasks = JSON.parse(data);
+      console.log(`[tasks] populated from ${dbPath}`);
     }
-
-    this.#readFile = fs.createReadStream(dbPath, { encoding: "utf8" });
-    this.#writeFile = fs.createWriteStream(dbPath, {
-      encoding: "utf8",
-      flags: "a+",
-    });
-  }
-
-  destructor() {
-    this.#readFile.destroy();
-    this.#writeFile.destroy();
   }
 
   async initializer(tasksPath) {
@@ -40,7 +37,11 @@ export class Database {
     console.log(`Database populated with ${tasksPath} data`);
   }
 
-  create(task) {
+  async #persist() {
+    await writeFile(this.#dbPath, JSON.stringify(this.#tasks));
+  }
+
+  async create(task) {
     if (!task || typeof task !== "object" || Array.isArray(task)) {
       throw new TypeError("Expected [task] to be an actual object");
     }
@@ -60,12 +61,18 @@ export class Database {
       updatedAt: Date.now(),
     };
 
-    return new Promise((resolve, reject) => {
-      const record = `${JSON.stringify(newTask)}\n`;
+    this.#tasks.push(newTask);
 
-      this.#writeFile.write(record, (err) => {
-        return err ? reject(err) : resolve(record);
-      });
-    });
+    try {
+      await this.#persist();
+    } catch (err) {
+      console.error(err);
+    }
+
+    return newTask;
+  }
+
+  read() {
+    return this.#tasks;
   }
 }
