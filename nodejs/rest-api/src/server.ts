@@ -1,15 +1,13 @@
 import Fastify from 'fastify'
 import { knex } from './database.js'
 import { env } from './env/index.js'
+import { randomUUID } from 'crypto'
 
 const app = Fastify({ logger: true })
 
-app.get('/', async (request, reply) => {
-  await new Promise((resolve) => setTimeout(resolve, Math.random() * 300 + 200))
+app.get('/', async (request) => {
+  const tables = await knex.select('*').from('transactions')
 
-  const tables = await knex.select('*').from('sqlite_master')
-
-  // reply.send({ message: `Hello, ${request.hostname} at IP ${request.ip}` })
   return { message: `Hello, ${request.hostname} at IP ${request.ip}`, tables }
 })
 
