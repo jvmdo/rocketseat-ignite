@@ -1,14 +1,11 @@
 import Fastify from 'fastify'
-import { knex } from './database.js'
 import { env } from './env/index.js'
-import { randomUUID } from 'crypto'
+import transactionsRoutes from './routes/transactions.js'
 
 const app = Fastify({ logger: true })
 
-app.get('/', async (request) => {
-  const tables = await knex.select('*').from('transactions')
-
-  return { message: `Hello, ${request.hostname} at IP ${request.ip}`, tables }
+app.register(transactionsRoutes, {
+  prefix: '/transactions',
 })
 
 try {
