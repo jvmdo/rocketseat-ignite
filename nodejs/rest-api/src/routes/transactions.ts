@@ -9,6 +9,10 @@ const transactionBodySchema = z.object({
   type: z.enum(['credit', 'debit']),
 })
 
+const transactionParamsSchema = z.object({
+  id: z.string().uuid(),
+})
+
 
 export default async function (app: FastifyInstance) {
   app.post('/', async (request, reply) => {
@@ -44,6 +48,36 @@ export default async function (app: FastifyInstance) {
       return reply.status(500).send(err)
     }
 
-    return reply.status(200).send({transactions})
+    return reply.status(200).send({ transactions })
+  })
+
+  app.get('/:id', async (request, reply) => {
+    let transactionParams
+
+    try {
+      transactionParams = transactionParamsSchema.parse(request.params)
+    } catch (err) {
+      return reply.status(400).send((err as ZodError).message)
+    }
+
+    let transaction
+
+    try {
+      transaction = await knex
+        .select('*')
+        .from('transactions')
+        .where({
+          id: transactionParams.id,
+        })
+        .first()
+
+      if (!transaction) { // no record found
+        throw new Error(`No transaction found for id ${transactionParams.id}`)
+      }
+    } catch (err) {
+      return reply.status(404).send(err)
+    }
+
+    return reply.status(200).send({ transaction })
   })
 }
