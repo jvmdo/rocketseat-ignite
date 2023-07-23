@@ -34,4 +34,16 @@ export default async function (app: FastifyInstance) {
 
     return reply.status(201).send()
   })
+
+  app.get('/', async (_, reply) => {
+    let transactions
+
+    try {
+      transactions = await knex.select('*').from('transactions')  
+    } catch (err) {
+      return reply.status(500).send(err)
+    }
+
+    return reply.status(200).send({transactions})
+  })
 }
