@@ -1,7 +1,7 @@
-import { FastifyInstance } from "fastify";
-import { ZodError, z } from "zod";
-import { knex } from "../database.js";
-import { randomUUID } from "crypto";
+import { FastifyInstance } from 'fastify'
+import { ZodError, z } from 'zod'
+import { knex } from '../database.js'
+import { randomUUID } from 'crypto'
 
 const transactionBodySchema = z.object({
   title: z.string(),
@@ -12,7 +12,6 @@ const transactionBodySchema = z.object({
 const transactionParamsSchema = z.object({
   id: z.string().uuid(),
 })
-
 
 export default async function (app: FastifyInstance) {
   app.post('/', async (request, reply) => {
@@ -27,11 +26,13 @@ export default async function (app: FastifyInstance) {
     const { title, amount, type } = transactionBody
 
     try {
-      await knex.insert({
-        id: randomUUID(),
-        title,
-        amount: type === 'credit' ? amount : -amount,
-      }).into('transactions')
+      await knex
+        .insert({
+          id: randomUUID(),
+          title,
+          amount: type === 'credit' ? amount : -amount,
+        })
+        .into('transactions')
     } catch (err) {
       return reply.status(500).send(err)
     }
@@ -43,7 +44,7 @@ export default async function (app: FastifyInstance) {
     let transactions
 
     try {
-      transactions = await knex.select('*').from('transactions')  
+      transactions = await knex.select('*').from('transactions')
     } catch (err) {
       return reply.status(500).send(err)
     }
@@ -66,12 +67,11 @@ export default async function (app: FastifyInstance) {
       transaction = await knex
         .select('*')
         .from('transactions')
-        .where({
-          id: transactionParams.id,
-        })
+        .where({ id: transactionParams.id })
         .first()
 
-      if (!transaction) { // no record found
+      if (!transaction) {
+        // no record found
         throw new Error(`No transaction found for id ${transactionParams.id}`)
       }
     } catch (err) {
@@ -79,5 +79,19 @@ export default async function (app: FastifyInstance) {
     }
 
     return reply.status(200).send({ transaction })
+  })
+
+  app.get('/summary', async (_, reply) => {
+    let summary
+
+    try {
+      // summary = await knex.sum('amount', { as: 'amount' }).from('transactions').first()
+      // summary = await knex.select({ amount: knex.sum('amount') }).from('transactions').first()
+      summary = await knex.sum('amount as amount').from('transactions')
+    } catch (err) {
+      return reply.status(500).send(err)
+    }
+
+    return reply.status(200).send({ summary })
   })
 }
