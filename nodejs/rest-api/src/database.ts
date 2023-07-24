@@ -1,7 +1,7 @@
-import Knex from 'knex'
+import createKnex, { Knex } from 'knex'
 import { env } from './env/index.js'
 
-export const knexConfig: Knex.Knex.Config = {
+export const knexConfig: Knex.Config = {
   client: 'sqlite3',
   connection: {
     filename: env.DATABASE_URL,
@@ -13,4 +13,5 @@ export const knexConfig: Knex.Knex.Config = {
   },
 }
 
-export const knex = Knex.default(knexConfig)
+// ? Although TypeScript accuses an error, default knex instance is actually working
+export const knex = createKnex(knexConfig)
