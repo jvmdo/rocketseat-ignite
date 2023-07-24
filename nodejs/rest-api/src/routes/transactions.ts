@@ -50,12 +50,6 @@ export default async function (app: FastifyInstance) {
   app.get('/', async (request, reply) => {
     const sessionId = request.cookies.sessionId
 
-    if (!sessionId) {
-      return reply
-        .status(401)
-        .send('No active session. Create a transaction then try again')
-    }
-
     let transactions
 
     try {
@@ -71,12 +65,6 @@ export default async function (app: FastifyInstance) {
 
   app.get('/:id', async (request, reply) => {
     const sessionId = request.cookies.sessionId
-
-    if (!sessionId) {
-      return reply
-        .status(401)
-        .send('No active session. Create a transaction then try again')
-    }
 
     let transactionParams
 
@@ -99,7 +87,6 @@ export default async function (app: FastifyInstance) {
         .first()
 
       if (!transaction) {
-        // no record found
         throw new Error(`No transaction found for id ${transactionParams.id}`)
       }
     } catch (err) {
@@ -112,15 +99,10 @@ export default async function (app: FastifyInstance) {
   app.get('/summary', async (request, reply) => {
     const sessionId = request.cookies.sessionId
 
-    if (!sessionId) {
-      return reply
-        .status(401)
-        .send('No active session. Create a transaction then try again')
-    }
-
     let summary
 
     try {
+      // ? Multiple ways to accomplish the same result
       // summary = await knex.sum('amount', { as: 'amount' }).from('transactions').first()
       // summary = await knex.select({ amount: knex.sum('amount') }).from('transactions').first()
       summary = await knex

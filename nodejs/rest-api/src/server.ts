@@ -3,6 +3,7 @@ import { env } from './env/index.js'
 import transactionsRoutes from './routes/transactions.js'
 import cookie from '@fastify/cookie'
 import type { FastifyCookieOptions } from '@fastify/cookie'
+import { sessionValidator } from './middlewares/session-validator.js'
 
 const app = Fastify({ logger: true })
 
@@ -13,6 +14,8 @@ app.register(cookie, {
     secure: 'auto',
   },
 } as FastifyCookieOptions)
+
+app.addHook('preHandler', sessionValidator)
 
 app.register(transactionsRoutes, {
   prefix: '/transactions',
