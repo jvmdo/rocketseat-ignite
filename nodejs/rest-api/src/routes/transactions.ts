@@ -15,6 +15,12 @@ const transactionParamsSchema = z.object({
 
 export default async function (app: FastifyInstance) {
   app.post('/', async (request, reply) => {
+    let sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      sessionId = randomUUID()
+    }
+
     let transactionBody
 
     try {
@@ -31,20 +37,31 @@ export default async function (app: FastifyInstance) {
           id: randomUUID(),
           title,
           amount: type === 'credit' ? amount : -amount,
+          session_id: sessionId,
         })
         .into('transactions')
     } catch (err) {
       return reply.status(500).send(err)
     }
 
-    return reply.status(201).send()
+    return reply.status(201).cookie('sessionId', sessionId).send()
   })
 
-  app.get('/', async (_, reply) => {
+  app.get('/', async (request, reply) => {
+    const sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      return reply
+        .status(401)
+        .send('No active session. Create a transaction then try again')
+    }
+
     let transactions
 
     try {
-      transactions = await knex.select('*').from('transactions')
+      transactions = await knex.select('*').from('transactions').where({
+        session_id: sessionId,
+      })
     } catch (err) {
       return reply.status(500).send(err)
     }
@@ -53,6 +70,14 @@ export default async function (app: FastifyInstance) {
   })
 
   app.get('/:id', async (request, reply) => {
+    const sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      return reply
+        .status(401)
+        .send('No active session. Create a transaction then try again')
+    }
+
     let transactionParams
 
     try {
@@ -67,7 +92,10 @@ export default async function (app: FastifyInstance) {
       transaction = await knex
         .select('*')
         .from('transactions')
-        .where({ id: transactionParams.id })
+        .where({
+          id: transactionParams.id,
+          session_id: sessionId,
+        })
         .first()
 
       if (!transaction) {
@@ -81,13 +109,27 @@ export default async function (app: FastifyInstance) {
     return reply.status(200).send({ transaction })
   })
 
-  app.get('/summary', async (_, reply) => {
+  app.get('/summary', async (request, reply) => {
+    const sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      return reply
+        .status(401)
+        .send('No active session. Create a transaction then try again')
+    }
+
     let summary
 
     try {
       // summary = await knex.sum('amount', { as: 'amount' }).from('transactions').first()
       // summary = await knex.select({ amount: knex.sum('amount') }).from('transactions').first()
-      summary = await knex.sum('amount as amount').from('transactions')
+      summary = await knex
+        .sum('amount as amount')
+        .from('transactions')
+        .where({
+          session_id: sessionId,
+        })
+        .first()
     } catch (err) {
       return reply.status(500).send(err)
     }
