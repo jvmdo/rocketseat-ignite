@@ -1,10 +1,9 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
+import { describe, it, beforeAll, afterAll, beforeEach } from 'vitest'
 import { execSync } from 'node:child_process'
-import { env } from '../env/index.js'
 import { app } from '../app.js'
 import request from 'supertest'
 
-describe('My very first test suite', () => {
+describe('Transactions routes', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -19,8 +18,27 @@ describe('My very first test suite', () => {
     execSync('npm run knex -- migrate:latest')
   })
 
-  it('should assert the current environment', () => {
-    const response = request(app.server)
-    expect(env.NODE_ENV).toEqual('test')
+  describe('POST /transactions', () => {
+    it('should create a new transaction', async () => {
+      await request(app.server)
+        .post('/transactions')
+        .send({
+          title: 'New test transaction',
+          amount: 5000,
+          type: 'credit',
+        })
+        .expect(201)
+    })
+
+    it('should handle body schema validation', async () => {
+      await request(app.server)
+        .post('/transactions')
+        .send({
+          title: 'Bad formatted transactions',
+          amount: '-777',
+          type: 'débito',
+        })
+        .expect(404)
+    })
   })
 })
