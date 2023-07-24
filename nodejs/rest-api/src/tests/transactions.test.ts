@@ -1,4 +1,4 @@
-import { describe, it, beforeAll, afterAll, beforeEach } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
 import { execSync } from 'node:child_process'
 import { app } from '../app.js'
 import request from 'supertest'
@@ -39,6 +39,36 @@ describe('Transactions routes', () => {
           type: 'débito',
         })
         .expect(404)
+    })
+  })
+
+  describe('GET /transactions', () => {
+    it('should refuse unauthorized requests', async () => {
+      await request(app.server).get('/transactions').expect(401)
+    })
+
+    it('should return all transactions of a single user', async () => {
+      const postResponse = await request(app.server)
+        .post('/transactions')
+        .send({
+          title: 'New transaction',
+          amount: 5000,
+          type: 'credit',
+        })
+
+      const sessionId = postResponse.get('Set-Cookie')
+
+      const transactionsResponse = await request(app.server)
+        .get('/transactions')
+        .set('Cookie', sessionId)
+        .expect(200)
+
+      expect(transactionsResponse.body.transactions).toEqual([
+        expect.objectContaining({
+          title: 'New transaction',
+          amount: 5000,
+        }),
+      ])
     })
   })
 })
