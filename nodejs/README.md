@@ -11,3 +11,9 @@ Os módulos possuem um projeto guiado e um desafio em que o aluno deve concluir 
       - [Readme](/nodejs/rest-api-from-scratch/README.md)
     - Desafio 01 - Tasks CRUD with Streams
       - [Readme](/nodejs/tasks-crud-from-scratch/README.md)
+
+2. **Criando API REST com Node.js**
+    - Projeto 02 - REST API with Fastify and Knex
+      - [Readme](/nodejs/rest-api/README.md)
+    - Desafio 02 - TO DO
+      - [Readme](/nodejs/)
