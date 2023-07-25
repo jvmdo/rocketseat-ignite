@@ -125,4 +125,42 @@ describe('Transactions routes', () => {
       )
     })
   })
+
+  describe('GET /transaction/summary', () => {
+    it('should refuse unauthorized requests', async () => {
+      await request(app.server).get('/transactions/summary').expect(401)
+    })
+
+    it('should return the summary of a single user', async () => {
+      const postResponse1 = await request(app.server)
+        .post('/transactions')
+        .send({
+          title: 'Post 1',
+          amount: 12000,
+          type: 'credit',
+        })
+
+      const sessionId = postResponse1.get('Set-Cookie')
+
+      const postResponse2 = await request(app.server)
+        .post('/transactions')
+        .set('Cookie', sessionId)
+        .send({
+          title: 'Post 2',
+          amount: 8000,
+          type: 'debit',
+        })
+
+      const summaryResponse = await request(app.server)
+        .get('/transactions/summary')
+        .set('Cookie', sessionId)
+        .expect(200)
+
+      expect(summaryResponse.body.summary).toEqual(
+        expect.objectContaining({
+          amount: 4000,
+        }),
+      )
+    })
+  })
 })
