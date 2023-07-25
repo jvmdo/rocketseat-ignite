@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
 import { execSync } from 'node:child_process'
 import { app } from '../app.js'
 import request from 'supertest'
+import { randomUUID } from 'node:crypto'
 
 describe('Transactions routes', () => {
   beforeAll(async () => {
@@ -69,6 +70,59 @@ describe('Transactions routes', () => {
           amount: 5000,
         }),
       ])
+    })
+  })
+
+  describe('GET /transactions/:id', () => {
+    it('should refuse unauthorized request', async () => {
+      await request(app.server).get(`/transactions/${randomUUID()}`).expect(401)
+    })
+
+    it('should handle params schema validation', async () => {
+      const postResponse = await request(app.server)
+        .post('/transactions')
+        .send({
+          title: 'New transaction',
+          amount: 5000,
+          type: 'credit',
+        })
+
+      const sessionId = postResponse.get('Set-Cookie')
+
+      await request(app.server)
+        .get(`/transactions/wrong-uuid-value`)
+        .set('Cookie', sessionId)
+        .expect(400)
+    })
+
+    it('should return the matching transaction', async () => {
+      const postResponse = await request(app.server)
+        .post('/transactions')
+        .send({
+          title: 'New transaction',
+          amount: 5000,
+          type: 'credit',
+        })
+
+      const sessionId = postResponse.get('Set-Cookie')
+
+      const transactionsResponse = await request(app.server)
+        .get('/transactions')
+        .set('Cookie', sessionId)
+
+      const transaction = transactionsResponse.body.transactions[0]
+
+      await request(app.server)
+        .get(`/transactions/${transaction.id}`)
+        .set('Cookie', sessionId)
+        .expect(200)
+
+      expect(transaction).toEqual(
+        expect.objectContaining({
+          title: 'New transaction',
+          amount: 5000,
+        }),
+      )
     })
   })
 })
