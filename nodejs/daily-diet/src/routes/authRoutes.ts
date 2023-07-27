@@ -8,6 +8,11 @@ const signUpBodySchema = z.object({
   password: z.string(),
 })
 
+const signInBodySchema = z.object({
+  username: z.string(),
+  password: z.string(),
+})
+
 export async function authRoutes(app: FastifyInstance) {
   app.post('/sign-up', async (request, reply) => {
     let signUpBody
@@ -45,5 +50,36 @@ export async function authRoutes(app: FastifyInstance) {
     }
 
     return reply.status(201).send({ message: 'New user created successfully.' })
+  })
+
+  app.post('/sign-in', async (request, reply) => {
+    let signInBody
+
+    try {
+      signInBody = signInBodySchema.parse(request.body)
+    } catch (error) {
+      return reply.status(400).send((error as ZodError).message)
+    }
+
+    const { username, password } = signInBody
+
+    let user
+
+    try {
+      user = await knex('users').where({ username }).first()
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    if (!user || user.password !== password) {
+      return reply.status(401).send({
+        message:
+          'Invalid credentials. Please check your username and password.',
+      })
+    }
+
+    const token = app.jwt.sign({ userId: user.id }, { expiresIn: '2h' })
+
+    return reply.send({ message: 'You are signed in.', token })
   })
 }
