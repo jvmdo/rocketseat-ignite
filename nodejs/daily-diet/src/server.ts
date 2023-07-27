@@ -1,22 +1,12 @@
 import Fastify from 'fastify'
-import { knex } from './database'
 import { env } from './env'
+import { authRoutes } from './routes/authRoutes'
 
 const app = Fastify({
   logger: true,
 })
 
-app.get('/', async (request, reply) => {
-  await knex
-    .insert({
-      name: 'John Doe',
-      username: 'john_doe',
-      password: 'john123',
-    })
-    .into('users')
-  const users = await knex.select('*').from('users')
-  return reply.status(200).send({ message: `Hello, ${request.ip}`, users })
-})
+app.register(authRoutes)
 
 const startServer = async () => {
   try {
