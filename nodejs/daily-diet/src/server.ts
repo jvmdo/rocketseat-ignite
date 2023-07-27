@@ -6,8 +6,8 @@ const app = Fastify({
 })
 
 app.get('/', async (request, reply) => {
-  const tables = await knex.select('*').from('sqlite_schema')
-  return reply.status(200).send({ message: `Hello, ${request.ip}`, tables })
+  const users = await knex.select('*').from('users')
+  return reply.status(200).send({ message: `Hello, ${request.ip}`, users })
 })
 
 const startServer = async () => {
