@@ -37,4 +37,16 @@ export async function mealRoutes(app: FastifyInstance) {
 
     return reply.status(201).send({ message: 'New meal added.' })
   })
+
+  app.get('/', async (request, reply) => {
+    let meals
+
+    try {
+      meals = await knex('meals').where({ user_id: userId }).select('*')
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    return reply.send({ meals })
+  })
 }
