@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { ZodError, z } from 'zod'
 import { knex } from '../database'
 
-const userId = '4e4752b5-4683-455a-99f0-a59f2db37206'
+const userId = '4e4752b5-4683-455a-99f0-a59f2db3726'
 
 const mealBodySchema = z.object({
   name: z.string(),
@@ -99,6 +99,21 @@ export async function mealRoutes(app: FastifyInstance) {
     }
 
     return reply.send(totalMeals)
+  })
+
+  app.get('/diet', async (request, reply) => {
+    let totalInDiet
+
+    try {
+      totalInDiet = await knex('meals')
+        .where({ user_id: userId, diet: true })
+        .count('diet as totalInDiet')
+        .first()
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    return reply.send(totalInDiet)
   })
 
   app.put('/:mealId', async (request, reply) => {
