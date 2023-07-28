@@ -86,6 +86,21 @@ export async function mealRoutes(app: FastifyInstance) {
     return reply.send({ meal })
   })
 
+  app.get('/total', async (request, reply) => {
+    let totalMeals
+
+    try {
+      totalMeals = await knex('meals')
+        .where({ user_id: userId })
+        .count('id as totalMeals')
+        .first()
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    return reply.send(totalMeals)
+  })
+
   app.put('/:mealId', async (request, reply) => {
     let params
 
