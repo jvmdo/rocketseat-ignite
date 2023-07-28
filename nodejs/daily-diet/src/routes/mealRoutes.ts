@@ -85,4 +85,101 @@ export async function mealRoutes(app: FastifyInstance) {
 
     return reply.send({ meal })
   })
+
+  app.put('/:mealId', async (request, reply) => {
+    let params
+
+    try {
+      params = mealParamsSchema.parse(request.params)
+    } catch (error) {
+      return reply.status(404).send((error as ZodError).message)
+    }
+
+    const { mealId } = params
+
+    let mealExists
+
+    try {
+      mealExists = await knex('meals')
+        .where({
+          id: mealId,
+          user_id: userId,
+        })
+        .first()
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    if (!mealExists) {
+      return reply.status(404).send({ message: 'No meal found' })
+    }
+
+    let mealBody
+
+    try {
+      mealBody = mealBodySchema.parse(request.body)
+    } catch (error) {
+      return reply.status(400).send((error as ZodError).message)
+    }
+
+    const { name, description, diet, datetime } = mealBody
+
+    try {
+      await knex('meals')
+        .update({
+          name,
+          description,
+          diet,
+          created_at: datetime.toISOString(),
+        })
+        .where({
+          id: mealId,
+          user_id: userId,
+        })
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    return reply.status(201).send({ message: 'Meal updated successfully.' })
+  })
+
+  app.delete('/:mealId', async (request, reply) => {
+    let params
+
+    try {
+      params = mealParamsSchema.parse(request.params)
+    } catch (error) {
+      return reply.status(404).send((error as ZodError).message)
+    }
+
+    const { mealId } = params
+
+    let mealExists
+
+    try {
+      mealExists = await knex('meals')
+        .where({
+          id: mealId,
+          user_id: userId,
+        })
+        .first()
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    if (!mealExists) {
+      return reply.status(404).send({ message: 'No meal found' })
+    }
+
+    try {
+      await knex('meals').del().where({
+        id: mealId,
+        user_id: userId,
+      })
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    return reply.status(204).send()
+  })
 }
