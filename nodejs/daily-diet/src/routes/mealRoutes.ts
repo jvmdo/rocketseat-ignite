@@ -11,6 +11,10 @@ const mealBodySchema = z.object({
   diet: z.boolean(),
 })
 
+const mealParamsSchema = z.object({
+  mealId: z.string().uuid(),
+})
+
 export async function mealRoutes(app: FastifyInstance) {
   app.post('/', async (request, reply) => {
     let mealBody
@@ -48,5 +52,37 @@ export async function mealRoutes(app: FastifyInstance) {
     }
 
     return reply.send({ meals })
+  })
+
+  app.get('/:mealId', async (request, reply) => {
+    let params
+
+    try {
+      params = mealParamsSchema.parse(request.params)
+    } catch (error) {
+      return reply.status(404).send((error as ZodError).message)
+    }
+
+    const { mealId } = params
+
+    let meal
+
+    try {
+      meal = await knex('meals')
+        .where({
+          id: mealId,
+          user_id: userId,
+        })
+        .select('*')
+        .first()
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    if (!meal) {
+      return reply.status(404).send({ message: 'No meal found' })
+    }
+
+    return reply.send({ meal })
   })
 }
