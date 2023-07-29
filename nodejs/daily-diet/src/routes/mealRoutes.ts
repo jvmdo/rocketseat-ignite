@@ -1,8 +1,9 @@
 import { FastifyInstance } from 'fastify'
 import { ZodError, z } from 'zod'
 import { knex } from '../database'
+import { longestDietSequence } from '../utils/longest-diet-sequence'
 
-const userId = '4e4752b5-4683-455a-99f0-a59f2db3726'
+const userId = '4e4752b5-4683-455a-99f0-a59f2db37206'
 
 const mealBodySchema = z.object({
   name: z.string(),
@@ -114,6 +115,37 @@ export async function mealRoutes(app: FastifyInstance) {
     }
 
     return reply.send(totalInDiet)
+  })
+
+  app.get('/non-diet', async (request, reply) => {
+    let totalNonDiet
+
+    try {
+      totalNonDiet = await knex('meals')
+        .where({ user_id: userId, diet: false })
+        .count('diet as totalNonDiet')
+        .first()
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    return reply.send(totalNonDiet)
+  })
+
+  app.get('/sequence', async (request, reply) => {
+    let dietArray
+
+    try {
+      dietArray = await knex('meals')
+        .where({ user_id: userId })
+        .select('diet', 'created_at')
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    const sequence = longestDietSequence(dietArray)
+
+    return reply.send(sequence)
   })
 
   app.put('/:mealId', async (request, reply) => {
