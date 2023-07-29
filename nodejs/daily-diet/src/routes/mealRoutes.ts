@@ -3,8 +3,6 @@ import { ZodError, z } from 'zod'
 import { knex } from '../database'
 import { longestDietSequence } from '../utils/longest-diet-sequence'
 
-const userId = '4e4752b5-4683-455a-99f0-a59f2db37206'
-
 const mealBodySchema = z.object({
   name: z.string(),
   description: z.string(),
@@ -17,7 +15,12 @@ const mealParamsSchema = z.object({
 })
 
 export async function mealRoutes(app: FastifyInstance) {
+  // @ts-expect-error: Fastify do not provide TypeScript for decorators
+  app.addHook('preHandler', app.auth([app.authorize]))
+
   app.post('/', async (request, reply) => {
+    const userId = request.user.id
+
     let mealBody
 
     try {
@@ -44,6 +47,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.get('/', async (request, reply) => {
+    const userId = request.user.id
+
     let meals
 
     try {
@@ -56,6 +61,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.get('/:mealId', async (request, reply) => {
+    const userId = request.user.id
+
     let params
 
     try {
@@ -88,6 +95,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.get('/total', async (request, reply) => {
+    const userId = request.user.id
+
     let totalMeals
 
     try {
@@ -103,6 +112,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.get('/diet', async (request, reply) => {
+    const userId = request.user.id
+
     let totalInDiet
 
     try {
@@ -118,6 +129,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.get('/non-diet', async (request, reply) => {
+    const userId = request.user.id
+
     let totalNonDiet
 
     try {
@@ -133,6 +146,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.get('/sequence', async (request, reply) => {
+    const userId = request.user.id
+
     let dietArray
 
     try {
@@ -149,6 +164,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.put('/:mealId', async (request, reply) => {
+    const userId = request.user.id
+
     let params
 
     try {
@@ -206,6 +223,8 @@ export async function mealRoutes(app: FastifyInstance) {
   })
 
   app.delete('/:mealId', async (request, reply) => {
+    const userId = request.user.id
+
     let params
 
     try {
