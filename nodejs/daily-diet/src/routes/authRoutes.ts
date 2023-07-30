@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { ZodError, z } from 'zod'
 import { knex } from '../database'
+import bcrypt from 'bcryptjs'
 
 const signUpBodySchema = z.object({
   name: z.string(),
@@ -39,11 +40,19 @@ export async function authRoutes(app: FastifyInstance) {
       })
     }
 
+    let encryptedPassword
+
+    try {
+      encryptedPassword = await bcrypt.hash(password, 8)
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
     try {
       await knex('users').insert({
         name,
         username,
-        password,
+        password: encryptedPassword,
       })
     } catch (error) {
       return reply.status(500).send(error)
@@ -71,7 +80,15 @@ export async function authRoutes(app: FastifyInstance) {
       return reply.status(500).send(error)
     }
 
-    if (!user || user.password !== password) {
+    let isPasswordCorrect
+
+    try {
+      isPasswordCorrect = await bcrypt.compare(password, user?.password ?? '')
+    } catch (error) {
+      return reply.status(500).send(error)
+    }
+
+    if (!user || !isPasswordCorrect) {
       return reply.status(401).send({
         message:
           'Invalid credentials. Please check your username and password.',
