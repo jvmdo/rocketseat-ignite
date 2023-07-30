@@ -27,17 +27,13 @@ export async function mealRoutes(app: FastifyInstance) {
     const userId = request.user.id
     const { name, description, datetime, diet } = extractBody(request.body)
 
-    try {
-      await knex('meals').insert({
-        name,
-        description,
-        diet,
-        created_at: datetime.toISOString(),
-        user_id: userId,
-      })
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    await knex('meals').insert({
+      name,
+      description,
+      diet,
+      created_at: datetime.toISOString(),
+      user_id: userId,
+    })
 
     return reply.status(201).send({ message: 'New meal added.' })
   })
@@ -45,13 +41,7 @@ export async function mealRoutes(app: FastifyInstance) {
   app.get('/', async (request, reply) => {
     const userId = request.user.id
 
-    let meals
-
-    try {
-      meals = await knex('meals').where({ user_id: userId }).select('*')
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    const meals = await knex('meals').where({ user_id: userId }).select('*')
 
     return reply.send({ meals })
   })
@@ -68,16 +58,10 @@ export async function mealRoutes(app: FastifyInstance) {
   app.get('/total', async (request, reply) => {
     const userId = request.user.id
 
-    let totalMeals
-
-    try {
-      totalMeals = await knex('meals')
-        .where({ user_id: userId })
-        .count('id as totalMeals')
-        .first()
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    const totalMeals = await knex('meals')
+      .where({ user_id: userId })
+      .count('id as totalMeals')
+      .first()
 
     return reply.send(totalMeals)
   })
@@ -85,16 +69,10 @@ export async function mealRoutes(app: FastifyInstance) {
   app.get('/diet', async (request, reply) => {
     const userId = request.user.id
 
-    let totalInDiet
-
-    try {
-      totalInDiet = await knex('meals')
-        .where({ user_id: userId, diet: true })
-        .count('diet as totalInDiet')
-        .first()
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    const totalInDiet = await knex('meals')
+      .where({ user_id: userId, diet: true })
+      .count('diet as totalInDiet')
+      .first()
 
     return reply.send(totalInDiet)
   })
@@ -102,16 +80,10 @@ export async function mealRoutes(app: FastifyInstance) {
   app.get('/non-diet', async (request, reply) => {
     const userId = request.user.id
 
-    let totalNonDiet
-
-    try {
-      totalNonDiet = await knex('meals')
-        .where({ user_id: userId, diet: false })
-        .count('diet as totalNonDiet')
-        .first()
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    const totalNonDiet = await knex('meals')
+      .where({ user_id: userId, diet: false })
+      .count('diet as totalNonDiet')
+      .first()
 
     return reply.send(totalNonDiet)
   })
@@ -119,15 +91,9 @@ export async function mealRoutes(app: FastifyInstance) {
   app.get('/sequence', async (request, reply) => {
     const userId = request.user.id
 
-    let dietArray
-
-    try {
-      dietArray = await knex('meals')
-        .where({ user_id: userId })
-        .select('diet', 'created_at')
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    const dietArray = await knex('meals')
+      .where({ user_id: userId })
+      .select('diet', 'created_at')
 
     const sequence = longestDietSequence(dietArray)
 
@@ -142,21 +108,17 @@ export async function mealRoutes(app: FastifyInstance) {
 
     const { name, description, diet, datetime } = extractBody(request.body)
 
-    try {
-      await knex('meals')
-        .update({
-          name,
-          description,
-          diet,
-          created_at: datetime.toISOString(),
-        })
-        .where({
-          id: mealId,
-          user_id: userId,
-        })
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    await knex('meals')
+      .update({
+        name,
+        description,
+        diet,
+        created_at: datetime.toISOString(),
+      })
+      .where({
+        id: mealId,
+        user_id: userId,
+      })
 
     return reply.status(201).send({ message: 'Meal updated successfully.' })
   })
@@ -167,14 +129,10 @@ export async function mealRoutes(app: FastifyInstance) {
 
     await findMealByIdOrThrow(mealId, userId)
 
-    try {
-      await knex('meals').del().where({
-        id: mealId,
-        user_id: userId,
-      })
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
+    await knex('meals').del().where({
+      id: mealId,
+      user_id: userId,
+    })
 
     return reply.status(204).send()
   })
