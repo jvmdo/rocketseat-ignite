@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { ZodError, z } from 'zod'
 import { knex } from '../database'
 import { longestDietSequence } from '../utils/longest-diet-sequence'
+import { MealError } from '../utils/meal-errors'
 
 const mealBodySchema = z.object({
   name: z.string(),
@@ -18,18 +19,13 @@ export async function mealRoutes(app: FastifyInstance) {
   // @ts-expect-error: Fastify do not provide TypeScript for decorators
   app.addHook('preHandler', app.auth([app.authorize]))
 
+  app.setErrorHandler(async (error, _, reply) => {
+    return reply.status(error.statusCode ?? 500).send(error)
+  })
+
   app.post('/', async (request, reply) => {
     const userId = request.user.id
-
-    let mealBody
-
-    try {
-      mealBody = mealBodySchema.parse(request.body)
-    } catch (error) {
-      return reply.status(400).send((error as ZodError).message)
-    }
-
-    const { name, description, datetime, diet } = mealBody
+    const { name, description, datetime, diet } = extractBody(request.body)
 
     try {
       await knex('meals').insert({
@@ -62,34 +58,9 @@ export async function mealRoutes(app: FastifyInstance) {
 
   app.get('/:mealId', async (request, reply) => {
     const userId = request.user.id
+    const { mealId } = extractParams(request.params)
 
-    let params
-
-    try {
-      params = mealParamsSchema.parse(request.params)
-    } catch (error) {
-      return reply.status(404).send((error as ZodError).message)
-    }
-
-    const { mealId } = params
-
-    let meal
-
-    try {
-      meal = await knex('meals')
-        .where({
-          id: mealId,
-          user_id: userId,
-        })
-        .select('*')
-        .first()
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
-
-    if (!meal) {
-      return reply.status(404).send({ message: 'No meal found' })
-    }
+    const meal = await findMealByIdOrThrow(mealId, userId)
 
     return reply.send({ meal })
   })
@@ -165,43 +136,11 @@ export async function mealRoutes(app: FastifyInstance) {
 
   app.put('/:mealId', async (request, reply) => {
     const userId = request.user.id
+    const { mealId } = extractParams(request.params)
 
-    let params
+    await findMealByIdOrThrow(mealId, userId)
 
-    try {
-      params = mealParamsSchema.parse(request.params)
-    } catch (error) {
-      return reply.status(404).send((error as ZodError).message)
-    }
-
-    const { mealId } = params
-
-    let mealExists
-
-    try {
-      mealExists = await knex('meals')
-        .where({
-          id: mealId,
-          user_id: userId,
-        })
-        .first()
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
-
-    if (!mealExists) {
-      return reply.status(404).send({ message: 'No meal found' })
-    }
-
-    let mealBody
-
-    try {
-      mealBody = mealBodySchema.parse(request.body)
-    } catch (error) {
-      return reply.status(400).send((error as ZodError).message)
-    }
-
-    const { name, description, diet, datetime } = mealBody
+    const { name, description, diet, datetime } = extractBody(request.body)
 
     try {
       await knex('meals')
@@ -224,33 +163,9 @@ export async function mealRoutes(app: FastifyInstance) {
 
   app.delete('/:mealId', async (request, reply) => {
     const userId = request.user.id
+    const { mealId } = extractParams(request.params)
 
-    let params
-
-    try {
-      params = mealParamsSchema.parse(request.params)
-    } catch (error) {
-      return reply.status(404).send((error as ZodError).message)
-    }
-
-    const { mealId } = params
-
-    let mealExists
-
-    try {
-      mealExists = await knex('meals')
-        .where({
-          id: mealId,
-          user_id: userId,
-        })
-        .first()
-    } catch (error) {
-      return reply.status(500).send(error)
-    }
-
-    if (!mealExists) {
-      return reply.status(404).send({ message: 'No meal found' })
-    }
+    await findMealByIdOrThrow(mealId, userId)
 
     try {
       await knex('meals').del().where({
@@ -263,4 +178,36 @@ export async function mealRoutes(app: FastifyInstance) {
 
     return reply.status(204).send()
   })
+}
+
+async function findMealByIdOrThrow(mealId: string, userId: string) {
+  const meal = await knex('meals')
+    .select('*')
+    .where({
+      id: mealId,
+      user_id: userId,
+    })
+    .first()
+
+  if (!meal) {
+    throw new MealError('No meal found', 404)
+  }
+
+  return meal
+}
+
+function extractBody(body: unknown) {
+  try {
+    return mealBodySchema.parse(body)
+  } catch (error) {
+    throw new MealError((error as ZodError).message, 400)
+  }
+}
+
+function extractParams(params: unknown) {
+  try {
+    return mealParamsSchema.parse(params)
+  } catch (error) {
+    throw new MealError((error as ZodError).message, 400)
+  }
 }
