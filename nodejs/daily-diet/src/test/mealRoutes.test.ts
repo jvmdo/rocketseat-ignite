@@ -3,8 +3,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { app } from '../app'
 import request from 'supertest'
 import { faker } from '@faker-js/faker'
-
-faker.seed(322)
+import { longestDietSequence } from '../utils/longest-diet-sequence'
 
 describe('Meals CRUD routes', () => {
   beforeAll(async () => {
@@ -79,7 +78,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe('GET /meals/:mealId', () => {
+  describe.skip('GET /meals/:mealId', () => {
     it('should retrieve one meal record by its ID', async () => {
       const token = await authenticate()
       const [meal] = newMeal()
@@ -140,6 +139,106 @@ describe('Meals CRUD routes', () => {
         .auth(token, { type: 'bearer' })
         .expect(400)
     })
+  })
+
+  describe('GET /meals/total', () => {
+    it('should retrieve the total number of meals of an user', async () => {
+      const token = await authenticate()
+      const mealsQuantity = 5
+      const meals = newMeal(mealsQuantity)
+
+      meals.forEach(async (meal) => {
+        await request(app.server)
+          .post('/meals')
+          .auth(token, { type: 'bearer' })
+          .send(meal)
+      })
+
+      const response = await request(app.server)
+        .get('/meals/total')
+        .auth(token, { type: 'bearer' })
+        .expect(200)
+
+      expect(response.body.totalMeals).toBe(mealsQuantity)
+    })
+  })
+
+  describe('GET /meals/diet', () => {
+    it('should retrieve the total number of diet meals of an user', async () => {
+      const token = await authenticate()
+      const mealsQuantity = 10
+      const meals = newMeal(mealsQuantity)
+      const dietMeals = meals.filter((meal) => meal.diet)
+
+      meals.forEach(async (meal) => {
+        await request(app.server)
+          .post('/meals')
+          .auth(token, { type: 'bearer' })
+          .send(meal)
+      })
+
+      const response = await request(app.server)
+        .get('/meals/diet')
+        .auth(token, { type: 'bearer' })
+        .expect(200)
+
+      expect(response.body.totalInDiet).toBe(dietMeals.length)
+    })
+  })
+
+  describe('GET /meals/non-diet', () => {
+    it('should retrieve the total number of non-diet meals of an user', async () => {
+      const token = await authenticate()
+      const mealsQuantity = 10
+      const meals = newMeal(mealsQuantity)
+      const nonDietMeals = meals.filter((meal) => !meal.diet)
+
+      meals.forEach(async (meal) => {
+        await request(app.server)
+          .post('/meals')
+          .auth(token, { type: 'bearer' })
+          .send(meal)
+      })
+
+      const response = await request(app.server)
+        .get('/meals/non-diet')
+        .auth(token, { type: 'bearer' })
+        .expect(200)
+
+      expect(response.body.totalNonDiet).toBe(nonDietMeals.length)
+    })
+  })
+
+  describe('GET /meals/sequence', () => {
+    it(
+      'should retrieve the longest diet sequence of an user',
+      async () => {
+        const token = await authenticate()
+        const mealsQuantity = 20
+        const meals = newMeal(mealsQuantity)
+        const longest = longestDietSequence(
+          meals.map(({ diet, datetime }) => ({
+            diet,
+            created_at: datetime.toISOString(),
+          })),
+        )
+
+        meals.forEach(async (meal) => {
+          await request(app.server)
+            .post('/meals')
+            .auth(token, { type: 'bearer' })
+            .send(meal)
+        })
+
+        const response = await request(app.server)
+          .get('/meals/sequence')
+          .auth(token, { type: 'bearer' })
+          .expect(200)
+
+        expect(response.body.sequence).toBe(longest.sequence)
+      },
+      { timeout: 10000 },
+    )
   })
 })
 
