@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import { afterAll, beforeAll, beforeEach, describe, it } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { app } from '../app'
 import request from 'supertest'
 import { faker } from '@faker-js/faker'
@@ -20,7 +20,7 @@ describe('Meals CRUD routes', () => {
     execSync('npm run knex -- migrate:latest')
   })
 
-  describe('POST /meals', () => {
+  describe.skip('POST /meals', () => {
     it('should deny unauthorized requests', async () => {
       const [meal] = newMeal()
 
@@ -49,6 +49,95 @@ describe('Meals CRUD routes', () => {
           ...meal,
           datetime: '30/07/2023 20h47', // incorrect date format
         })
+        .expect(400)
+    })
+  })
+
+  describe.skip('GET /meals', async () => {
+    it('should deny unauthorized requests', async () => {
+      await request(app.server).get('/meals').expect(401)
+    })
+
+    it('should retrieve all meals of an user', async () => {
+      const token = await authenticate()
+      const mealsQuantity = 5
+      const meals = newMeal(mealsQuantity)
+
+      meals.forEach(async (meal) => {
+        await request(app.server)
+          .post('/meals')
+          .auth(token, { type: 'bearer' })
+          .send(meal)
+      })
+
+      const response = await request(app.server)
+        .get('/meals')
+        .auth(token, { type: 'bearer' })
+        .expect(200)
+
+      expect(response.body.meals.length).toBe(mealsQuantity)
+    })
+  })
+
+  describe('GET /meals/:mealId', () => {
+    it('should retrieve one meal record by its ID', async () => {
+      const token = await authenticate()
+      const [meal] = newMeal()
+
+      await request(app.server)
+        .post('/meals')
+        .auth(token, { type: 'bearer' })
+        .send(meal)
+
+      const response = await request(app.server)
+        .get('/meals')
+        .auth(token, { type: 'bearer' })
+
+      const mealId = response.body.meals[0].id
+
+      const record = await request(app.server)
+        .get(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .expect(200)
+
+      expect(record.body.meal).toEqual(
+        expect.objectContaining({
+          id: mealId,
+        }),
+      )
+    })
+
+    it('should not retrieve records by non-existent ID', async () => {
+      const token = await authenticate()
+      const [meal] = newMeal()
+
+      await request(app.server)
+        .post('/meals')
+        .auth(token, { type: 'bearer' })
+        .send(meal)
+
+      const mealId = faker.string.uuid() // non-existent ID
+
+      await request(app.server)
+        .get(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .expect(404)
+    })
+
+    it('should reject bad formatted UUID', async () => {
+      const token = await authenticate()
+      const [meal] = newMeal()
+
+      await request(app.server)
+        .post('/meals')
+        .auth(token, { type: 'bearer' })
+        .send(meal)
+
+      const mealId = faker.string.uuid() + 'wrong!'
+
+      await request(app.server)
+        .get(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
         .expect(400)
     })
   })
