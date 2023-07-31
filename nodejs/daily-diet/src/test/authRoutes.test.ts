@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import { afterAll, beforeAll, beforeEach, describe, it } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { app } from '../app'
 import request from 'supertest'
 
@@ -18,7 +18,7 @@ describe('Authentication routes', () => {
   })
 
   describe('POST /sign-up', () => {
-    it.skip('should create a new user', async () => {
+    it('should create a new user', async () => {
       const credentials = {
         name: 'Saul Goodman',
         username: 'itsallgoodman',
@@ -28,7 +28,7 @@ describe('Authentication routes', () => {
       await request(app.server).post(`/sign-up`).send(credentials).expect(201)
     })
 
-    it.skip('should reject creating two accounts with the same username', async () => {
+    it('should reject creating two accounts with the same username', async () => {
       const credentials = {
         name: 'Saul Goodman',
         username: 'itsallgoodman',
@@ -47,6 +47,88 @@ describe('Authentication routes', () => {
       }
 
       await request(app.server).post(`/sign-up`).send(credentials).expect(400)
+    })
+  })
+
+  describe('POST /sign-in', () => {
+    it('should sign an user in and return the access token', async () => {
+      const credentials = {
+        name: 'Saul Goodman',
+        username: 'itsallgoodman',
+        password: '123123',
+      }
+
+      await request(app.server).post(`/sign-up`).send(credentials)
+
+      const { username, password } = credentials
+
+      const response = await request(app.server)
+        .post('/sign-in')
+        .send({ username, password })
+        .expect(200)
+
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: 'You are signed in.',
+          token: expect.stringMatching(
+            /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/,
+          ),
+        }),
+      )
+    })
+
+    it('should reject signing in with wrong credentials values', async () => {
+      const credentials = {
+        name: 'Saul Goodman',
+        username: 'itsallgoodman',
+        password: '123123',
+      }
+
+      await request(app.server).post(`/sign-up`).send(credentials)
+
+      await request(app.server)
+        .post('/sign-in')
+        .send({
+          username: 'notgoodman',
+          password: 'wrong-password',
+        })
+        .expect(401)
+    })
+
+    it('should reject signing in with wrong credentials format', async () => {
+      const credentials = {
+        name: 'Saul Goodman',
+        username: 'itsallgoodman',
+        password: '123123',
+      }
+
+      await request(app.server).post(`/sign-up`).send(credentials)
+
+      await request(app.server)
+        .post('/sign-in')
+        .send({
+          username: 'notgoodman',
+          password: 123123, // should be string
+        })
+        .expect(400)
+    })
+
+    it('should deny sign-in for non-existent users', async () => {
+      const credentials = {
+        name: 'Saul Goodman',
+        username: 'itsallgoodman',
+        password: '123123',
+      }
+
+      // ? The account is not registered
+      // await request(app.server).post(`/sign-up`).send(credentials)
+
+      const { username, password } = credentials
+
+      await request(app.server)
+        .post('/sign-in')
+        .send({ username, password })
+        .expect(401)
     })
   })
 })
