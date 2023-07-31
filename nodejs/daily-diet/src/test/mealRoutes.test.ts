@@ -5,7 +5,7 @@ import request from 'supertest'
 import { faker } from '@faker-js/faker'
 import { longestDietSequence } from '../utils/longest-diet-sequence'
 
-describe('Meals CRUD routes', () => {
+describe('Meals CRUD endpoints', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -19,7 +19,7 @@ describe('Meals CRUD routes', () => {
     execSync('npm run knex -- migrate:latest')
   })
 
-  describe.skip('POST /meals', () => {
+  describe('POST /meals', () => {
     it('should deny unauthorized requests', async () => {
       const [meal] = newMeal()
 
@@ -52,7 +52,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe.skip('GET /meals', async () => {
+  describe('GET /meals', async () => {
     it('should deny unauthorized requests', async () => {
       await request(app.server).get('/meals').expect(401)
     })
@@ -78,7 +78,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe.skip('GET /meals/:mealId', () => {
+  describe('GET /meals/:mealId', () => {
     it('should retrieve one meal record by its ID', async () => {
       const token = await authenticate()
       const [meal] = newMeal()
@@ -141,7 +141,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe.skip('GET /meals/total', () => {
+  describe('GET /meals/total', () => {
     it('should retrieve the total number of meals of an user', async () => {
       const token = await authenticate()
       const mealsQuantity = 5
@@ -163,7 +163,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe.skip('GET /meals/diet', () => {
+  describe('GET /meals/diet', () => {
     it('should retrieve the total number of diet meals of an user', async () => {
       const token = await authenticate()
       const mealsQuantity = 10
@@ -186,7 +186,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe.skip('GET /meals/non-diet', () => {
+  describe('GET /meals/non-diet', () => {
     it('should retrieve the total number of non-diet meals of an user', async () => {
       const token = await authenticate()
       const mealsQuantity = 10
@@ -209,7 +209,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe.skip('GET /meals/sequence', () => {
+  describe('GET /meals/sequence', () => {
     it(
       'should retrieve the longest diet sequence of an user',
       async () => {
@@ -241,7 +241,7 @@ describe('Meals CRUD routes', () => {
     )
   })
 
-  describe.skip('PUT /meals/:mealId', () => {
+  describe('PUT /meals/:mealId', () => {
     it('should deny unauthorized requests', async () => {
       const mealId = faker.string.uuid()
       const [updatedMeal] = newMeal()
@@ -330,6 +330,55 @@ describe('Meals CRUD routes', () => {
         .auth(token, { type: 'bearer' })
         .send(updatedMeal)
         .expect(404)
+    })
+  })
+
+  describe('DELETE /meals/:mealId', () => {
+    it('should deny unauthorized requests', async () => {
+      const mealId = faker.string.uuid()
+
+      await request(app.server).delete(`/meals/${mealId}`).expect(401)
+    })
+
+    it('should deny bad formatted UUID', async () => {
+      const token = await authenticate()
+      const mealId = 'bad-formatted-uuid'
+
+      await request(app.server)
+        .delete(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .expect(400)
+    })
+
+    it('should not delete records by non-existing ID', async () => {
+      const token = await authenticate()
+      const mealId = faker.string.uuid() // non-existing ID
+
+      await request(app.server)
+        .delete(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .expect(404)
+    })
+
+    it('should delete a meal record by its ID', async () => {
+      const token = await authenticate()
+      const [meal] = newMeal()
+
+      await request(app.server)
+        .post('/meals')
+        .auth(token, { type: 'bearer' })
+        .send(meal)
+
+      const response = await request(app.server)
+        .get('/meals')
+        .auth(token, { type: 'bearer' })
+
+      const mealId = response.body.meals[0].id
+
+      await request(app.server)
+        .delete(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .expect(204)
     })
   })
 })
