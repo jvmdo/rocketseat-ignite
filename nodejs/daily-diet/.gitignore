@@ -7,3 +7,6 @@ db/*.db
 # Environment variables
 .env
 .env.test
+
+# Build files
+build

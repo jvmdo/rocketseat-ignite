@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
 import { ZodError, z } from 'zod'
-import { knex } from '../database'
-import { longestDietSequence } from '../utils/longest-diet-sequence'
-import { MealError } from '../utils/meal-errors'
+import { knex } from '../database.js'
+import { longestDietSequence } from '../utils/longest-diet-sequence.js'
+import { MealError } from '../utils/meal-errors.js'
 
 const mealBodySchema = z.object({
   name: z.string(),

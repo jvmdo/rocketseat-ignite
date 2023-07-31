@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { ZodError, z } from 'zod'
-import { knex } from '../database'
+import { knex } from '../database.js'
 import bcrypt from 'bcryptjs'
 
 const signUpBodySchema = z.object({

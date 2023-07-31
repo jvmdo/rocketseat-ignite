@@ -1,10 +1,10 @@
 import Fastify from 'fastify'
-import { env } from './env'
-import { authRoutes } from './routes/authRoutes'
-import jwt from '@fastify/jwt'
-import { mealRoutes } from './routes/mealRoutes'
+import jwt from '@fastify/jwt/jwt.js'
 import auth from '@fastify/auth'
-import { authorize } from './middlewares/authorize'
+import { env } from './env/index.js'
+import { authRoutes } from './routes/authRoutes.js'
+import { mealRoutes } from './routes/mealRoutes.js'
+import { authorize } from './middlewares/authorize.js'
 
 export const app = Fastify({
   logger: true,
