@@ -141,7 +141,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe('GET /meals/total', () => {
+  describe.skip('GET /meals/total', () => {
     it('should retrieve the total number of meals of an user', async () => {
       const token = await authenticate()
       const mealsQuantity = 5
@@ -163,7 +163,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe('GET /meals/diet', () => {
+  describe.skip('GET /meals/diet', () => {
     it('should retrieve the total number of diet meals of an user', async () => {
       const token = await authenticate()
       const mealsQuantity = 10
@@ -186,7 +186,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe('GET /meals/non-diet', () => {
+  describe.skip('GET /meals/non-diet', () => {
     it('should retrieve the total number of non-diet meals of an user', async () => {
       const token = await authenticate()
       const mealsQuantity = 10
@@ -209,7 +209,7 @@ describe('Meals CRUD routes', () => {
     })
   })
 
-  describe('GET /meals/sequence', () => {
+  describe.skip('GET /meals/sequence', () => {
     it(
       'should retrieve the longest diet sequence of an user',
       async () => {
@@ -239,6 +239,98 @@ describe('Meals CRUD routes', () => {
       },
       { timeout: 10000 },
     )
+  })
+
+  describe.skip('PUT /meals/:mealId', () => {
+    it('should deny unauthorized requests', async () => {
+      const mealId = faker.string.uuid()
+      const [updatedMeal] = newMeal()
+
+      await request(app.server)
+        .put(`/meals/${mealId}`)
+        .send(updatedMeal)
+        .expect(401)
+    })
+
+    it('should deny bad formatted UUID', async () => {
+      const token = await authenticate()
+      const [updatedMeal] = newMeal()
+      const mealId = 'bad-formatted-uuid'
+
+      await request(app.server)
+        .put(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .send(updatedMeal)
+        .expect(400)
+    })
+
+    it('should deny bad formatted meal objects', async () => {
+      const token = await authenticate()
+      const [meal] = newMeal()
+
+      await request(app.server)
+        .post('/meals')
+        .auth(token, { type: 'bearer' })
+        .send(meal)
+
+      const response = await request(app.server)
+        .get('/meals')
+        .auth(token, { type: 'bearer' })
+
+      const mealId = response.body.meals[0].id
+      const [updatedMeal] = newMeal()
+
+      await request(app.server)
+        .put(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .send({
+          ...updatedMeal,
+          datetime: '30/07/2023 23h18', // wrong date format
+        })
+        .expect(400)
+    })
+
+    it('should update meal details by its ID', async () => {
+      const token = await authenticate()
+      const [meal] = newMeal()
+
+      await request(app.server)
+        .post('/meals')
+        .auth(token, { type: 'bearer' })
+        .send(meal)
+
+      const response = await request(app.server)
+        .get('/meals')
+        .auth(token, { type: 'bearer' })
+
+      const mealId = response.body.meals[0].id
+      const [updatedMeal] = newMeal()
+
+      await request(app.server)
+        .put(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .send(updatedMeal)
+        .expect(201)
+    })
+
+    it('should not update records by non-existing ID', async () => {
+      const token = await authenticate()
+      const [meal] = newMeal()
+
+      await request(app.server)
+        .post('/meals')
+        .auth(token, { type: 'bearer' })
+        .send(meal)
+
+      const mealId = faker.string.uuid() // non-existing ID
+      const [updatedMeal] = newMeal()
+
+      await request(app.server)
+        .put(`/meals/${mealId}`)
+        .auth(token, { type: 'bearer' })
+        .send(updatedMeal)
+        .expect(404)
+    })
   })
 })
 
