@@ -15,5 +15,5 @@ Os módulos possuem um projeto guiado e um desafio em que o aluno deve concluir 
 2. **Criando API REST com Node.js**
     - Projeto 02 - REST API with Fastify and Knex
       - [Readme](/nodejs/rest-api/README.md)
-    - Desafio 02 - TO DO
-      - [Readme](/nodejs/)
+    - Desafio 02 - Daily Diet API
+      - [Readme](/nodejs/daily-diet/README.md)
