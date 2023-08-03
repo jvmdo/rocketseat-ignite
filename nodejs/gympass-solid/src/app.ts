@@ -1,23 +1,19 @@
 import fastify from 'fastify'
 import { env } from '@/env'
-import { PrismaClient } from '@prisma/client'
+import { authRoutes } from './http/routes/auth'
+import { ZodError } from 'zod'
 
 export const app = fastify({
   logger: env.NODE_ENV === 'dev',
 })
 
-app.get('/', async (request, reply) => {
-  const prisma = new PrismaClient({
-    log: env.NODE_ENV === 'dev' ? ['query'] : [],
-  })
+app.register(authRoutes)
+app.setErrorHandler((error, _, reply) => {
+  app.log.error(error)
 
-  const user = await prisma.user.create({
-    data: {
-      name: 'Jane Doe',
-      email: 'jane_dona@example.com',
-      passwordHash: 'jane123',
-    },
-  })
+  if (error instanceof ZodError) {
+    return reply.status(400).send({ message: error.format() })
+  }
 
-  return reply.send({ message: `Hello, ${user.name}!` })
+  return reply.send(error)
 })
