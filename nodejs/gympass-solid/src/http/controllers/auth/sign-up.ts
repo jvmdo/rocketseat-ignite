@@ -1,6 +1,5 @@
-import { UsersRepository } from '@/repository/prisma/users'
-import { SignUpUseCase } from '@/usecases/auth/sign-up'
 import { UserAlreadyExistsError } from '@/usecases/errors/user-already-exists'
+import { makeSignUp } from '@/usecases/factories/make-sign-up'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -14,8 +13,7 @@ export async function signUpController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const usersRepository = new UsersRepository()
-  const signUpUseCase = new SignUpUseCase(usersRepository)
+  const signUpUseCase = makeSignUp()
 
   const { name, email, password } = signUpBodySchema.parse(request.body)
 

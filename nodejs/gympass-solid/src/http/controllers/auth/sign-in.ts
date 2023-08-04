@@ -1,6 +1,5 @@
-import { UsersRepository } from '@/repository/prisma/users'
-import { SignInUseCase } from '@/usecases/auth/sign-in'
 import { InvalidCredentialsError } from '@/usecases/errors/invalid-credentials'
+import { makeSignIn } from '@/usecases/factories/make-sign-in'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -13,8 +12,7 @@ export async function signInController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const usersRepository = new UsersRepository()
-  const signInUseCase = new SignInUseCase(usersRepository)
+  const signInUseCase = makeSignIn()
 
   const { email, password } = signInBodySchema.parse(request.body)
 
