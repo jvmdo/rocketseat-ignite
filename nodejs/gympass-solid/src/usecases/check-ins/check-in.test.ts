@@ -18,7 +18,7 @@ describe('Check Ins use case', () => {
 
     vi.useFakeTimers()
 
-    gymsRepository.gyms.push({
+    gymsRepository.create({
       id: 'gym-01',
       title: 'Strife',
       description: 'This burden tortures me deep in my soul',
@@ -96,7 +96,7 @@ describe('Check Ins use case', () => {
   })
 
   it('should not be able to check in out of range users', async () => {
-    gymsRepository.gyms.push({
+    gymsRepository.create({
       id: 'gym-02',
       title: 'My anxiety is crawling',
       description: 'Out from deep within me',
