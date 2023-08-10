@@ -42,4 +42,12 @@ export class CheckInsRepository implements ICheckInsRepository {
 
     return checkIns
   }
+
+  async countByUserId(userId: string) {
+    const numberOfCheckIns = this.checkIns.filter(
+      (checkIn) => checkIn.userId === userId,
+    ).length
+
+    return numberOfCheckIns
+  }
 }
