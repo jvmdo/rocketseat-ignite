@@ -20,6 +20,12 @@ export class CheckInsRepository implements ICheckInsRepository {
     return checkIn
   }
 
+  async findById(checkInId: string) {
+    const checkIn = this.checkIns.find((checkIn) => checkIn.id === checkInId)
+
+    return checkIn ?? null
+  }
+
   async findByUserIdOnDate(userId: string, date: Date) {
     const startOfDate = dayjs(date).startOf('date')
     const endOfDate = dayjs(date).endOf('date')
@@ -49,5 +55,15 @@ export class CheckInsRepository implements ICheckInsRepository {
     ).length
 
     return numberOfCheckIns
+  }
+
+  async save(checkIn: CheckIn) {
+    const checkInIndex = this.checkIns.findIndex(({ id }) => id === checkIn.id)
+
+    if (checkInIndex >= 0) {
+      this.checkIns[checkInIndex] = checkIn
+    }
+
+    return checkIn
   }
 }
