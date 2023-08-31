@@ -1,7 +1,7 @@
 import { UsersRepository } from '@/repository/prisma/users'
 import { SignUpUseCase } from '../auth/sign-up'
 
-export function makeSignUp() {
+export function makeSignUpUseCase() {
   const usersRepository = new UsersRepository()
   const signUpUseCase = new SignUpUseCase(usersRepository)
 

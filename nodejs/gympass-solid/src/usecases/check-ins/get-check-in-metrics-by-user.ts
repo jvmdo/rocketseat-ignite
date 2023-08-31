@@ -4,7 +4,7 @@ interface IGetUserMetricsUseCase {
   userId: string
 }
 
-export class GetUserMetricsUseCase {
+export class GetCheckInMetricsByUserUseCase {
   constructor(private checkInsRepository: CheckInsRepository) {}
 
   async execute({ userId }: IGetUserMetricsUseCase) {

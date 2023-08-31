@@ -1,5 +1,5 @@
 import { InvalidCredentialsError } from '@/usecases/errors/invalid-credentials'
-import { makeSignIn } from '@/usecases/factories/make-sign-in'
+import { makeSignInUseCase } from '@/usecases/factories/make-sign-in'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -12,7 +12,7 @@ export async function signInController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const signInUseCase = makeSignIn()
+  const signInUseCase = makeSignInUseCase()
 
   const { email, password } = signInBodySchema.parse(request.body)
 
