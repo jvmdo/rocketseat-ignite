@@ -1,9 +1,9 @@
-import { CheckInsRepository } from '@/repository/in-memory/check-ins'
-import { GymsRepository } from '@/repository/in-memory/gyms'
 import { ResourceNotFoundError } from '../errors/resource-not-found'
 import { getDistanceBetweenCoordinates } from '@/utils/get-distance-between-coordinates'
 import { MaxAllowedDistanceError } from '../errors/max-allowed-distance'
 import { MaxNumberOfCheckInsError } from '../errors/max-number-of-check-ins'
+import { ICheckInsRepository } from '@/repository/check-ins-repository'
+import { IGymsRepository } from '@/repository/gyms-repository'
 
 interface ICheckInUseCase {
   userId: string
@@ -14,8 +14,8 @@ interface ICheckInUseCase {
 
 export class CheckInUseCase {
   constructor(
-    private checkInsRepository: CheckInsRepository,
-    private gymsRepository: GymsRepository,
+    private checkInsRepository: ICheckInsRepository,
+    private gymsRepository: IGymsRepository,
   ) {}
 
   async execute({

@@ -1,4 +1,4 @@
-import { GymsRepository } from '@/repository/in-memory/gyms'
+import { IGymsRepository } from '@/repository/gyms-repository'
 
 interface IFetchNearbyGymsUseCase {
   userLatitude: number
@@ -6,7 +6,7 @@ interface IFetchNearbyGymsUseCase {
 }
 
 export class FetchNearbyGymsUseCase {
-  constructor(private gymsRepository: GymsRepository) {}
+  constructor(private gymsRepository: IGymsRepository) {}
 
   async execute({ userLatitude, userLongitude }: IFetchNearbyGymsUseCase) {
     const gyms = await this.gymsRepository.findManyNearby({

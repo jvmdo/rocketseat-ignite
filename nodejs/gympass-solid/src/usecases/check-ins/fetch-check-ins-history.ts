@@ -1,4 +1,4 @@
-import { CheckInsRepository } from '@/repository/in-memory/check-ins'
+import { ICheckInsRepository } from '@/repository/check-ins-repository'
 
 interface IFetchCheckInsUseCase {
   userId: string
@@ -6,7 +6,7 @@ interface IFetchCheckInsUseCase {
 }
 
 export class FetchCheckInsUseCase {
-  constructor(private checkInsRepository: CheckInsRepository) {}
+  constructor(private checkInsRepository: ICheckInsRepository) {}
 
   async execute({ userId, page }: IFetchCheckInsUseCase) {
     const checkIns = await this.checkInsRepository.findManyByUserId(

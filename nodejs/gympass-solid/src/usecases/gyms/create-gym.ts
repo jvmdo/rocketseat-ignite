@@ -1,4 +1,4 @@
-import { GymsRepository } from '@/repository/in-memory/gyms'
+import { IGymsRepository } from '@/repository/gyms-repository'
 
 interface ICreateGymUseCase {
   title: string
@@ -9,7 +9,7 @@ interface ICreateGymUseCase {
 }
 
 export class CreateGymUseCase {
-  constructor(private gymsRepository: GymsRepository) {}
+  constructor(private gymsRepository: IGymsRepository) {}
 
   async execute({
     title,

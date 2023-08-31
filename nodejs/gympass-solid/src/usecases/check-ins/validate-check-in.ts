@@ -1,14 +1,14 @@
-import { CheckInsRepository } from '@/repository/in-memory/check-ins'
 import { ResourceNotFoundError } from '../errors/resource-not-found'
 import dayjs from 'dayjs'
 import { LateCheckInValidationError } from '../errors/late-check-in-validation-error'
+import { ICheckInsRepository } from '@/repository/check-ins-repository'
 
 interface IValidateCheckInUseCase {
   checkInId: string
 }
 
 export class ValidateCheckInUseCase {
-  constructor(private checkInRepository: CheckInsRepository) {}
+  constructor(private checkInRepository: ICheckInsRepository) {}
 
   async execute({ checkInId }: IValidateCheckInUseCase) {
     const checkIn = await this.checkInRepository.findById(checkInId)
