@@ -1,17 +1,15 @@
 import fastify from 'fastify'
 import { env } from '@/env'
-import { authRoutes } from './http/routes/auth'
 import { ZodError } from 'zod'
 import jwt from '@fastify/jwt'
+import { appRoutes } from './http/routes'
 
 export const app = fastify({
   logger: env.NODE_ENV === 'dev',
 })
 
-app.register(jwt, {
-  secret: env.JWT_SECRET,
-})
-app.register(authRoutes)
+app.register(jwt, { secret: env.JWT_SECRET })
+app.register(appRoutes)
 app.setErrorHandler((error, _, reply) => {
   app.log.error(error)
 
