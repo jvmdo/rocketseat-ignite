@@ -21,7 +21,7 @@ export async function signUpController(
     await signUpUseCase.execute({ name, email, password })
   } catch (err) {
     if (err instanceof UserAlreadyExistsError) {
-      return reply.status(err.code).send({ message: err.message })
+      return reply.status(err.statusCode).send(err)
     }
 
     throw err

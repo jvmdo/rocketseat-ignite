@@ -1,16 +1,16 @@
 import { describe, it, beforeEach, expect } from 'vitest'
-import { GetUserProfile } from './get-user-profile'
+import { GetUserProfileUseCase } from './get-user-profile'
 import { UsersRepository } from '@/repository/in-memory/users'
 import { hashSync } from 'bcryptjs'
 import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 let usersRepository: UsersRepository
-let sut: GetUserProfile
+let sut: GetUserProfileUseCase
 
 describe('Get user profile use case', () => {
   beforeEach(() => {
     usersRepository = new UsersRepository()
-    sut = new GetUserProfile(usersRepository)
+    sut = new GetUserProfileUseCase(usersRepository)
   })
 
   it('should retrieve an user profile by id', async () => {
@@ -37,7 +37,7 @@ describe('Get user profile use case', () => {
     try {
       await sut.execute({ userId: 'non-existing-id' })
     } catch (error) {
-      expect((error as ResourceNotFoundError).code).toBe(404)
+      expect((error as ResourceNotFoundError).statusCode).toBe(404)
     }
   })
 })

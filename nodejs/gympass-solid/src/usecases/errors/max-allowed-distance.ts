@@ -1,11 +1,11 @@
 export class MaxAllowedDistanceError extends Error {
-  private _code = 403
+  private _statusCode = 403
 
   constructor(message = 'Max allowed distance reached') {
     super(message)
   }
 
-  public get code() {
-    return this._code
+  public get statusCode() {
+    return this._statusCode
   }
 }

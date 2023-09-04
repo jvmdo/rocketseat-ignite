@@ -67,7 +67,7 @@ describe('Sign in use case', () => {
         password: credentials.password,
       })
     } catch (error) {
-      expect((error as InvalidCredentialsError).code).toBe(401)
+      expect((error as InvalidCredentialsError).statusCode).toBe(401)
     }
   })
 })

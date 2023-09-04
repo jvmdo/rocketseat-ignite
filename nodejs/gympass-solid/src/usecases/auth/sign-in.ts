@@ -14,17 +14,13 @@ export class SignInUseCase {
     const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {
-      throw new InvalidCredentialsError(
-        'Invalid email and password combination.',
-      )
+      throw new InvalidCredentialsError()
     }
 
     const doesPasswordsMatch = await bcrypt.compare(password, user.passwordHash)
 
     if (!doesPasswordsMatch) {
-      throw new InvalidCredentialsError(
-        'Invalid email and password combination.',
-      )
+      throw new InvalidCredentialsError()
     }
 
     return user

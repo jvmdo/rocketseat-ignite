@@ -63,7 +63,7 @@ describe('Sign up use case', () => {
     try {
       await signUpUseCase.execute(data)
     } catch (error) {
-      expect(error).toHaveProperty('code', 409)
+      expect(error).toHaveProperty('statusCode', 409)
     }
   })
 })

@@ -1,11 +1,11 @@
 export class InvalidCredentialsError extends Error {
-  private _code = 401
+  private _statusCode = 401
 
-  constructor(message: string) {
+  constructor(message = 'Invalid email and password combination.') {
     super(message)
   }
 
-  public get code() {
-    return this._code
+  public get statusCode() {
+    return this._statusCode
   }
 }

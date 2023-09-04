@@ -1,5 +1,5 @@
 export class LateCheckInValidationError extends Error {
-  private _code = 400
+  private _statusCode = 400
 
   constructor(
     message = 'Check-in is not valid. Past the 20 minutes time window.',
@@ -7,7 +7,7 @@ export class LateCheckInValidationError extends Error {
     super(message)
   }
 
-  public get code() {
-    return this._code
+  public get statusCode() {
+    return this._statusCode
   }
 }

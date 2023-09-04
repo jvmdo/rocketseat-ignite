@@ -1,11 +1,11 @@
 export class ResourceNotFoundError extends Error {
-  private _code = 404
+  private _statusCode = 404
 
-  constructor(message = 'Resource not found') {
+  constructor(message = 'No record found for the desired resource') {
     super(message)
   }
 
-  public get code() {
-    return this._code
+  public get statusCode() {
+    return this._statusCode
   }
 }

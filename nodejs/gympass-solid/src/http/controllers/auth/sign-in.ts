@@ -24,7 +24,7 @@ export async function signInController(
     token = await reply.jwtSign({}, { sign: { sub: userId } })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
-      return reply.status(err.code).send({ message: err.message })
+      return reply.status(err.statusCode).send(err)
     }
 
     throw err

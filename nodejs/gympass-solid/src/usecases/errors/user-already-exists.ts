@@ -1,11 +1,11 @@
 export class UserAlreadyExistsError extends Error {
-  private _code = 409
+  private _statusCode = 409
 
-  constructor() {
-    super('Email already in use.')
+  constructor(message = 'Email already in use.') {
+    super(message)
   }
 
-  public get code() {
-    return this._code
+  public get statusCode() {
+    return this._statusCode
   }
 }
