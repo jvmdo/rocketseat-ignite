@@ -16,8 +16,12 @@ export async function signInController(
 
   const { email, password } = signInBodySchema.parse(request.body)
 
+  let token
+
   try {
-    await signInUseCase.execute({ email, password })
+    const { id: userId } = await signInUseCase.execute({ email, password })
+
+    token = await reply.jwtSign({}, { sign: { sub: userId } })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
       return reply.status(err.code).send({ message: err.message })
@@ -26,5 +30,5 @@ export async function signInController(
     throw err
   }
 
-  return reply.status(200).send({ message: `You are now signed in.` })
+  return reply.status(200).send({ message: `You are now signed in.`, token })
 }
