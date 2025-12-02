@@ -126,8 +126,17 @@ export function Transactions() {
             {biggerThanKiss && 'Search'}
           </button>
         </StyledTransactionForm>
-        {transactions.length && <TransactionsTable data={transactions} />}
+        {isSubmitting && <LoadingIndicator />}
+        {transactions.length > 0 && <TransactionsTable data={transactions} />}
       </ContentContainer>
     </section>
+  )
+}
+
+function LoadingIndicator() {
+  return (
+    <span style={{ display: 'inline-block', marginBlockEnd: '0.5rem' }}>
+      🔃 Loading transactions
+    </span>
   )
 }
