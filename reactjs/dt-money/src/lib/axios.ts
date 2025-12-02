@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-// const DEV_BASE_URL = 'http://localhost:3333'
-const PROD_BASE_URL = 'https://json-server-jvmdo.vercel.app/api'
+const JSON_SERVER_URL = import.meta.env.VITE_JSON_SERVER_URL
+
+console.log({ JSON_SERVER_URL })
 
 export const api = axios.create({
-  baseURL: PROD_BASE_URL,
+  baseURL: JSON_SERVER_URL,
 })
