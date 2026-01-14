@@ -50,6 +50,14 @@ A proposta desse módulo é desenvolver um projeto *fullstack* completo, do zero
 
 - [Remote repository](https://github.com/jvmdo/rocketseat-ignite/tree/main/reactjs/ignite-call)
 
+## Getting started
+
+0. Criar projeto Google Cloud
+1. Docker Mysql database
+2. Env variables
+3. npm i
+4. npx prisma migrate dev
+
 ## My process
 
 Por conta do tamanho deste módulo (10h de duração), adotei a abordagem de implementar uma parte do projeto a cada seção de lições. Assim, o processo foi assistir a seção inteira, tomando notas dos pontos importantes para, então, partir para o código, evitando ao máximo consultar a fonte.

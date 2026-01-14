@@ -27,7 +27,7 @@ Os módulos possuem um projeto guiado e um desafio em que o aluno deve concluir 
       - [Live preview](https://coffee-delivery-jvmdo.vercel.app/)
 
 3. **Consumo de API e performance no React.js**
-    - Projeto 03 - Ignite Timer
+    - Projeto 03 - DT Money
       - [Readme](/reactjs/dt-money/README.md)
 
       - [Live preview](https://dt-money-jvmdo.netlify.app/)
